@@ -8,68 +8,76 @@
                     database/API nanti.</p>
             </div>
 
-            <div class="card border-0 shadow-sm mb-4 filter-panel">
-                <div class="card-body d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between">
-                    <div class="btn-group flex-wrap gap-2" role="group" aria-label="Filter Hari">
-                        <button type="button" class="btn btn-primary btn-sm filter-btn active" data-day="Semua">Semua
-                            Hari</button>
-                        <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
-                            data-day="Senin">Senin</button>
-                        <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
-                            data-day="Selasa">Selasa</button>
-                        <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
-                            data-day="Rabu">Rabu</button>
-                        <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
-                            data-day="Kamis">Kamis</button>
-                        <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
-                            data-day="Jumat">Jumat</button>
-                    </div>
+            @if ($error)
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>{{ $error }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            </div>
-
-            <div class="schedule-list" id="scheduleGrid">
-                @forelse ($jadwal as $hari => $items)
-                    <div class="card border-0 shadow-lg schedule-group mb-4" data-day="{{ $hari }}">
-                        <div class="card-body">
-                            <div
-                                class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
-                                <div>
-                                    <span
-                                        class="badge text-bg-primary rounded-pill px-3 py-2 mb-2">{{ $hari }}</span>
-
-                                </div>
-                                <small class="text-muted fw-semibold">{{ $items->count() }} mata kuliah</small>
-                            </div>
-
-                            <div class="table-responsive">
-                                <table class="table table-borderless align-middle mb-0 schedule-table">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-muted fw-semibold">Jam</th>
-                                            <th class="text-muted fw-semibold">Mata Kuliah</th>
-                                            <th class="text-muted fw-semibold">Dosen</th>
-                                            <th class="text-muted fw-semibold">Ruang</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($items as $item)
-                                            <tr>
-                                                <td class="fw-semibold">{{ $item['jamberangkat'] }} -
-                                                    {{ $item['jampulang'] }}</td>
-                                                <td>{{ $item['matkul'] }}</td>
-                                                <td>{{ $item['dosen'] }}</td>
-                                                <td>{{ $item['ruang'] }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+            @else
+                <div class="card border-0 shadow-sm mb-4 filter-panel">
+                    <div
+                        class="card-body d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between">
+                        <div class="btn-group flex-wrap gap-2" role="group" aria-label="Filter Hari">
+                            <button type="button" class="btn btn-primary btn-sm filter-btn active" data-day="Semua">Semua
+                                Hari</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
+                                data-day="Senin">Senin</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
+                                data-day="Selasa">Selasa</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
+                                data-day="Rabu">Rabu</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
+                                data-day="Kamis">Kamis</button>
+                            <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
+                                data-day="Jumat">Jumat</button>
                         </div>
                     </div>
-                @empty
-                    <div class="alert alert-warning">Belum ada data jadwal.</div>
-                @endforelse
-            </div>
+                </div>
+
+                <div class="schedule-list" id="scheduleGrid">
+                    @forelse ($jadwal as $hari => $items)
+                        <div class="card border-0 shadow-lg schedule-group mb-4" data-day="{{ $hari }}">
+                            <div class="card-body">
+                                <div
+                                    class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
+                                    <div>
+                                        <span
+                                            class="badge text-bg-primary rounded-pill px-3 py-2 mb-2">{{ $hari }}</span>
+
+                                    </div>
+                                    <small class="text-muted fw-semibold">{{ $items->count() }} mata kuliah</small>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-borderless align-middle mb-0 schedule-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-muted fw-semibold">Jam</th>
+                                                <th class="text-muted fw-semibold">Mata Kuliah</th>
+                                                <th class="text-muted fw-semibold">Dosen</th>
+                                                <th class="text-muted fw-semibold">Ruang</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($items as $item)
+                                                <tr>
+                                                    <td class="fw-semibold">{{ $item['jamberangkat'] }} -
+                                                        {{ $item['jampulang'] }}</td>
+                                                    <td>{{ $item['matkul'] }}</td>
+                                                    <td>{{ $item['dosen'] }}</td>
+                                                    <td>{{ $item['ruang'] }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="alert alert-warning">Belum ada data jadwal.</div>
+                    @endforelse
+                </div>
+            @endif
         </div>
     </section>
 

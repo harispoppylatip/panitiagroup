@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class AdminUserController extends Controller
@@ -103,7 +104,7 @@ class AdminUserController extends Controller
     public function destroy(User $user)
     {
         // Jangan hapus user yang sedang login
-        if ($user->id === auth()->id()) {
+        if ($user->id === Auth::id()) {
             return redirect()->back()
                 ->with('error', 'Tidak bisa menghapus user yang sedang login');
         }

@@ -65,7 +65,8 @@
                 </div>
             </div>
 
-            <div class="row g-4 team-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+            <div class="row g-4 team-grid"
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
                 @forelse ($teamMembers as $member)
                     <article class="team-card">
                         <img src="{{ $member->image_url }}" alt="{{ $member->name }}" class="team-photo">
