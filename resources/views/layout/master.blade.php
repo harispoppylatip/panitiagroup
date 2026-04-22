@@ -230,7 +230,6 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link active" href="/">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('gambare') }}">Galeri</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('jadwal') }}">Jadwal Kuliah</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('tugas') }}">Tugas</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('scan.login') }}">Scan Absen</a></li>

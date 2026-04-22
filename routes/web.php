@@ -10,6 +10,8 @@ use App\Http\Controllers\ambiljadwalapi;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\tokencontroller;
 use App\Http\Controllers\BarcodeController;
+use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\BerandaController;
 
 Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
@@ -42,6 +44,29 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::post('/token/refresh-all', [tokencontroller::class, 'refreshAllTokens'])->name('admin.token.refresh-all');
     Route::get('/scan-login-setting', [AdminController::class, 'scanLoginSetting'])->name('admin.scan.login.setting');
     Route::post('/scan-login-setting', [AdminController::class, 'updateScanLoginSetting'])->name('admin.scan.login.setting.update');
+
+    // management user
+    Route::resource('/users', AdminUserController::class, [
+        'names' => [
+            'index' => 'admin.users.index',
+            'create' => 'admin.users.create',
+            'store' => 'admin.users.store',
+            'show' => 'admin.users.show',
+            'edit' => 'admin.users.edit',
+            'update' => 'admin.users.update',
+            'destroy' => 'admin.users.destroy',
+        ],
+        'parameters' => ['user' => 'user'],
+    ]);
+
+    // management beranda
+    Route::get('/beranda', [BerandaController::class, 'index'])->name('admin.beranda.index');
+    Route::get('/beranda/hero/edit', [BerandaController::class, 'editHero'])->name('admin.beranda.edit-hero');
+    Route::put('/beranda/hero/update', [BerandaController::class, 'updateHero'])->name('admin.beranda.update-hero');
+    Route::get('/beranda/team/edit', [BerandaController::class, 'editTeam'])->name('admin.beranda.edit-team');
+    Route::post('/beranda/team/store', [BerandaController::class, 'storeTeam'])->name('admin.beranda.store-team');
+    Route::put('/beranda/team/{teamMember}/update', [BerandaController::class, 'updateTeam'])->name('admin.beranda.update-team');
+    Route::delete('/beranda/team/{teamMember}', [BerandaController::class, 'destroyTeam'])->name('admin.beranda.destroy-team');
 });
 
 // pages
@@ -50,9 +75,7 @@ Route::get('/jadwal', [ambiljadwalapi::class, 'index'])->name('jadwal');
 Route::get('/tugas', [TugasController::class, 'front'])->name('tugas');
 
 
-// gambar funcation
-Route::get('/galeri', [indexcontroller::class, 'ambilgambar'])->name('gambare');
-Route::delete('/galeri/hapus/{id}', [indexcontroller::class, 'hapusgambar'])->name('hapusgambar');
+
 
 Route::get('/post', [controllerpost::class, 'index']);
 Route::delete('/edit/del/{id}', [controllerpost::class, 'delete']);

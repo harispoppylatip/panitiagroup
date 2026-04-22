@@ -201,6 +201,10 @@
             <div class="collapse navbar-collapse" id="adminNavbar">
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.beranda.*') ? 'active' : '' }}"
+                            href="{{ route('admin.beranda.index') }}">Management Beranda</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.upload') ? 'active' : '' }}"
                             href="{{ route('admin.upload') }}">Upload</a>
                     </li>
@@ -219,6 +223,10 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.scan.login.setting') ? 'active' : '' }}"
                             href="{{ route('admin.scan.login.setting') }}">Setting Login Scan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
+                            href="{{ route('admin.users.index') }}">Management User</a>
                     </li>
                     <li class="nav-item">
                         <button type="button" class="theme-toggle" id="themeToggle">

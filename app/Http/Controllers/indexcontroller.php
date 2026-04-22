@@ -29,19 +29,4 @@ class indexcontroller extends Controller
         ]);
         return redirect()->route('admin.upload')->with('success', 'Product created successfully.');
     }
-
-    public function ambilgambar(){
-        $gambar = gambaran::all();
-        return view('pages.galeri', compact('gambar'));
-    }
-
-    public function hapusgambar($id){
-        $namagambar = gambaran::find($id)->gambar; 
-        
-        File::delete(public_path('images/'. $namagambar));
-
-        gambaran::destroy($id);
-
-        return redirect('/galeri');
-    }
 }

@@ -17,8 +17,6 @@
                             </p>
                             <div class="d-flex flex-wrap gap-2 mb-4">
                                 <a href="{{ route('scan.login') }}" class="btn btn-brand px-4 py-2">Masuk Scan Absen</a>
-                                <a href="{{ route('gambare') }}" class="btn btn-outline-secondary px-4 py-2">Lihat
-                                    Galeri</a>
                             </div>
 
                             <div class="hero-metrics">
@@ -41,8 +39,8 @@
                     <div class="col-xl-6">
                         <div class="hero-gallery">
                             <div class="hero-main-photo">
-                                <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1300&q=80"
-                                    alt="Foto utama tim" class="img-cover">
+                                <img src="{{ $heroImages->get('main')?->image_url ?? 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1300&q=80' }}"
+                                    alt="{{ $heroImages->get('main')?->alt_text ?? 'Foto utama tim' }}" class="img-cover">
                                 <div class="hero-main-overlay">
                                     <p class="overlay-mini mb-1">IKATAN MAHASISWA</p>
                                     <h3 class="overlay-title mb-1">Kolaborasi, Integritas, dan Dampak Nyata</h3>
@@ -52,12 +50,14 @@
 
                             <div class="hero-side-grid">
                                 <div class="side-photo-card">
-                                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80"
-                                        alt="Aktivitas tim 1" class="img-cover">
+                                    <img src="{{ $heroImages->get('side1')?->image_url ?? 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80' }}"
+                                        alt="{{ $heroImages->get('side1')?->alt_text ?? 'Aktivitas tim 1' }}"
+                                        class="img-cover">
                                 </div>
                                 <div class="side-photo-card">
-                                    <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80"
-                                        alt="Aktivitas tim 2" class="img-cover">
+                                    <img src="{{ $heroImages->get('side2')?->image_url ?? 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80' }}"
+                                        alt="{{ $heroImages->get('side2')?->alt_text ?? 'Aktivitas tim 2' }}"
+                                        class="img-cover">
                                 </div>
                             </div>
                         </div>
@@ -65,67 +65,20 @@
                 </div>
             </div>
 
-            <div class="row g-4 team-grid">
-                <div class="col-lg-4 col-md-6">
+            <div class="row g-4 team-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                @forelse ($teamMembers as $member)
                     <article class="team-card">
-                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=80"
-                            alt="Foto tim kepemimpinan" class="team-photo">
+                        <img src="{{ $member->image_url }}" alt="{{ $member->name }}" class="team-photo">
                         <div class="team-card-body">
-                            <p class="team-role mb-1">Project Coordinator</p>
-                            <h3 class="team-name mb-0">Ari Pratama</h3>
+                            <p class="team-role mb-1">{{ $member->role }}</p>
+                            <h3 class="team-name mb-0">{{ $member->name }}</h3>
                         </div>
                     </article>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <article class="team-card">
-                        <img src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=900&q=80"
-                            alt="Foto tim desain" class="team-photo">
-                        <div class="team-card-body">
-                            <p class="team-role mb-1">UI/UX Designer</p>
-                            <h3 class="team-name mb-0">Nadia Putri</h3>
-                        </div>
-                    </article>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <article class="team-card">
-                        <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&w=900&q=80"
-                            alt="Foto tim frontend" class="team-photo">
-                        <div class="team-card-body">
-                            <p class="team-role mb-1">Frontend Developer</p>
-                            <h3 class="team-name mb-0">Rizki Fadillah</h3>
-                        </div>
-                    </article>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <article class="team-card">
-                        <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=900&q=80"
-                            alt="Foto tim backend" class="team-photo">
-                        <div class="team-card-body">
-                            <p class="team-role mb-1">Backend Developer</p>
-                            <h3 class="team-name mb-0">Dina Rahma</h3>
-                        </div>
-                    </article>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <article class="team-card">
-                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=900&q=80"
-                            alt="Foto tim QA" class="team-photo">
-                        <div class="team-card-body">
-                            <p class="team-role mb-1">Quality Assurance</p>
-                            <h3 class="team-name mb-0">Fajar Maulana</h3>
-                        </div>
-                    </article>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <article class="team-card">
-                        <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=900&q=80"
-                            alt="Foto tim data" class="team-photo">
-                        <div class="team-card-body">
-                            <p class="team-role mb-1">Data Analyst</p>
-                            <h3 class="team-name mb-0">Salsa Dewi</h3>
-                        </div>
-                    </article>
-                </div>
+                @empty
+                    <div class="col-12 text-center py-5">
+                        <p class="text-muted">Belum ada anggota tim</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>
@@ -291,6 +244,8 @@
         }
 
         .team-card {
+            display: flex;
+            flex-direction: column;
             height: 100%;
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 248, 254, 0.95));
             border-radius: 18px;
@@ -309,7 +264,8 @@
 
         .team-photo {
             width: 100%;
-            height: 250px;
+            height: 300px;
+            aspect-ratio: 4/3;
             object-fit: cover;
             display: block;
         }
@@ -333,17 +289,23 @@
         }
 
         .team-grid .col-lg-4:nth-child(1) .team-card,
-        .team-grid .col-lg-4:nth-child(4) .team-card {
+        .team-grid .col-lg-4:nth-child(4) .team-card,
+        .team-grid article:nth-child(1),
+        .team-grid article:nth-child(4) {
             animation-delay: 0.05s;
         }
 
         .team-grid .col-lg-4:nth-child(2) .team-card,
-        .team-grid .col-lg-4:nth-child(5) .team-card {
+        .team-grid .col-lg-4:nth-child(5) .team-card,
+        .team-grid article:nth-child(2),
+        .team-grid article:nth-child(5) {
             animation-delay: 0.15s;
         }
 
         .team-grid .col-lg-4:nth-child(3) .team-card,
-        .team-grid .col-lg-4:nth-child(6) .team-card {
+        .team-grid .col-lg-4:nth-child(6) .team-card,
+        .team-grid article:nth-child(3),
+        .team-grid article:nth-child(6) {
             animation-delay: 0.25s;
         }
 
