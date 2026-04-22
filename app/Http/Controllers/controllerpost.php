@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Http;
 
 class controllerpost extends Controller
 {
+
+
     public function home()
     {
+        
         // $hasil = [];
         // $sikad = Sikaddata::all();
 

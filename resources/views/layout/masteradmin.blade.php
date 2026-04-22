@@ -205,16 +205,16 @@
                             href="{{ route('admin.upload') }}">Upload</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.inserttoken.form') ? 'active' : '' }}"
-                            href="{{ route('admin.inserttoken.form') }}">Insert Token</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.editor') ? 'active' : '' }}"
                             href="{{ route('admin.editor') }}">Editor Post</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.tugas.*') ? 'active' : '' }}"
+                            href="{{ route('admin.tugas.index') }}">Management Tugas</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.membertoken') ? 'active' : '' }}"
-                            href="{{ route('admin.membertoken') }}">member control</a>
+                            href="{{ route('admin.membertoken') }}">Management Token</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.scan.login.setting') ? 'active' : '' }}"

@@ -7,11 +7,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 
 class indexcontroller extends Controller
-{
-    public function jadwal()
-    {
-        return view('pages.jadwal');
-    }
+{    
 
     public function upload(Request $request)
     {
