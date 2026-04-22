@@ -65,16 +65,17 @@
                 </div>
             </div>
 
-            <div class="row g-4 team-grid"
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+            <div class="row g-4 team-grid">
                 @forelse ($teamMembers as $member)
-                    <article class="team-card">
-                        <img src="{{ $member->image_url }}" alt="{{ $member->name }}" class="team-photo">
-                        <div class="team-card-body">
-                            <p class="team-role mb-1">{{ $member->role }}</p>
-                            <h3 class="team-name mb-0">{{ $member->name }}</h3>
-                        </div>
-                    </article>
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <article class="team-card">
+                            <img src="{{ $member->image_url }}" alt="{{ $member->name }}" class="team-photo">
+                            <div class="team-card-body">
+                                <p class="team-role mb-1">{{ $member->role }}</p>
+                                <h3 class="team-name mb-0">{{ $member->name }}</h3>
+                            </div>
+                        </article>
+                    </div>
                 @empty
                     <div class="col-12 text-center py-5">
                         <p class="text-muted">Belum ada anggota tim</p>
@@ -265,14 +266,27 @@
 
         .team-photo {
             width: 100%;
-            height: 300px;
             aspect-ratio: 4/3;
             object-fit: cover;
             display: block;
         }
 
+        @media (max-width: 576px) {
+            .team-photo {
+                aspect-ratio: auto;
+                height: auto;
+                object-fit: contain;
+            }
+        }
+
         .team-card-body {
             padding: 1rem 1.1rem 1.2rem;
+        }
+
+        @media (max-width: 576px) {
+            .team-card-body {
+                padding: 0.75rem 0.85rem 0.9rem;
+            }
         }
 
         .team-name {
@@ -289,24 +303,28 @@
             text-transform: uppercase;
         }
 
+        @media (max-width: 576px) {
+            .team-name {
+                font-size: 0.95rem;
+            }
+
+            .team-role {
+                font-size: 0.75rem;
+            }
+        }
+
         .team-grid .col-lg-4:nth-child(1) .team-card,
-        .team-grid .col-lg-4:nth-child(4) .team-card,
-        .team-grid article:nth-child(1),
-        .team-grid article:nth-child(4) {
+        .team-grid .col-lg-4:nth-child(4) .team-card {
             animation-delay: 0.05s;
         }
 
         .team-grid .col-lg-4:nth-child(2) .team-card,
-        .team-grid .col-lg-4:nth-child(5) .team-card,
-        .team-grid article:nth-child(2),
-        .team-grid article:nth-child(5) {
+        .team-grid .col-lg-4:nth-child(5) .team-card {
             animation-delay: 0.15s;
         }
 
         .team-grid .col-lg-4:nth-child(3) .team-card,
-        .team-grid .col-lg-4:nth-child(6) .team-card,
-        .team-grid article:nth-child(3),
-        .team-grid article:nth-child(6) {
+        .team-grid .col-lg-4:nth-child(6) .team-card {
             animation-delay: 0.25s;
         }
 
