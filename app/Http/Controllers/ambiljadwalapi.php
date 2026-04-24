@@ -23,7 +23,7 @@ class ambiljadwalapi extends Controller
             'Accept' => 'application/json, text/plain, */*',
             'college-id' => '111024',
             'Authorization' => 'Bearer '. $data->access_token,
-        ])->get('https://mahasiswa.umkt.ac.id/v1/mahasiswa/2411102441024/jadwal_kuliah?semester=2&tahun=2026');
+        ])->get('https://mahasiswa.umkt.ac.id/v1/mahasiswa/'. $data->Nim .'/jadwal_kuliah?semester=2&tahun=2026');
     
         if (!$response->successful()) {
             $errorData = $response->json();
