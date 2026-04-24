@@ -24,7 +24,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::post('/upload', [indexcontroller::class, 'upload'])->name('admin.upload.store');
     Route::get('/editor', [controllerpost::class, 'editor'])->name('admin.editor');
 
-    // management tugas (dummy UI)
+    // management tugas
     Route::get('/tugas', [TugasController::class, 'index'])->name('admin.tugas.index');
     Route::get('/tugas/create', [TugasController::class, 'create'])->name('admin.tugas.create');
     Route::post('/tugas/createnew', [TugasController::class, 'postnew'])->name('admin.tugas.createnew');
@@ -73,11 +73,9 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 Route::get('/', [controllerpost::class, 'home']);
 Route::get('/jadwal', [ambiljadwalapi::class, 'index'])->name('jadwal');
 Route::get('/tugas', [TugasController::class, 'front'])->name('tugas');
-
-
-
-
-Route::get('/post', [controllerpost::class, 'index']);
+Route::get('/grubkas', function() {
+    return view('pages.grubkas');
+})->name('grubkas');
 Route::delete('/edit/del/{id}', [controllerpost::class, 'delete']);
 
 // scanner
@@ -91,4 +89,4 @@ Route::post('/scan/submit', [BarcodeController::class, 'submitScan'])->middlewar
 
 
 // jadwal
-Route::get('/test', [ambiljadwalapi::class, 'index']);
+Route::get('/wee', [tokencontroller::class, 'refreshtoken']);
