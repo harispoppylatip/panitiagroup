@@ -26,7 +26,8 @@ class ambiljadwalapi extends Controller
         ])->get('https://mahasiswa.umkt.ac.id/v1/mahasiswa/2411102441024/jadwal_kuliah?semester=2&tahun=2026');
     
         if (!$response->successful()) {
-            $error = 'Token Error: Gagal mengambil data jadwal';
+            $errorData = $response->json();
+            $error = $errorData['message'] ?? $errorData['error'] ?? $response->body() ?? 'Token Error: Gagal mengambil data jadwal';
             return view('pages.jadwal', compact('jadwal', 'error'));
         }
 
