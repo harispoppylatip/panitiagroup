@@ -30,13 +30,12 @@ class controllerpost extends Controller
 
     public function editor()
     {
-        $data = modelpost::all();
-        return view('admin.editorpost', compact('data'));
+        return redirect()->route('admin.beranda.index');
     }
     public function delete($id)
     {
         modelpost::destroy($id);
-        return redirect('/editor');
+        return redirect()->route('admin.beranda.index');
     }
 
     

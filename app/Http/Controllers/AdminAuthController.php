@@ -23,7 +23,7 @@ class AdminAuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('admin.upload'));
+            return redirect()->intended(route('admin.beranda.index'));
         }
 
         return back()

@@ -27,6 +27,6 @@ class indexcontroller extends Controller
             'detail' => $detail,
             'gambar' => $imageName,
         ]);
-        return redirect()->route('admin.upload')->with('success', 'Product created successfully.');
+        return redirect()->route('admin.beranda.index')->with('success', 'Data berhasil disimpan.');
     }
 }

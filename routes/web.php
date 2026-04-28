@@ -20,13 +20,8 @@ Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
-Route::redirect('/upload', '/admin/upload');
 
 Route::middleware('auth')->prefix('admin')->group(function () {
-    Route::get('/upload', [AdminController::class, 'upload'])->name('admin.upload');
-    Route::post('/upload', [indexcontroller::class, 'upload'])->name('admin.upload.store');
-    Route::get('/editor', [controllerpost::class, 'editor'])->name('admin.editor');
-
     // management tugas
     Route::get('/tugas', [TugasController::class, 'index'])->name('admin.tugas.index');
     Route::get('/tugas/create', [TugasController::class, 'create'])->name('admin.tugas.create');
@@ -82,7 +77,6 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 Route::get('/', [controllerpost::class, 'home']);
 Route::get('/jadwal', [ambiljadwalapi::class, 'index'])->name('jadwal');
 Route::get('/tugas', [TugasController::class, 'front'])->name('tugas');
-Route::delete('/edit/del/{id}', [controllerpost::class, 'delete']);
 
 // scanner
 Route::get('/loginbarcode', [controllerscanner::class, 'loginbarcode'])->name('scan.login');

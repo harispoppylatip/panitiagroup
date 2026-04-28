@@ -11,11 +11,6 @@ use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
-    public function upload(): View
-    {
-        return view('admin.uploadfile');
-    }
-
     public function inserttoken(): View
     {
         return view('admin.inserttoken');

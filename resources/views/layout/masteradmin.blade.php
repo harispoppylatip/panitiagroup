@@ -191,7 +191,7 @@
 <body>
     <nav class="navbar navbar-expand-md navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('admin.upload') }}">
+            <a class="navbar-brand" href="{{ route('admin.beranda.index') }}">
                 <i class="bi bi-speedometer2"></i> Admin Panel
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar"
@@ -203,14 +203,6 @@
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.beranda.*') ? 'active' : '' }}"
                             href="{{ route('admin.beranda.index') }}">Management Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.upload') ? 'active' : '' }}"
-                            href="{{ route('admin.upload') }}">Upload</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.editor') ? 'active' : '' }}"
-                            href="{{ route('admin.editor') }}">Editor Post</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.tugas.*') ? 'active' : '' }}"
