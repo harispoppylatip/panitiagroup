@@ -2,13 +2,28 @@
 @section('konten')
     <section class="kas-grub-section">
         <div class="container">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <div class="row g-4 mb-5">
                 <!-- Header Section -->
                 <div class="col-12">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <div>
                             <h1 class="kas-title mb-2">Kas Grub</h1>
-                            <p class="kas-subtitle mb-0">Ituran mingguan Rp 10.000/orang · Minggu ke-18</p>
+                            <p class="kas-subtitle mb-0">Iuran mingguan Rp
+                                {{ number_format((int) $weeklyFee, 0, ',', '.') }}/orang · Minggu ke-18</p>
                         </div>
                         <button class="btn btn-sm btn-outline-secondary">
                             <i class="bi bi-three-dots-vertical"></i>
@@ -18,7 +33,7 @@
                     <!-- Total Kas Card -->
                     <div class="kas-total-card">
                         <p class="kas-total-label">TOTAL KAS TERKUMPUL</p>
-                        <h2 class="kas-total-amount">Rp 730.000</h2>
+                        <h2 class="kas-total-amount">Rp {{ number_format((int) $totalKasTerkumpul, 0, ',', '.') }}</h2>
                         <p class="kas-total-info">Dikekola via Midtrans - Terakhir diperbarui hari ini</p>
                     </div>
                 </div>
@@ -27,22 +42,84 @@
                 <div class="col-12">
                     <div class="row g-3">
                         <div class="col-4 col-md-4">
-                            <div class="stat-card">
-                                <div class="stat-value">7</div>
-                                <div class="stat-label">Sudah bayar minggu ini</div>
-                            </div>
+                            <details class="stat-dropdown stat-dropdown--success">
+                                <summary class="stat-card stat-summary">
+                                    <div class="stat-value stat-value--success">{{ $sudahBayar }}</div>
+                                    <div class="stat-label">Sudah bayar minggu ini</div>
+                                    <i class="bi bi-chevron-down stat-chevron"></i>
+                                </summary>
+                                <div class="stat-dropdown-panel">
+                                    @forelse ($sudahBayarMembers as $member)
+                                        <div class="stat-member-item">
+                                            <div class="stat-member-avatar stat-member-avatar--success">
+                                                {{ $member['initials'] }}
+                                            </div>
+                                            <div class="stat-member-content">
+                                                <p class="stat-member-name">{{ $member['nama'] }}</p>
+                                                <p class="stat-member-meta">{{ $member['nim'] }} ·
+                                                    {{ $member['keterangan'] }}</p>
+                                            </div>
+                                            <span class="stat-pill stat-pill--success">Lunas</span>
+                                        </div>
+                                    @empty
+                                        <div class="stat-empty-state">Belum ada anggota yang tercatat lunas.</div>
+                                    @endforelse
+                                </div>
+                            </details>
                         </div>
                         <div class="col-4 col-md-4">
-                            <div class="stat-card">
-                                <div class="stat-value">3</div>
-                                <div class="stat-label">Belum bayar</div>
-                            </div>
+                            <details class="stat-dropdown stat-dropdown--warning">
+                                <summary class="stat-card stat-summary">
+                                    <div class="stat-value stat-value--warning">{{ $belumBayar }}</div>
+                                    <div class="stat-label">Belum bayar</div>
+                                    <i class="bi bi-chevron-down stat-chevron"></i>
+                                </summary>
+                                <div class="stat-dropdown-panel">
+                                    @forelse ($belumBayarMembers as $member)
+                                        <div class="stat-member-item">
+                                            <div class="stat-member-avatar stat-member-avatar--warning">
+                                                {{ $member['initials'] }}
+                                            </div>
+                                            <div class="stat-member-content">
+                                                <p class="stat-member-name">{{ $member['nama'] }}</p>
+                                                <p class="stat-member-meta">{{ $member['nim'] }} ·
+                                                    {{ $member['keterangan'] }}</p>
+                                            </div>
+                                            <span class="stat-pill stat-pill--warning">Pending</span>
+                                        </div>
+                                    @empty
+                                        <div class="stat-empty-state">Semua anggota sudah membayar.</div>
+                                    @endforelse
+                                </div>
+                            </details>
                         </div>
                         <div class="col-4 col-md-4">
-                            <div class="stat-card">
-                                <div class="stat-value">10</div>
-                                <div class="stat-label">Total anggota</div>
-                            </div>
+                            <details class="stat-dropdown stat-dropdown--info">
+                                <summary class="stat-card stat-summary">
+                                    <div class="stat-value stat-value--info">{{ $totalAnggota }}</div>
+                                    <div class="stat-label">Total anggota</div>
+                                    <i class="bi bi-chevron-down stat-chevron"></i>
+                                </summary>
+                                <div class="stat-dropdown-panel stat-dropdown-panel--total">
+                                    @forelse ($memberStats as $member)
+                                        <div class="stat-member-item">
+                                            <div
+                                                class="stat-member-avatar stat-member-avatar--{{ $member['status_class'] }}">
+                                                {{ $member['initials'] }}
+                                            </div>
+                                            <div class="stat-member-content">
+                                                <p class="stat-member-name">{{ $member['nama'] }}</p>
+                                                <p class="stat-member-meta">{{ $member['nim'] }} ·
+                                                    {{ $member['keterangan'] }}</p>
+                                            </div>
+                                            <span
+                                                class="stat-pill stat-pill--{{ $member['status_class'] }}">{{ $member['status_label'] }}</span>
+                                        </div>
+                                    @empty
+                                        <div class="stat-empty-state">Belum ada data anggota.</div>
+                                    @endforelse
+                                </div>
+                            </details>
                         </div>
                     </div>
                 </div>
@@ -62,92 +139,99 @@
                         </div>
 
                         <div class="activity-list">
-                            <div class="activity-item">
-                                <div class="activity-icon up">
-                                    <i class="bi bi-arrow-up"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <p class="activity-name">Lisa Kurnia</p>
-                                    <p class="activity-date">Kamis, 07 Mei · 07:55</p>
-                                </div>
-                                <div class="activity-amount positive">+Rp 10.000</div>
-                            </div>
+                            @forelse ($activityLogs as $log)
+                                <details class="activity-dropdown">
+                                    <summary class="activity-summary">
+                                        <div class="activity-item">
+                                            <div class="activity-icon {{ $log->direction === 'out' ? 'down' : 'up' }}">
+                                                <i
+                                                    class="bi {{ $log->direction === 'out' ? 'bi-arrow-down' : 'bi-arrow-up' }}"></i>
+                                            </div>
+                                            <div class="activity-content">
+                                                <p class="activity-name">{{ $log->title }}</p>
+                                                <p class="activity-date">
+                                                    {{ optional($log->occurred_at)->translatedFormat('l, d M Y') ?? '-' }}
+                                                    ·
+                                                    {{ optional($log->occurred_at)->format('H:i') ?? '-' }}
+                                                </p>
+                                            </div>
+                                            <div class="activity-summary-right">
+                                                <div
+                                                    class="activity-amount {{ $log->direction === 'out' ? 'negative' : 'positive' }}">
+                                                    {{ $log->direction === 'out' ? '-' : '+' }}Rp
+                                                    {{ number_format((int) $log->amount, 0, ',', '.') }}
+                                                </div>
+                                                <i class="bi bi-chevron-down activity-chevron"></i>
+                                            </div>
+                                        </div>
+                                    </summary>
 
-                            <div class="activity-item">
-                                <div class="activity-icon up">
-                                    <i class="bi bi-arrow-up"></i>
+                                    <div class="activity-detail-panel">
+                                        <div class="activity-detail-grid">
+                                            <div class="activity-detail-row">
+                                                <span class="activity-detail-label">Waktu</span>
+                                                <span class="activity-detail-value">
+                                                    {{ optional($log->occurred_at)->translatedFormat('d-m-Y H:i') ?? '-' }}
+                                                </span>
+                                            </div>
+                                            <div class="activity-detail-row">
+                                                <span class="activity-detail-label">Nominal</span>
+                                                <span class="activity-detail-value">
+                                                    Rp {{ number_format((int) $log->amount, 0, ',', '.') }}
+                                                </span>
+                                            </div>
+                                            <div class="activity-detail-row">
+                                                <span class="activity-detail-label">Keterangan</span>
+                                                <span class="activity-detail-value">
+                                                    {{ $log->description ?: 'Tidak ada keterangan' }}
+                                                </span>
+                                            </div>
+                                            <div class="activity-detail-row">
+                                                <span class="activity-detail-label">Status</span>
+                                                <span class="activity-detail-value">
+                                                    {{ $log->transaction_status ?: '-' }}
+                                                </span>
+                                            </div>
+                                            @if ($log->order_id)
+                                                <div class="activity-detail-row">
+                                                    <span class="activity-detail-label">Order ID</span>
+                                                    <span class="activity-detail-value">{{ $log->order_id }}</span>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </details>
+                            @empty
+                                <div class="activity-item">
+                                    <div class="activity-content">
+                                        <p class="activity-name">Belum ada aktivitas pembayaran</p>
+                                        <p class="activity-date">Transaksi yang berhasil akan muncul di sini</p>
+                                    </div>
                                 </div>
-                                <div class="activity-content">
-                                    <p class="activity-name">Andi Reza</p>
-                                    <p class="activity-date">Rabu, 08 Mei · 14:20</p>
-                                </div>
-                                <div class="activity-amount positive">+Rp 10.000</div>
-                            </div>
-
-                            <div class="activity-item">
-                                <div class="activity-icon down">
-                                    <i class="bi bi-arrow-down"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <p class="activity-name">Makan bareng W17</p>
-                                    <p class="activity-date">Minggu, 05 Mei · 19:00</p>
-                                </div>
-                                <div class="activity-amount negative">-Rp 150.000</div>
-                            </div>
-
-                            <div class="activity-item">
-                                <div class="activity-icon up">
-                                    <i class="bi bi-arrow-up"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <p class="activity-name">Bagus Wicaksono</p>
-                                    <p class="activity-date">Rabu, 08 Mei · 10:30</p>
-                                </div>
-                                <div class="activity-amount positive">+Rp 10.000</div>
-                            </div>
-
-                            <div class="activity-item">
-                                <div class="activity-icon up">
-                                    <i class="bi bi-arrow-up"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <p class="activity-name">Yusuf Pratama</p>
-                                    <p class="activity-date">Senin, 06 Mei · 11:00</p>
-                                </div>
-                                <div class="activity-amount positive">+Rp 10.000</div>
-                            </div>
-
-                            <div class="activity-item">
-                                <div class="activity-icon up">
-                                    <i class="bi bi-arrow-up"></i>
-                                </div>
-                                <div class="activity-content">
-                                    <p class="activity-name">Fahmi Hendra</p>
-                                    <p class="activity-date">Selasa, 07 Mei · 14:02</p>
-                                </div>
-                                <div class="activity-amount positive">+Rp 10.000</div>
-                            </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>
 
                 <!-- Payment Section -->
                 <div class="col-lg-6">
-                    <div class="payment-section">
-                        <div class="section-header mb-3">
-                            <h3 class="section-title">Tagihan minggu ini</h3>
-                        </div>
+                    <form action="/bayar" method="POST">
+                        @csrf
+                        <div class="payment-section">
+                            <div class="section-header mb-3">
+                                <h3 class="section-title">Tagihan minggu ini</h3>
+                            </div>
 
-                        <div class="payment-amount-card">
-                            <p class="payment-label">TAGIHAN MINGGU INI</p>
-                            <h2 class="payment-amount">Rp 10.000</h2>
-                            <p class="payment-deadline">Deadline: Minggu, 12 Mei 2025</p>
-                        </div>
+                            <div class="payment-amount-card">
+                                <p class="payment-label">TAGIHAN PERMINGGU INI</p>
+                                <h2 class="payment-amount">Rp {{ number_format((int) $weeklyFee, 0, ',', '.') }}</h2>
+                                <p class="payment-deadline">Deadline: Minggu, 12 Mei 2025</p>
+                            </div>
 
-                        <div class="payment-methods mb-4">
-                            <p class="payment-methods-label">METODE PEMBAYARAN</p>
+                            <div class="payment-methods mb-4">
+                                {{-- <p class="payment-methods-label">METODE PEMBAYARAN</p> --}}
 
-                            <div class="payment-option">
+                                {{-- <div class="payment-option">
                                 <input type="radio" id="method-qris" name="payment-method" value="qris" checked>
                                 <label for="method-qris" class="payment-option-label">
                                     <span class="option-radio"></span>
@@ -169,14 +253,47 @@
                                     <span class="option-radio"></span>
                                     <span class="option-text">Alfamart / Indomaret</span>
                                 </label>
+                            </div> --}}
+
+                                <div class="payer-select mt-3">
+                                    <label for="payer-name" class="payer-select-label">Pilih Nama Anggota</label>
+                                    <select id="payer-name" name="payer_info" class="payer-select-input" required>
+                                        <option value="" selected disabled>-- Pilih nama untuk pembayaran --</option>
+                                        @foreach ($datauser as $item)
+                                            <option value="{{ $item->Nim }}">{{ $item->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
+
+                            <button class="btn btn-payment w-100" type="submit">
+                                <span>Click Untuk Lihat Detail Pembayaran</span>
+                            </button>
+
+                            <p class="payment-footer">Secured by Midtrans</p>
                         </div>
+                    </form>
 
-                        <button class="btn btn-payment w-100">
-                            <span>Bayar via Midtrans</span>
-                        </button>
-
-                        <p class="payment-footer">Secured by Midtrans</p>
+                    <div class="send-fund-section mt-4">
+                        <div class="section-header mb-3">
+                            <h3 class="section-title">Kirim Dana</h3>
+                            <p class="send-fund-subtitle mb-0">Bukan anggota? Kirim dana bebas untuk keperluan apa saja.
+                            </p>
+                        </div>
+                        <div class="send-fund-cta">
+                            <div class="send-fund-cta-icon">
+                                <i class="bi bi-cash-coin"></i>
+                            </div>
+                            <div class="send-fund-cta-content">
+                                <p class="send-fund-cta-title">Bukan anggota?</p>
+                                <p class="send-fund-cta-text">Buka halaman kirim dana untuk mencatat donasi atau transfer
+                                    kas.</p>
+                            </div>
+                            <a href="{{ route('grubkas.kirim-dana.page') }}"
+                                class="btn btn-outline-secondary send-fund-cta-btn">
+                                Kirim Dana <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -254,12 +371,166 @@
             box-shadow: 0 2px 8px rgba(46, 91, 135, 0.1);
         }
 
+        .stat-dropdown {
+            position: relative;
+        }
+
+        .stat-summary {
+            list-style: none;
+            cursor: pointer;
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .stat-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .stat-summary:focus-visible {
+            outline: 2px solid var(--brand-500);
+            outline-offset: 2px;
+        }
+
+        .stat-chevron {
+            position: absolute;
+            right: 1rem;
+            bottom: 0.9rem;
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+            font-size: 0.8rem;
+        }
+
+        .stat-dropdown[open] .stat-chevron {
+            transform: rotate(180deg);
+        }
+
+        .stat-dropdown-panel {
+            margin-top: 0.5rem;
+            border: 1px solid var(--border-soft);
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.75rem;
+            max-height: 22rem;
+            overflow: auto;
+        }
+
+        .stat-dropdown-panel--total {
+            max-height: 28rem;
+        }
+
+        .stat-member-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .stat-member-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .stat-member-avatar {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.55rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .stat-member-avatar--success {
+            background: rgba(34, 197, 94, 0.18);
+            color: #22c55e;
+        }
+
+        .stat-member-avatar--warning {
+            background: rgba(245, 158, 11, 0.18);
+            color: #d97706;
+        }
+
+        .stat-member-avatar--info {
+            background: rgba(59, 130, 246, 0.18);
+            color: #60a5fa;
+        }
+
+        .stat-member-content {
+            flex: 1;
+            min-width: 0;
+            text-align: left;
+        }
+
+        .stat-member-name {
+            margin: 0;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 0.875rem;
+            line-height: 1.35;
+        }
+
+        .stat-member-meta {
+            margin: 0.15rem 0 0;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            line-height: 1.35;
+        }
+
+        .stat-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.25rem 0.55rem;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+
+        .stat-pill--success {
+            background: rgba(34, 197, 94, 0.16);
+            color: #22c55e;
+        }
+
+        .stat-pill--warning {
+            background: rgba(245, 158, 11, 0.16);
+            color: #d97706;
+        }
+
+        .stat-pill--info {
+            background: rgba(59, 130, 246, 0.16);
+            color: #60a5fa;
+        }
+
+        .stat-empty-state {
+            padding: 0.75rem 0.25rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-align: left;
+        }
+
         .stat-value {
             font-family: 'Manrope', sans-serif;
             font-size: 1.75rem;
             font-weight: 700;
             color: var(--brand-500);
             margin-bottom: 0.25rem;
+        }
+
+        .stat-value--success {
+            color: #84cc16;
+        }
+
+        .stat-value--warning {
+            color: #f59e0b;
+        }
+
+        .stat-value--info {
+            color: #60a5fa;
         }
 
         .stat-label {
@@ -329,6 +600,86 @@
         .activity-item:last-child {
             border-bottom: none;
             padding-bottom: 0;
+        }
+
+        .activity-dropdown {
+            border: 1px solid var(--border-soft);
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            overflow: hidden;
+        }
+
+        .activity-dropdown[open] {
+            border-color: rgba(46, 91, 135, 0.25);
+            box-shadow: 0 6px 18px rgba(46, 91, 135, 0.08);
+        }
+
+        .activity-summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 1rem;
+        }
+
+        .activity-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .activity-summary:focus-visible {
+            outline: 2px solid var(--brand-500);
+            outline-offset: 2px;
+        }
+
+        .activity-summary .activity-item {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .activity-summary-right {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .activity-chevron {
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+        }
+
+        .activity-dropdown[open] .activity-chevron {
+            transform: rotate(180deg);
+        }
+
+        .activity-detail-panel {
+            border-top: 1px solid var(--border-soft);
+            padding: 1rem;
+            background: rgba(46, 91, 135, 0.03);
+        }
+
+        .activity-detail-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .activity-detail-row {
+            display: grid;
+            gap: 0.25rem;
+        }
+
+        .activity-detail-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .activity-detail-value {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.5;
+            word-break: break-word;
         }
 
         .activity-icon {
@@ -441,6 +792,37 @@
             margin-bottom: 1.5rem;
         }
 
+        .payer-select {
+            margin-top: 1rem;
+        }
+
+        .payer-select-label {
+            display: block;
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin: 0 0 0.5rem 0;
+            letter-spacing: 0.02em;
+        }
+
+        .payer-select-input {
+            width: 100%;
+            border: 1px solid var(--border-soft);
+            border-radius: 0.75rem;
+            padding: 0.75rem 0.9rem;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-main);
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .payer-select-input:focus {
+            border-color: var(--brand-500);
+            box-shadow: 0 0 0 0.2rem rgba(46, 91, 135, 0.15);
+            outline: none;
+        }
+
         .payment-option {
             position: relative;
             margin-bottom: 0.75rem;
@@ -526,6 +908,169 @@
             margin: 0.75rem 0 0 0;
         }
 
+        .send-fund-section {
+            background: var(--surface-elevated);
+            border: 1px solid var(--border-soft);
+            border-radius: 1rem;
+            padding: 1.25rem;
+        }
+
+        .send-fund-subtitle {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+            margin-top: 0.35rem;
+        }
+
+        .send-fund-cta {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            border: 1px solid var(--border-soft);
+            border-radius: 0.9rem;
+            padding: 0.95rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .send-fund-cta-icon {
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 0.6rem;
+            background: rgba(34, 197, 94, 0.16);
+            color: #16a34a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            flex-shrink: 0;
+        }
+
+        .send-fund-cta-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .send-fund-cta-title {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .send-fund-cta-text {
+            margin: 0.2rem 0 0;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            line-height: 1.35;
+        }
+
+        .send-fund-cta-btn {
+            white-space: nowrap;
+        }
+
+        .send-fund-label {
+            display: block;
+            font-size: 0.79rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        .send-fund-input,
+        .send-fund-textarea {
+            width: 100%;
+            border: 1px solid var(--border-soft);
+            border-radius: 0.7rem;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-main);
+            padding: 0.72rem 0.85rem;
+            font-size: 0.92rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .send-fund-textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .send-fund-input:focus,
+        .send-fund-textarea:focus {
+            outline: none;
+            border-color: var(--brand-500);
+            box-shadow: 0 0 0 0.18rem rgba(46, 91, 135, 0.15);
+        }
+
+        .send-fund-hint {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            margin: 0.4rem 0 0;
+        }
+
+        .quick-amount-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.5rem;
+        }
+
+        .quick-amount-btn {
+            border: 1px solid var(--border-soft);
+            background: transparent;
+            color: var(--text-main);
+            border-radius: 0.6rem;
+            padding: 0.58rem 0.25rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .quick-amount-btn:hover {
+            border-color: var(--brand-500);
+            color: var(--brand-500);
+        }
+
+        .quick-amount-btn.active {
+            background: rgba(46, 91, 135, 0.15);
+            border-color: rgba(46, 91, 135, 0.4);
+            color: var(--brand-500);
+        }
+
+        .send-fund-summary {
+            margin-top: 0.5rem;
+            border: 1px solid var(--border-soft);
+            border-radius: 0.75rem;
+            padding: 0.75rem 0.85rem;
+            background: rgba(255, 255, 255, 0.02);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 1rem;
+        }
+
+        .send-fund-summary-label {
+            margin: 0;
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        .send-fund-summary-value {
+            margin: 0.3rem 0 0;
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .send-fund-summary-amount {
+            margin: 0.3rem 0 0;
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Manrope', sans-serif;
+            color: #84cc16;
+            line-height: 1;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .kas-title {
@@ -544,6 +1089,11 @@
             .activity-section,
             .payment-section {
                 margin-bottom: 1rem;
+            }
+
+            .send-fund-cta {
+                align-items: flex-start;
+                flex-wrap: wrap;
             }
         }
 

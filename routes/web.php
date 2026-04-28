@@ -12,6 +12,9 @@ use App\Http\Controllers\tokencontroller;
 use App\Http\Controllers\BarcodeController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\GrubkasController;
+use App\Http\Controllers\AdminFinanceController;
+use App\Http\Controllers\test;
 
 Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
@@ -67,15 +70,18 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::post('/beranda/team/store', [BerandaController::class, 'storeTeam'])->name('admin.beranda.store-team');
     Route::put('/beranda/team/{teamMember}/update', [BerandaController::class, 'updateTeam'])->name('admin.beranda.update-team');
     Route::delete('/beranda/team/{teamMember}', [BerandaController::class, 'destroyTeam'])->name('admin.beranda.destroy-team');
+
+    // management keuangan kas
+    Route::get('/finance', [AdminFinanceController::class, 'index'])->name('admin.finance.index');
+    Route::put('/finance/weekly-fee', [AdminFinanceController::class, 'updateWeeklyFee'])->name('admin.finance.weekly-fee');
+    Route::put('/finance/member/{nim}', [AdminFinanceController::class, 'updateMemberBalance'])->name('admin.finance.member.update');
+    Route::post('/finance/expense', [AdminFinanceController::class, 'storeExpense'])->name('admin.finance.expense.store');
 });
 
 // pages
 Route::get('/', [controllerpost::class, 'home']);
 Route::get('/jadwal', [ambiljadwalapi::class, 'index'])->name('jadwal');
 Route::get('/tugas', [TugasController::class, 'front'])->name('tugas');
-Route::get('/grubkas', function() {
-    return view('pages.grubkas');
-})->name('grubkas');
 Route::delete('/edit/del/{id}', [controllerpost::class, 'delete']);
 
 // scanner
@@ -87,6 +93,13 @@ Route::get('/scan/users', [tokencontroller::class, 'listUsers'])->middleware('au
 Route::post('/scan/users/{id}/status', [tokencontroller::class, 'updateUserStatus'])->middleware('auth')->name('scan.users.status');
 Route::post('/scan/submit', [BarcodeController::class, 'submitScan'])->middleware('auth')->name('scan.submit');
 
+// pembayaran midtrans
+Route::get('/grubkas',[GrubkasController::class,'index'])->name('grubkas');
+Route::post('/bayar', [GrubkasController::class, 'bayar']);
+Route::get('/grubkas/kirim-dana', [GrubkasController::class, 'halamanKirimDanaNonAnggota'])->name('grubkas.kirim-dana.page');
+Route::post('/kirim-dana/non-anggota', [GrubkasController::class, 'kirimDanaNonAnggota'])->name('grubkas.kirim-dana.non-anggota');
+
 
 // jadwal
-Route::get('/wee', [tokencontroller::class, 'refreshtoken']);
+Route::get('/wee', [test::class, 'index']);
+Route::get('/update', [test::class, 'updatemingguan']);

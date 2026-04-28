@@ -221,6 +221,10 @@
                             href="{{ route('admin.membertoken') }}">Management Token</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('admin.finance.*') ? 'active' : '' }}"
+                            href="{{ route('admin.finance.index') }}">Management Uang</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('admin.scan.login.setting') ? 'active' : '' }}"
                             href="{{ route('admin.scan.login.setting') }}">Setting Login Scan</a>
                     </li>

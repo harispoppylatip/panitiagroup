@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('datasikad', function (Blueprint $table) {
+        Schema::create('grubkas', function (Blueprint $table) {
             $table->id();
-            $table->text('nama');
-            $table->string('Nim', 20)->unique();
-            $table->text('access_token');
-            $table->text('refresh_token');
-            $table->text('status_onoff')->nullable();
+            $table->string('user_nim', 20);
+            $table->text('Keterangan')->nullable();
+            $table->integer('Nominal')->default('10000');
+            $table->boolean('Status_Bayar')->default('0');
             $table->timestamps();
+
+            $table->foreign('user_nim')->references('Nim')->on('datasikad')->cascadeOnDelete();
         });
     }
 
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('datasikad');
+        Schema::dropIfExists('grubkas');
     }
 };

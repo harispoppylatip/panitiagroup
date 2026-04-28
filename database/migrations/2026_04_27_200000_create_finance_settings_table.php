@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('datasikad', function (Blueprint $table) {
+        Schema::create('finance_settings', function (Blueprint $table) {
             $table->id();
-            $table->text('nama');
-            $table->string('Nim', 20)->unique();
-            $table->text('access_token');
-            $table->text('refresh_token');
-            $table->text('status_onoff')->nullable();
+            $table->unsignedInteger('weekly_fee')->default(10000);
             $table->timestamps();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('datasikad');
+        Schema::dropIfExists('finance_settings');
     }
 };

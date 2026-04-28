@@ -62,16 +62,6 @@
                                         @enderror
                                     </div>
                                     <div class="col-12">
-                                        <label for="urlpost" class="form-label fw-semibold">URL Post Backend
-                                            (Opsional)</label>
-                                        <input type="url" id="urlpost" name="urlpost"
-                                            class="form-control @error('urlpost') is-invalid @enderror"
-                                            placeholder="https://example.com/api/post" value="{{ old('urlpost') }}">
-                                        @error('urlpost')
-                                            <span class="invalid-feedback d-block">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-12">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="status_onoff"
                                                 name="status_onoff" value="on"

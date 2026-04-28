@@ -398,17 +398,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="urlpost" class="form-label">URL Post Backend (Opsional)</label>
-                            <input type="url" id="urlpost" name="urlpost"
-                                class="form-control @error('urlpost') is-invalid @enderror"
-                                value="{{ old('urlpost', $data->urlpost) }}" placeholder="https://example.com/api/post">
-                            <div class="form-text">URL endpoint untuk mengirim data presensi (jika diperlukan)</div>
-                            @error('urlpost')
-                                <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
                             <div class="form-check">
                                 <input type="checkbox" id="status_onoff" class="form-check-input" name="status_onoff"
                                     value="on"
