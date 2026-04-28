@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('app:refreshtoken')->dailyAt('00:00');
+Schedule::command('app:updatenominalmingguan')->mondays()->at('00:00');

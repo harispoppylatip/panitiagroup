@@ -6,6 +6,7 @@ use App\Models\Datasikadmodel;
 use App\Models\FinanceSetting;
 use App\Models\GrubkasActivityLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 class GrubkasController extends Controller
@@ -65,8 +66,52 @@ class GrubkasController extends Controller
 
         $activityLogs = GrubkasActivityLog::latest('occurred_at')
             ->latest('id')
-            ->limit(10)
+            ->limit(100)
             ->get();
+
+        $now = Carbon::now();
+        $mingguIniMulai = $now->copy()->startOfWeek();
+        $mingguIniAkhir = $now->copy()->endOfWeek();
+        $mingguLaluMulai = $now->copy()->subWeek()->startOfWeek();
+        $mingguLaluAkhir = $now->copy()->subWeek()->endOfWeek();
+        $bulanIniMulai = $now->copy()->startOfMonth();
+        $bulanIniAkhir = $now->copy()->endOfMonth();
+        $bulanLaluMulai = $now->copy()->subMonthNoOverflow()->startOfMonth();
+        $bulanLaluAkhir = $now->copy()->subMonthNoOverflow()->endOfMonth();
+
+        $activityLogs = $activityLogs->map(function ($log) use (
+            $mingguIniMulai,
+            $mingguIniAkhir,
+            $mingguLaluMulai,
+            $mingguLaluAkhir,
+            $bulanIniMulai,
+            $bulanIniAkhir,
+            $bulanLaluMulai,
+            $bulanLaluAkhir
+        ) {
+            $periodKeys = ['semua'];
+
+            if ($log->occurred_at) {
+                if ($log->occurred_at->between($mingguIniMulai, $mingguIniAkhir)) {
+                    $periodKeys[] = 'minggu-1';
+                }
+
+                if ($log->occurred_at->between($mingguLaluMulai, $mingguLaluAkhir)) {
+                    $periodKeys[] = 'minggu-2';
+                }
+
+                if ($log->occurred_at->between($bulanIniMulai, $bulanIniAkhir)) {
+                    $periodKeys[] = 'bulan-ini';
+                }
+
+                if ($log->occurred_at->between($bulanLaluMulai, $bulanLaluAkhir)) {
+                    $periodKeys[] = 'bulan-lalu';
+                }
+            }
+
+            $log->period_keys = $periodKeys;
+            return $log;
+        });
 
         return view('pages.grubkas', compact(
             'datauser',

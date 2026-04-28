@@ -23,7 +23,7 @@
                         <div>
                             <h1 class="kas-title mb-2">Kas Grub</h1>
                             <p class="kas-subtitle mb-0">Iuran mingguan Rp
-                                {{ number_format((int) $weeklyFee, 0, ',', '.') }}/orang · Minggu ke-18</p>
+                                {{ number_format((int) $weeklyFee, 0, ',', '.') }}/orang</p>
                         </div>
                         <button class="btn btn-sm btn-outline-secondary">
                             <i class="bi bi-three-dots-vertical"></i>
@@ -134,13 +134,17 @@
                         </div>
 
                         <div class="activity-tabs mb-3">
-                            <button class="tab-btn active" data-tab="minggu-ini">Minggu ini</button>
-                            <button class="tab-btn" data-tab="bayar-luran">Bayar luran</button>
+                            <button class="tab-btn active" type="button" data-filter="minggu-1">Minggu 1</button>
+                            <button class="tab-btn" type="button" data-filter="minggu-2">Minggu 2</button>
+                            <button class="tab-btn" type="button" data-filter="bulan-ini">Bulan ini</button>
+                            <button class="tab-btn" type="button" data-filter="bulan-lalu">Bulan lalu</button>
+                            <button class="tab-btn" type="button" data-filter="semua">Semua</button>
                         </div>
 
-                        <div class="activity-list">
+                        <div class="activity-list" id="activity-list">
                             @forelse ($activityLogs as $log)
-                                <details class="activity-dropdown">
+                                <details class="activity-dropdown"
+                                    data-periods="{{ implode(',', $log->period_keys ?? ['semua']) }}">
                                     <summary class="activity-summary">
                                         <div class="activity-item">
                                             <div class="activity-icon {{ $log->direction === 'out' ? 'down' : 'up' }}">
@@ -209,6 +213,11 @@
                                     </div>
                                 </div>
                             @endforelse
+
+                            <div class="activity-filter-empty d-none" id="activity-filter-empty">
+                                <p class="activity-name">Tidak ada aktivitas pada periode ini</p>
+                                <p class="activity-date">Coba pilih tab periode lain untuk melihat data transaksi.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -223,9 +232,9 @@
                             </div>
 
                             <div class="payment-amount-card">
-                                <p class="payment-label">TAGIHAN PERMINGGU INI</p>
+                                <p class="payment-label">TAGIHAN PERMINGGU</p>
                                 <h2 class="payment-amount">Rp {{ number_format((int) $weeklyFee, 0, ',', '.') }}</h2>
-                                <p class="payment-deadline">Deadline: Minggu, 12 Mei 2025</p>
+                                {{-- <p class="payment-deadline">Deadline: Minggu, 12 Mei 2025</p> --}}
                             </div>
 
                             <div class="payment-methods mb-4">
@@ -564,6 +573,7 @@
         .activity-tabs {
             display: flex;
             gap: 0.5rem;
+            flex-wrap: wrap;
         }
 
         .tab-btn {
@@ -600,6 +610,13 @@
         .activity-item:last-child {
             border-bottom: none;
             padding-bottom: 0;
+        }
+
+        .activity-filter-empty {
+            border: 1px dashed var(--border-soft);
+            border-radius: 0.9rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .activity-dropdown {
@@ -1091,6 +1108,11 @@
                 margin-bottom: 1rem;
             }
 
+            .tab-btn {
+                padding: 0.45rem 0.7rem;
+                font-size: 0.8rem;
+            }
+
             .send-fund-cta {
                 align-items: flex-start;
                 flex-wrap: wrap;
@@ -1112,4 +1134,57 @@
             }
         }
     </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var tabButtons = document.querySelectorAll('.activity-tabs .tab-btn[data-filter]');
+            var activityItems = document.querySelectorAll('#activity-list .activity-dropdown');
+            var emptyState = document.getElementById('activity-filter-empty');
+
+            if (!tabButtons.length || !activityItems.length) {
+                return;
+            }
+
+            function applyActivityFilter(filterKey) {
+                var visibleCount = 0;
+
+                activityItems.forEach(function(item) {
+                    var periodValues = (item.getAttribute('data-periods') || '')
+                        .split(',')
+                        .map(function(value) {
+                            return value.trim();
+                        })
+                        .filter(Boolean);
+
+                    var isVisible = periodValues.indexOf(filterKey) !== -1;
+
+                    item.classList.toggle('d-none', !isVisible);
+
+                    if (isVisible) {
+                        visibleCount += 1;
+                    } else {
+                        item.removeAttribute('open');
+                    }
+                });
+
+                if (emptyState) {
+                    emptyState.classList.toggle('d-none', visibleCount > 0);
+                }
+            }
+
+            tabButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    tabButtons.forEach(function(otherButton) {
+                        otherButton.classList.remove('active');
+                    });
+
+                    button.classList.add('active');
+                    applyActivityFilter(button.getAttribute('data-filter'));
+                });
+            });
+
+            var activeButton = document.querySelector('.activity-tabs .tab-btn.active[data-filter]');
+            applyActivityFilter(activeButton ? activeButton.getAttribute('data-filter') : 'minggu-1');
+        });
+    </script>
 @endsection
