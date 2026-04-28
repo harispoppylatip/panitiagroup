@@ -10,10 +10,12 @@
                     <div class="col-xl-6">
                         <div class="hero-copy">
                             <p class="hero-tag mb-3">BERANDA RESMI</p>
-                            <h1 class="hero-title mb-3">Wajah Baru Beranda Dengan Foto Tim Lebih Menarik</h1>
+                            <h1 class="hero-title mb-3">Pemuda Akhir Zaman</h1>
                             <p class="hero-lead mb-4">
-                                Mengadopsi gaya visual modern: fokus pada foto utama, tipografi tegas, serta nuansa
-                                profesional agar identitas tim terlihat lebih kuat.
+                                Kami merupakan kelompok mahasiswa Universitas Muhammadiyah Kalimantan Timur dari jurusan IT
+                                Internasional yang dipersatukan oleh minat yang sama dalam dunia teknologi. Website ini kami
+                                hadirkan sebagai solusi untuk mempermudah pengelolaan tim, komunikasi, serta produktivitas
+                                kerja bersama.
                             </p>
                             <div class="d-flex flex-wrap gap-2 mb-4">
                                 <a href="{{ route('scan.login') }}" class="btn btn-brand px-4 py-2">Masuk Scan Absen</a>
@@ -42,8 +44,8 @@
                                 <img src="{{ $heroImages->get('main')?->image_url ?? 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1300&q=80' }}"
                                     alt="{{ $heroImages->get('main')?->alt_text ?? 'Foto utama tim' }}" class="img-cover">
                                 <div class="hero-main-overlay">
-                                    <p class="overlay-mini mb-1">IKATAN MAHASISWA</p>
-                                    <h3 class="overlay-title mb-1">Kolaborasi, Integritas, dan Dampak Nyata</h3>
+                                    <p class="overlay-mini mb-1">P.A.Z</p>
+                                    <h3 class="overlay-title mb-1">Bersatu dalam Ide, Berkarya dengan Teknologi</h3>
                                     <p class="overlay-text mb-0">Universitas Muhammadiyah Kalimantan Timur</p>
                                 </div>
                             </div>
