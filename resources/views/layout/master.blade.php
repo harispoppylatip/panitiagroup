@@ -5,7 +5,7 @@
     @yield('head')
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Panitia Akhir Zaman | Profesional dan Terstruktur</title>
+    <title>Pemuda Akhir Zaman | Profesional dan Terstruktur</title>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -223,7 +223,7 @@
 <body>
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Panitia Akhir Zaman</a>
+            <a class="navbar-brand" href="/">Pemuda Akhir Zaman</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -274,8 +274,8 @@
 
     <footer id="kontak" class="text-center py-4">
         <div class="container">
-            <p class="mb-1 fw-semibold" style="color: var(--brand-900);">Panitia Akhir Zaman</p>
-            <p class="mb-0">© 2026 Panitia Akhir Zaman | Dibuat Oleh Tim Kami</p>
+            <p class="mb-1 fw-semibold" style="color: var(--brand-900);">Pemuda Akhir Zaman</p>
+            <p class="mb-0">© 2026 Pemuda Akhir Zaman | Dibuat Oleh Tim Kami</p>
         </div>
     </footer>
 

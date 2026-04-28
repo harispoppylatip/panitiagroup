@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Panel | Panitia Akhir Zaman</title>
+    <title>Admin Panel | Pemuda Akhir Zaman</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -252,7 +252,7 @@
 
     <footer class="text-center py-3">
         <div class="container">
-            <p class="mb-0">Admin Panel Panitia Akhir Zaman</p>
+            <p class="mb-0">Admin Panel Pemuda Akhir Zaman</p>
         </div>
     </footer>
 
