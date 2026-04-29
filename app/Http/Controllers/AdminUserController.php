@@ -10,6 +10,12 @@ use Illuminate\Validation\Rule;
 
 class AdminUserController extends Controller
 {
+    private array $roles = [
+        'admin' => 'Admin',
+        'akuntan' => 'Akuntan',
+        'anggota' => 'Anggota',
+    ];
+
     /**
      * Display a listing of users.
      */
@@ -24,7 +30,9 @@ class AdminUserController extends Controller
      */
     public function create()
     {
-        return view('admin.users.create');
+        return view('admin.users.create', [
+            'roles' => $this->roles,
+        ]);
     }
 
     /**
@@ -37,7 +45,7 @@ class AdminUserController extends Controller
             'username' => 'required|string|max:255|unique:users,username',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:admin,scanabsen',
+            'role' => 'required|in:admin,akuntan,anggota',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
@@ -61,7 +69,10 @@ class AdminUserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('admin.users.edit', compact('user'));
+        return view('admin.users.edit', [
+            'user' => $user,
+            'roles' => $this->roles,
+        ]);
     }
 
     /**
@@ -82,7 +93,7 @@ class AdminUserController extends Controller
                 'email',
                 Rule::unique('users', 'email')->ignore($user->id),
             ],
-            'role' => 'required|in:admin,scanabsen',
+            'role' => 'required|in:admin,akuntan,anggota',
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 

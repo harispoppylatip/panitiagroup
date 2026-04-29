@@ -191,7 +191,11 @@
 <body>
     <nav class="navbar navbar-expand-md navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('admin.beranda.index') }}">
+            @php
+                $currentRole = auth()->user()?->role;
+                $homeRoute = $currentRole === 'akuntan' ? route('admin.finance.index') : route('admin.beranda.index');
+            @endphp
+            <a class="navbar-brand" href="{{ $homeRoute }}">
                 <i class="bi bi-speedometer2"></i> Admin Panel
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar"
@@ -200,30 +204,38 @@
             </button>
             <div class="collapse navbar-collapse" id="adminNavbar">
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.beranda.*') ? 'active' : '' }}"
-                            href="{{ route('admin.beranda.index') }}">Management Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.tugas.*') ? 'active' : '' }}"
-                            href="{{ route('admin.tugas.index') }}">Management Tugas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.membertoken') ? 'active' : '' }}"
-                            href="{{ route('admin.membertoken') }}">Management Token</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.finance.*') ? 'active' : '' }}"
-                            href="{{ route('admin.finance.index') }}">Management Uang</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.scan.login.setting') ? 'active' : '' }}"
-                            href="{{ route('admin.scan.login.setting') }}">Setting Login Scan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
-                            href="{{ route('admin.users.index') }}">Management User</a>
-                    </li>
+                    @if (in_array($currentRole, ['admin', 'anggota'], true))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.beranda.*') ? 'active' : '' }}"
+                                href="{{ route('admin.beranda.index') }}">Management Beranda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.tugas.*') ? 'active' : '' }}"
+                                href="{{ route('admin.tugas.index') }}">Management Tugas</a>
+                        </li>
+                    @endif
+
+                    @if (in_array($currentRole, ['admin', 'akuntan'], true))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.finance.*') ? 'active' : '' }}"
+                                href="{{ route('admin.finance.index') }}">Management Uang</a>
+                        </li>
+                    @endif
+
+                    @if ($currentRole === 'admin')
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.membertoken') ? 'active' : '' }}"
+                                href="{{ route('admin.membertoken') }}">Management Token</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.scan.login.setting') ? 'active' : '' }}"
+                                href="{{ route('admin.scan.login.setting') }}">Setting Login Scan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
+                                href="{{ route('admin.users.index') }}">Management User</a>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <button type="button" class="theme-toggle" id="themeToggle">
                             <i class="bi bi-moon-stars"></i>

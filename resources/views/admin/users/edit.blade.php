@@ -48,10 +48,11 @@
                             <label class="form-label">Role</label>
                             <select class="form-select @error('role') is-invalid @enderror" name="role" required>
                                 <option value="">-- Pilih Role --</option>
-                                <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>
-                                    Admin</option>
-                                <option value="scanabsen" {{ old('role', $user->role) === 'scanabsen' ? 'selected' : '' }}>
-                                    Scan Absen</option>
+                                @foreach ($roles as $value => $label)
+                                    <option value="{{ $value }}"
+                                        {{ old('role', $user->role) === $value ? 'selected' : '' }}>
+                                        {{ $label }}</option>
+                                @endforeach
                             </select>
                             @error('role')
                                 <div class="invalid-feedback">{{ $message }}</div>

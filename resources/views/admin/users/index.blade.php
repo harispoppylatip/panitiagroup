@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h2 class="fw-bold mb-1">Management User</h2>
-                <p class="text-muted mb-0">Kelola user admin dan petugas scan absen</p>
+                <p class="text-muted mb-0">Kelola user admin, akuntan, dan anggota</p>
             </div>
             <a href="{{ route('admin.users.create') }}" class="btn btn-brand">
                 <i class="bi bi-plus-circle"></i> Tambah User
@@ -53,8 +53,10 @@
                                 <td>
                                     @if ($user->role === 'admin')
                                         <span class="badge bg-danger">Admin</span>
+                                    @elseif ($user->role === 'akuntan')
+                                        <span class="badge bg-warning text-dark">Akuntan</span>
                                     @else
-                                        <span class="badge bg-info">Scan Absen</span>
+                                        <span class="badge bg-info">Anggota</span>
                                     @endif
                                 </td>
                                 <td class="text-end pe-4">

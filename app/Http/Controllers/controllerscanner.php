@@ -28,7 +28,7 @@ class controllerscanner extends Controller
 
         if (Auth::attempt($cre)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('scan.barcode'));
+            return redirect()->route('scan.barcode');
         }
 
         return back()

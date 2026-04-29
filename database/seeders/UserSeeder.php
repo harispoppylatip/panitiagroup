@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
                 'name' => 'Petugas Scan Absen 1',
                 'email' => 'scan1@example.com',
                 'password' => Hash::make('scan12345'),
-                'role' => 'scanabsen',
+                'role' => 'anggota',
             ]
         );
 
@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
                 'name' => 'Petugas Scan Absen 2',
                 'email' => 'scan2@example.com',
                 'password' => Hash::make('scan12345'),
-                'role' => 'scanabsen',
+                'role' => 'anggota',
             ]
         );
 
@@ -53,7 +53,7 @@ class UserSeeder extends Seeder
                 'name' => 'Petugas Scan Absen 3',
                 'email' => 'scan3@example.com',
                 'password' => Hash::make('scan12345'),
-                'role' => 'scanabsen',
+                'role' => 'anggota',
             ]
         );
     }

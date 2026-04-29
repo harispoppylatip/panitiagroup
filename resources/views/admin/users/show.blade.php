@@ -33,8 +33,10 @@
                         <p>
                             @if ($user->role === 'admin')
                                 <span class="badge bg-danger">Admin</span>
+                            @elseif ($user->role === 'akuntan')
+                                <span class="badge bg-warning text-dark">Akuntan</span>
                             @else
-                                <span class="badge bg-info">Scan Absen</span>
+                                <span class="badge bg-info">Anggota</span>
                             @endif
                         </p>
                     </div>

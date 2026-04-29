@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,26 @@ class AdminAuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('admin.beranda.index'));
+
+            $user = Auth::user();
+            if (!$user instanceof User) {
+                Auth::logout();
+
+                return back()
+                    ->withErrors(['username' => 'Akun tidak valid'])
+                    ->onlyInput('username');
+            }
+
+            $role = $user->role === 'scanabsen' ? 'anggota' : $user->role;
+
+            $destination = match ($role) {
+                'admin' => route('admin.beranda.index'),
+                'akuntan' => route('admin.finance.index'),
+                'anggota' => route('admin.beranda.index'),
+                default => route('scan.barcode'),
+            };
+
+            return redirect($destination);
         }
 
         return back()

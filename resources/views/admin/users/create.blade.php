@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h2 class="fw-bold mb-1">Tambah User Baru</h2>
-                <p class="text-muted mb-0">Form untuk menambahkan user admin atau petugas scan</p>
+                <p class="text-muted mb-0">Form untuk menambahkan user admin, akuntan, atau anggota</p>
             </div>
             <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary">Kembali</a>
         </div>
@@ -47,9 +47,10 @@
                             <label class="form-label">Role</label>
                             <select class="form-select @error('role') is-invalid @enderror" name="role" required>
                                 <option value="">-- Pilih Role --</option>
-                                <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Admin</option>
-                                <option value="scanabsen" {{ old('role') === 'scanabsen' ? 'selected' : '' }}>Scan
-                                    Absen</option>
+                                @foreach ($roles as $value => $label)
+                                    <option value="{{ $value }}" {{ old('role') === $value ? 'selected' : '' }}>
+                                        {{ $label }}</option>
+                                @endforeach
                             </select>
                             @error('role')
                                 <div class="invalid-feedback">{{ $message }}</div>
