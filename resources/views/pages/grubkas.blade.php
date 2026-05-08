@@ -1262,6 +1262,46 @@
             color: var(--brand-500);
         }
 
+        /* Mobile adjustments: stack member status under name to avoid collisions */
+        @media (max-width: 576px) {
+            .stat-member-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.45rem;
+                padding: 0.6rem 0;
+            }
+
+            .stat-member-avatar {
+                width: 2.2rem;
+                height: 2.2rem;
+                border-radius: 0.45rem;
+                flex-shrink: 0;
+            }
+
+            .stat-member-content {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .stat-member-name {
+                white-space: normal;
+                overflow: visible;
+                text-overflow: unset;
+                margin-bottom: 0.25rem;
+            }
+
+            .stat-member-meta {
+                display: block;
+                margin-bottom: 0.25rem;
+            }
+
+            .stat-pill {
+                display: inline-block;
+                margin-top: 0.25rem;
+                align-self: flex-start;
+            }
+        }
+
         .send-fund-summary {
             margin-top: 0.5rem;
             border: 1px solid var(--border-soft);
