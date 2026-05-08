@@ -253,6 +253,13 @@
                     return;
                 }
 
+                const summaryMessage = data && typeof data === 'object' && data.summary && data.summary.message ?
+                    String(data.summary.message) :
+                    '';
+                const topLevelMessage = data && typeof data === 'object' && typeof data.message === 'string' ?
+                    data.message :
+                    '';
+
                 // Hitung jumlah sukses dan gagal
                 let ok = 0,
                     err = 0;
@@ -288,6 +295,11 @@
 
                 // Update UI dengan hasil akhir
                 respSummary.innerHTML = html;
+                if (!items.length) {
+                    const emptyMessage = summaryMessage || topLevelMessage || 'Tidak ada detail respons dari server.';
+                    respSummary.innerHTML = `<div class="alert alert-info mb-3">ℹ️ ${emptyMessage}</div>` + respSummary
+                        .innerHTML;
+                }
                 if (document.getElementById('okCount')) {
                     document.getElementById('okCount').textContent = ok;
                     document.getElementById('errCount').textContent = err;

@@ -227,59 +227,64 @@
                     <form action="/bayar" method="POST">
                         @csrf
                         <div class="payment-section">
-                            <div class="section-header mb-3">
-                                <h3 class="section-title">Tagihan minggu ini</h3>
-                            </div>
-
-                            <div class="payment-amount-card">
-                                <p class="payment-label">TAGIHAN PERMINGGU</p>
-                                <h2 class="payment-amount">Rp {{ number_format((int) $weeklyFee, 0, ',', '.') }}</h2>
-                                {{-- <p class="payment-deadline">Deadline: Minggu, 12 Mei 2025</p> --}}
-                            </div>
-
-                            <div class="payment-methods mb-4">
-                                {{-- <p class="payment-methods-label">METODE PEMBAYARAN</p> --}}
-
-                                {{-- <div class="payment-option">
-                                <input type="radio" id="method-qris" name="payment-method" value="qris" checked>
-                                <label for="method-qris" class="payment-option-label">
-                                    <span class="option-radio"></span>
-                                    <span class="option-text">QRIS · GoPay · OVO · Dana</span>
-                                </label>
-                            </div>
-
-                            <div class="payment-option">
-                                <input type="radio" id="method-transfer" name="payment-method" value="transfer">
-                                <label for="method-transfer" class="payment-option-label">
-                                    <span class="option-radio"></span>
-                                    <span class="option-text">Transfer Bank</span>
-                                </label>
-                            </div>
-
-                            <div class="payment-option">
-                                <input type="radio" id="method-retail" name="payment-method" value="retail">
-                                <label for="method-retail" class="payment-option-label">
-                                    <span class="option-radio"></span>
-                                    <span class="option-text">Alfamart / Indomaret</span>
-                                </label>
-                            </div> --}}
-
-                                <div class="payer-select mt-3">
-                                    <label for="payer-name" class="payer-select-label">Pilih Nama Anggota</label>
-                                    <select id="payer-name" name="payer_info" class="payer-select-input" required>
-                                        <option value="" selected disabled>-- Pilih nama untuk pembayaran --</option>
-                                        @foreach ($datauser as $item)
-                                            <option value="{{ $item->Nim }}">{{ $item->nama }}</option>
-                                        @endforeach
-                                    </select>
+                            <div class="payment-info-banner mb-3">
+                                <div class="payment-info-icon"><i class="bi bi-ticket-perforated-fill"></i></div>
+                                <div>
+                                    <p class="payment-info-title mb-1">Iuran Keanggotaan Mingguan</p>
+                                    <p class="payment-info-text mb-2">Kontribusi rutin mingguan untuk kas bersama panitia
+                                        akhir zaman.</p>
+                                    <p class="payment-info-amount mb-0">Rp
+                                        {{ number_format((int) $weeklyFee, 0, ',', '.') }} <span>/ minggu per
+                                            anggota</span></p>
                                 </div>
                             </div>
 
-                            <button class="btn btn-payment w-100" type="submit">
-                                <span>Click Untuk Lihat Detail Pembayaran</span>
-                            </button>
+                            <div class="payment-checkout-panel">
+                                <div class="section-header mb-3 pb-2">
+                                    <h3 class="section-title">Bayar Iuran Minggu Ini</h3>
+                                    <p class="payment-panel-subtitle mb-0">Pilih nama kamu lalu lanjut ke pembayaran</p>
+                                </div>
 
-                            <p class="payment-footer">Secured by Midtrans</p>
+                                <p class="member-grid-title">Pilih Nama Anggota</p>
+                                <input type="hidden" id="payer-info" name="payer_info" value="" required>
+
+                                <div class="member-picker-grid" id="member-picker-grid">
+                                    @forelse ($belumBayarMembers as $item)
+                                        <button type="button" class="member-picker-item" data-nim="{{ $item['nim'] }}"
+                                            data-name="{{ $item['nama'] }}">
+                                            <span
+                                                class="member-picker-initial">{{ $item['initials'] !== '' ? $item['initials'] : 'NA' }}</span>
+                                            <span class="member-picker-name">{{ $item['nama'] }}</span>
+                                            <span class="member-picker-check"><i class="bi bi-check-lg"></i></span>
+                                        </button>
+                                    @empty
+                                        <div class="member-picker-empty">Semua anggota sudah lunas minggu ini.</div>
+                                    @endforelse
+                                </div>
+
+                                <div class="payment-summary-box mt-3">
+                                    <div class="payment-summary-row">
+                                        <span>Produk</span>
+                                        <strong>Iuran Keanggotaan Mingguan</strong>
+                                    </div>
+                                    <div class="payment-summary-row">
+                                        <span>Atas nama</span>
+                                        <strong id="payment-selected-name">-</strong>
+                                    </div>
+                                    <div class="payment-summary-row payment-summary-total">
+                                        <span>Total</span>
+                                        <strong>Rp {{ number_format((int) $weeklyFee, 0, ',', '.') }}</strong>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-payment w-100 mt-3" id="payment-submit-btn" type="submit"
+                                    @if (count($belumBayarMembers) === 0) disabled @endif>
+                                    <span>Bayar Rp {{ number_format((int) $weeklyFee, 0, ',', '.') }} via Midtrans</span>
+                                </button>
+
+                                <p class="payment-footer"><i class="bi bi-lock-fill me-1"></i> Secured by Midtrans · SSL
+                                    Encrypted</p>
+                            </div>
                         </div>
                     </form>
 
@@ -763,6 +768,188 @@
             padding: 1.5rem;
         }
 
+        .payment-info-banner {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            background: linear-gradient(135deg, #315b8b, #1f3d62);
+            border: 1px solid rgba(149, 197, 247, 0.55);
+            border-radius: 0.9rem;
+            padding: 1rem;
+        }
+
+        .payment-info-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.7rem;
+            background: rgba(222, 239, 255, 0.22);
+            color: #f3f9ff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .payment-info-title {
+            color: #f1f7ff;
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin: 0;
+        }
+
+        .payment-info-text {
+            color: rgba(236, 245, 255, 0.9);
+            font-size: 0.83rem;
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        .payment-info-amount {
+            font-size: 2rem;
+            line-height: 1;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .payment-info-amount span {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: rgba(223, 238, 255, 0.95);
+        }
+
+        .payment-checkout-panel {
+            border: 1px solid var(--border-soft);
+            border-radius: 0.9rem;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1rem;
+        }
+
+        .payment-panel-subtitle {
+            color: var(--text-muted);
+            font-size: 0.84rem;
+            margin-top: 0.35rem;
+        }
+
+        .member-grid-title {
+            margin: 0 0 0.7rem;
+            font-size: 0.79rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .member-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.55rem;
+        }
+
+        .member-picker-item {
+            width: 100%;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border: 1px solid var(--border-soft);
+            border-radius: 0.65rem;
+            background: transparent;
+            color: var(--text-main);
+            padding: 0.6rem 0.7rem;
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .member-picker-item:hover {
+            border-color: rgba(132, 182, 236, 0.7);
+        }
+
+        .member-picker-item.is-selected {
+            border-color: rgba(132, 182, 236, 0.9);
+            background: rgba(46, 91, 135, 0.35);
+        }
+
+        .member-picker-initial {
+            width: 1.7rem;
+            height: 1.7rem;
+            border-radius: 0.45rem;
+            background: rgba(46, 91, 135, 0.5);
+            color: #99c2ee;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .member-picker-name {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-main);
+            flex: 1;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .member-picker-check {
+            opacity: 0;
+            color: #9fc8f3;
+            font-size: 0.92rem;
+        }
+
+        .member-picker-item.is-selected .member-picker-check {
+            opacity: 1;
+        }
+
+        .member-picker-empty {
+            grid-column: 1 / -1;
+            border: 1px dashed var(--border-soft);
+            border-radius: 0.7rem;
+            padding: 0.8rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .payment-summary-box {
+            border: 1px solid var(--border-soft);
+            border-radius: 0.75rem;
+            padding: 0.85rem 0.9rem;
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .payment-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.35rem;
+        }
+
+        .payment-summary-row strong {
+            color: var(--text-main);
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .payment-summary-total {
+            margin-top: 0.55rem;
+            padding-top: 0.55rem;
+            border-top: 1px solid var(--border-soft);
+            margin-bottom: 0;
+        }
+
+        .payment-summary-total strong {
+            font-size: 1.05rem;
+        }
+
         .payment-amount-card {
             background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
             border-radius: 1rem;
@@ -1117,6 +1304,14 @@
                 align-items: flex-start;
                 flex-wrap: wrap;
             }
+
+            .payment-info-amount {
+                font-size: 1.55rem;
+            }
+
+            .member-picker-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Dark theme support */
@@ -1140,10 +1335,11 @@
             var tabButtons = document.querySelectorAll('.activity-tabs .tab-btn[data-filter]');
             var activityItems = document.querySelectorAll('#activity-list .activity-dropdown');
             var emptyState = document.getElementById('activity-filter-empty');
-
-            if (!tabButtons.length || !activityItems.length) {
-                return;
-            }
+            var pickerItems = document.querySelectorAll('.member-picker-item[data-nim]');
+            var payerInfoInput = document.getElementById('payer-info');
+            var selectedNameEl = document.getElementById('payment-selected-name');
+            var paymentSubmitBtn = document.getElementById('payment-submit-btn');
+            var paymentForm = document.querySelector('form[action="/bayar"]');
 
             function applyActivityFilter(filterKey) {
                 var visibleCount = 0;
@@ -1172,19 +1368,70 @@
                 }
             }
 
-            tabButtons.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    tabButtons.forEach(function(otherButton) {
-                        otherButton.classList.remove('active');
+            if (tabButtons.length && activityItems.length) {
+                tabButtons.forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        tabButtons.forEach(function(otherButton) {
+                            otherButton.classList.remove('active');
+                        });
+
+                        button.classList.add('active');
+                        applyActivityFilter(button.getAttribute('data-filter'));
                     });
-
-                    button.classList.add('active');
-                    applyActivityFilter(button.getAttribute('data-filter'));
                 });
-            });
 
-            var activeButton = document.querySelector('.activity-tabs .tab-btn.active[data-filter]');
-            applyActivityFilter(activeButton ? activeButton.getAttribute('data-filter') : 'minggu-1');
+                var activeButton = document.querySelector('.activity-tabs .tab-btn.active[data-filter]');
+                applyActivityFilter(activeButton ? activeButton.getAttribute('data-filter') : 'minggu-1');
+            }
+
+            function setSelectedMember(element) {
+                if (!payerInfoInput || !selectedNameEl) {
+                    return;
+                }
+
+                pickerItems.forEach(function(item) {
+                    item.classList.remove('is-selected');
+                    item.setAttribute('aria-pressed', 'false');
+                });
+
+                if (!element) {
+                    payerInfoInput.value = '';
+                    selectedNameEl.textContent = '-';
+                    if (paymentSubmitBtn) {
+                        paymentSubmitBtn.setAttribute('disabled', 'disabled');
+                    }
+                    return;
+                }
+
+                element.classList.add('is-selected');
+                element.setAttribute('aria-pressed', 'true');
+                payerInfoInput.value = element.getAttribute('data-nim') || '';
+                selectedNameEl.textContent = element.getAttribute('data-name') || '-';
+
+                if (paymentSubmitBtn && payerInfoInput.value !== '') {
+                    paymentSubmitBtn.removeAttribute('disabled');
+                }
+            }
+
+            if (pickerItems.length) {
+                pickerItems.forEach(function(item) {
+                    item.setAttribute('aria-pressed', 'false');
+                    item.addEventListener('click', function() {
+                        setSelectedMember(item);
+                    });
+                });
+
+                setSelectedMember(null);
+            }
+
+            if (paymentForm) {
+                paymentForm.addEventListener('submit', function(event) {
+                    if (!payerInfoInput || payerInfoInput.value.trim() === '') {
+                        event.preventDefault();
+                        alert('Pilih nama anggota terlebih dahulu.');
+                    }
+                });
+            }
         });
     </script>
 @endsection

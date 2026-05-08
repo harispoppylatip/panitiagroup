@@ -55,6 +55,8 @@
                                         <span class="badge bg-danger">Admin</span>
                                     @elseif ($user->role === 'akuntan')
                                         <span class="badge bg-warning text-dark">Akuntan</span>
+                                    @elseif ($user->role === 'scanabsen')
+                                        <span class="badge bg-secondary">Scan Absen</span>
                                     @else
                                         <span class="badge bg-info">Anggota</span>
                                     @endif

@@ -34,7 +34,17 @@ class AdminAuthController extends Controller
                     ->onlyInput('username');
             }
 
-            $role = $user->role === 'scanabsen' ? 'anggota' : $user->role;
+                    if ($user->role === 'scanabsen') {
+                    Auth::logout();
+                    $request->session()->invalidate();
+                    $request->session()->regenerateToken();
+
+                    return back()
+                        ->withErrors(['username' => 'Akun scanabsen hanya bisa login lewat halaman absensi'])
+                        ->onlyInput('username');
+                    }
+
+                    $role = $user->role;
 
             $destination = match ($role) {
                 'admin' => route('admin.beranda.index'),

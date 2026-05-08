@@ -66,6 +66,22 @@ class TugasController extends Controller
         return view('admin.tugas.create');
     }
 
+    public function storeapi(Request $request)
+    {
+        $validatedData = $request->validate([
+            'judul' => 'required|string',
+            'mata_kuliah' => 'required|string',
+            'deadline' => 'required|date_format:Y-m-d',
+            'prioritas' => 'required|string',
+            'deskripsi' => 'nullable|string',
+            'status' => 'required|string',
+        ]);
+
+        $tugas = Tugas::create($validatedData);
+
+        return response()->json(['message' => 'Tugas created successfully.', 'data' => $tugas], 201);
+    }
+
     public function postnew(Request $request) {
         Tugas::create([
             'judul' => $request->judul,

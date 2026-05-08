@@ -14,6 +14,7 @@ class AdminUserController extends Controller
         'admin' => 'Admin',
         'akuntan' => 'Akuntan',
         'anggota' => 'Anggota',
+        'scanabsen' => 'Scan Absen',
     ];
 
     /**
@@ -45,7 +46,7 @@ class AdminUserController extends Controller
             'username' => 'required|string|max:255|unique:users,username',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:admin,akuntan,anggota',
+            'role' => 'required|in:admin,akuntan,anggota,scanabsen',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
@@ -93,7 +94,7 @@ class AdminUserController extends Controller
                 'email',
                 Rule::unique('users', 'email')->ignore($user->id),
             ],
-            'role' => 'required|in:admin,akuntan,anggota',
+            'role' => 'required|in:admin,akuntan,anggota,scanabsen',
             'password' => 'nullable|string|min:8|confirmed',
         ]);
 

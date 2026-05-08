@@ -27,6 +27,14 @@ class controllerscanner extends Controller
         ]);
 
         if (Auth::attempt($cre)) {
+            if (Auth::user()?->role !== 'scanabsen') {
+                Auth::logout();
+
+                return back()
+                    ->withErrors(['username' => 'Halaman ini khusus akun scanabsen'])
+                    ->onlyInput('username');
+            }
+
             $request->session()->regenerate();
             return redirect()->route('scan.barcode');
         }

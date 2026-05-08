@@ -3,61 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Datasikadmodel;
+use Illuminate\Support\Facades\Http;
 
 class test extends Controller
 {
     public function index(){
-        $nim = '2411102441045';
-        $data = Datasikadmodel::where('Nim', $nim)->first();
-
-        if (!$data) {
-            echo 'User tidak ditemukan';
-            return;
+        // Cek apakah WhatsApp API sudah dikonfigurasi
+        if (!config('api.whatsapp_api') || empty(config('api.whatsapp_api'))) {
+            return response()->json([
+                'error' => 'WhatsApp API tidak dikonfigurasi. Set Whatsapp_UrlApi di .env',
+            ]);
         }
 
-        $jumlah = $data->iuran()
-            ->where('Status_Bayar', 0)
-            ->sum('Nominal');
-
-        echo $jumlah;
-
-        // $nim?->iuran()->create([
-        //     'Nominal' => 10000,
-        //     'Status_Bayar' => 1,
-        // ]);
-    }
-
-    public function updatemingguan()
-    {
-        $data = Datasikadmodel::get();
-        $nominalMingguan = 10000;
-        $updated = 0;
-        $created = 0;
-
-        foreach ($data as $item) {
-            $iuranTerakhir = $item->iuran()
-                ->latest('id')
-                ->first();
-
-            if (!$iuranTerakhir) {
-                $item->iuran()->create([
-                    'TanggalMulai' => now()->toDateString(),
-                    'Nominal' => $nominalMingguan,
-                    'Status_Bayar' => 0,
-                ]);
-                $created++;
-            } else {
-                $iuranTerakhir->update([
-                    'Nominal' => ((int) $iuranTerakhir->Nominal) + $nominalMingguan,
-                ]);
-                $updated++;
-            }
-        }
-
-        return response()->json([
-            'message' => 'Update iuran mingguan selesai',
-            'updated' => $updated,
-            'created' => $created,
+        $requets = Http::post(config('api.whatsapp_api').'send/message', [
+            "phone" => "120363332274172697@g.us",
+            "message" => "Halo dari API"
         ]);
+
+        dd($requets);
     }
 }

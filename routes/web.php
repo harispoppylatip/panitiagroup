@@ -21,8 +21,9 @@ Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name(
 Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
 
-Route::middleware('auth')->prefix('admin')->group(function () {
-    Route::middleware('role:admin,anggota')->group(function () {
+Route::middleware('auth')->prefix('admin')->group(function() {
+
+    Route::middleware('role:admin,akuntan,anggota')->group( function() {
         // management tugas
         Route::get('/tugas', [TugasController::class, 'index'])->name('admin.tugas.index');
         Route::get('/tugas/create', [TugasController::class, 'create'])->name('admin.tugas.create');
@@ -48,6 +49,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         Route::put('/finance/weekly-fee', [AdminFinanceController::class, 'updateWeeklyFee'])->name('admin.finance.weekly-fee');
         Route::put('/finance/member/{nim}', [AdminFinanceController::class, 'updateMemberBalance'])->name('admin.finance.member.update');
         Route::post('/finance/expense', [AdminFinanceController::class, 'storeExpense'])->name('admin.finance.expense.store');
+        Route::post('/finance/cash-adjustment', [AdminFinanceController::class, 'storeCashAdjustment'])->name('admin.finance.cash-adjustment.store');
     });
 
     Route::middleware('role:admin')->group(function () {
@@ -87,10 +89,12 @@ Route::get('/tugas', [TugasController::class, 'front'])->name('tugas');
 Route::get('/loginbarcode', [controllerscanner::class, 'loginbarcode'])->name('scan.login');
 Route::post('/sesi/login', [controllerscanner::class, 'login']);
 Route::get('/sesi/logout', [controllerscanner::class, 'logout'])->middleware('auth');
-Route::get('/barcode', [controllerscanner::class, 'index'])->middleware('auth')->name('scan.barcode');
-Route::get('/scan/users', [tokencontroller::class, 'listUsers'])->middleware('auth')->name('scan.users');
-Route::post('/scan/users/{id}/status', [tokencontroller::class, 'updateUserStatus'])->middleware('auth')->name('scan.users.status');
-Route::post('/scan/submit', [BarcodeController::class, 'submitScan'])->middleware('auth')->name('scan.submit');
+Route::middleware(['auth', 'role:scanabsen'])->group(function () {
+    Route::get('/barcode', [controllerscanner::class, 'index'])->name('scan.barcode');
+    Route::get('/scan/users', [tokencontroller::class, 'listUsers'])->name('scan.users');
+    Route::post('/scan/users/{id}/status', [tokencontroller::class, 'updateUserStatus'])->name('scan.users.status');
+    Route::post('/scan/submit', [BarcodeController::class, 'submitScan'])->name('scan.submit');
+});
 
 // pembayaran midtrans
 Route::get('/grubkas',[GrubkasController::class,'index'])->name('grubkas');
@@ -100,5 +104,5 @@ Route::post('/kirim-dana/non-anggota', [GrubkasController::class, 'kirimDanaNonA
 
 
 // jadwal
-Route::get('/wee', [test::class, 'index']);
+Route::get('/test', [test::class, 'index']);
 Route::get('/update', [test::class, 'updatemingguan']);
