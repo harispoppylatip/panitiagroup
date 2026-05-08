@@ -134,47 +134,59 @@
                             </div>
                         </div>
 
-                        <form action="{{ route('admin.finance.cash-adjustment.store') }}" method="POST" class="row g-3">
-                            @csrf
-                            <div class="col-12">
-                                <label for="cash_adjustment_amount" class="form-label text-white-50">Nominal
-                                    Penyesuaian</label>
-                                <div class="input-group input-group-lg finance-adjustment-input-group">
-                                    <span class="input-group-text">Rp</span>
-                                    <input type="number" min="1" class="form-control"
-                                        id="cash_adjustment_amount" name="amount" value="{{ old('amount') }}" required>
+                        @if (Route::has('admin.finance.cash-adjustment.store'))
+                            <form action="{{ route('admin.finance.cash-adjustment.store') }}" method="POST"
+                                class="row g-3">
+                                @csrf
+                                <div class="col-12">
+                                    <label for="cash_adjustment_amount" class="form-label text-white-50">Nominal
+                                        Penyesuaian</label>
+                                    <div class="input-group input-group-lg finance-adjustment-input-group">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="number" min="1" class="form-control"
+                                            id="cash_adjustment_amount" name="amount" value="{{ old('amount') }}"
+                                            required>
+                                    </div>
+                                    <small class="text-white-50">Gunakan jika ada selisih saat stok kas fisik
+                                        dicek.</small>
                                 </div>
-                                <small class="text-white-50">Gunakan jika ada selisih saat stok kas fisik dicek.</small>
-                            </div>
 
-                            <div class="col-12">
-                                <label class="form-label text-white-50">Arah Penyesuaian</label>
-                                <div class="d-grid gap-2 adjustment-toggle-group">
-                                    <input type="radio" class="btn-check" name="adjustment_type" id="adjustment_add"
-                                        value="add" autocomplete="off" checked>
-                                    <label class="btn btn-outline-light adjustment-toggle" for="adjustment_add">
-                                        <i class="bi bi-plus-circle me-1"></i> Tambah Kas
-                                    </label>
+                                <div class="col-12">
+                                    <label class="form-label text-white-50">Arah Penyesuaian</label>
+                                    <div class="d-grid gap-2 adjustment-toggle-group">
+                                        <input type="radio" class="btn-check" name="adjustment_type"
+                                            id="adjustment_add" value="add" autocomplete="off" checked>
+                                        <label class="btn btn-outline-light adjustment-toggle" for="adjustment_add">
+                                            <i class="bi bi-plus-circle me-1"></i> Tambah Kas
+                                        </label>
 
-                                    <input type="radio" class="btn-check" name="adjustment_type"
-                                        id="adjustment_subtract" value="subtract" autocomplete="off">
-                                    <label class="btn btn-outline-light adjustment-toggle" for="adjustment_subtract">
-                                        <i class="bi bi-dash-circle me-1"></i> Kurangi Kas
-                                    </label>
+                                        <input type="radio" class="btn-check" name="adjustment_type"
+                                            id="adjustment_subtract" value="subtract" autocomplete="off">
+                                        <label class="btn btn-outline-light adjustment-toggle" for="adjustment_subtract">
+                                            <i class="bi bi-dash-circle me-1"></i> Kurangi Kas
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="cash_adjustment_description"
+                                        class="form-label text-white-50">Keterangan</label>
+                                    <textarea id="cash_adjustment_description" name="description" class="form-control finance-adjustment-textarea"
+                                        rows="3" placeholder="Contoh: Koreksi kas setelah hitung manual">{{ old('description') }}</textarea>
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-light w-100 fw-bold">Simpan Penyesuaian</button>
+                                </div>
+                            </form>
+                        @else
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <div class="alert alert-warning mb-0">Fitur penyesuaian kas belum terdaftar pada server
+                                        ini.</div>
                                 </div>
                             </div>
-
-                            <div class="col-12">
-                                <label for="cash_adjustment_description"
-                                    class="form-label text-white-50">Keterangan</label>
-                                <textarea id="cash_adjustment_description" name="description" class="form-control finance-adjustment-textarea"
-                                    rows="3" placeholder="Contoh: Koreksi kas setelah hitung manual">{{ old('description') }}</textarea>
-                            </div>
-
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-light w-100 fw-bold">Simpan Penyesuaian</button>
-                            </div>
-                        </form>
+                        @endif
                     </div>
                 </div>
             </div>
