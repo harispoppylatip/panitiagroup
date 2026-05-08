@@ -231,7 +231,7 @@
                                 <div class="payment-info-icon"><i class="bi bi-ticket-perforated-fill"></i></div>
                                 <div>
                                     <p class="payment-info-title mb-1">Iuran Keanggotaan Mingguan</p>
-                                    <p class="payment-info-text mb-2">Kontribusi rutin mingguan untuk kas bersama panitia
+                                    <p class="payment-info-text mb-2">Kontribusi rutin mingguan untuk kas bersama Pemuda
                                         akhir zaman.</p>
                                     <p class="payment-info-amount mb-0">Rp
                                         {{ number_format((int) $weeklyFee, 0, ',', '.') }} <span>/ minggu per

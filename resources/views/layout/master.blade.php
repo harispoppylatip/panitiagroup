@@ -11,6 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="icon" type="image/x-icon" href="https://minio.umkt.ac.id/dev-umkt-static/images/favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -241,7 +242,7 @@
                                 Token</a>
                         </li>
                     @endauth
-                    <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
+                    {{-- <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li> --}}
                     <li class="nav-item ms-lg-2">
                         <button type="button" class="theme-toggle" id="themeToggle">
                             <i class="bi bi-moon-stars"></i>
@@ -276,6 +277,11 @@
         <div class="container">
             <p class="mb-1 fw-semibold" style="color: var(--brand-900);">Pemuda Akhir Zaman</p>
             <p class="mb-0">© 2026 Pemuda Akhir Zaman | Dibuat Oleh Tim Kami</p>
+            <div class="mt-3 small footer-text">
+                <div>WhatsApp: 081321897866</div>
+                <div>Email: 2411102441024@umkt.ac.id</div>
+                <div>Instagram: @paz.team214</div>
+            </div>
         </div>
     </footer>
 
