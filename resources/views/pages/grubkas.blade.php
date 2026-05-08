@@ -778,6 +778,29 @@
             padding: 1rem;
         }
 
+        body[data-theme='dark'] .payment-info-banner {
+            background: linear-gradient(135deg, #1f466f 0%, #183854 55%, #102739 100%);
+            border-color: rgba(148, 163, 184, 0.32);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+        }
+
+        body[data-theme='dark'] .payment-info-icon {
+            background: rgba(229, 238, 249, 0.14);
+            color: #f4f8ff;
+        }
+
+        body[data-theme='dark'] .payment-info-title {
+            color: #f4f8ff;
+        }
+
+        body[data-theme='dark'] .payment-info-text {
+            color: rgba(229, 238, 249, 0.88);
+        }
+
+        body[data-theme='dark'] .payment-info-amount span {
+            color: rgba(229, 238, 249, 0.9);
+        }
+
         .payment-info-icon {
             width: 3rem;
             height: 3rem;
@@ -1315,18 +1338,26 @@
         }
 
         /* Dark theme support */
-        body[data-theme='dark'] {
-            .kas-total-card {
-                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-            }
+        body[data-theme='dark'] .kas-total-card {
+            background: linear-gradient(135deg, #1f3b5c 0%, #16314f 50%, #0f2238 100%);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+        }
 
-            .stat-card:hover {
-                box-shadow: 0 2px 8px rgba(135, 169, 204, 0.15);
-            }
+        body[data-theme='dark'] .kas-total-label {
+            color: rgba(229, 238, 249, 0.85);
+        }
 
-            .btn-payment:hover {
-                box-shadow: 0 4px 12px rgba(214, 173, 98, 0.3);
-            }
+        body[data-theme='dark'] .kas-total-info {
+            color: rgba(229, 238, 249, 0.78);
+        }
+
+        body[data-theme='dark'] .stat-card:hover {
+            box-shadow: 0 2px 8px rgba(135, 169, 204, 0.15);
+        }
+
+        body[data-theme='dark'] .btn-payment:hover {
+            box-shadow: 0 4px 12px rgba(214, 173, 98, 0.3);
         }
     </style>
 

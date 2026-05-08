@@ -5,7 +5,7 @@
     @yield('head')
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Pemuda Akhir Zaman | Profesional dan Terstruktur</title>
+    <title>Pemuda Akhir Zaman</title>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -177,6 +177,19 @@
         .btn-brand:hover {
             background: linear-gradient(135deg, var(--brand-700), var(--brand-900));
             color: #fff;
+        }
+
+        body[data-theme='dark'] .btn-brand {
+            background: linear-gradient(135deg, #2f5f8e 0%, #224a72 52%, #1a3a5a 100%);
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            color: #f8fbff;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+        }
+
+        body[data-theme='dark'] .btn-brand:hover {
+            background: linear-gradient(135deg, #3b75ae 0%, #2d618f 52%, #21486d 100%);
+            border-color: rgba(148, 163, 184, 0.4);
+            color: #ffffff;
         }
 
         footer {

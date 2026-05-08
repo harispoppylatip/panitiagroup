@@ -6,7 +6,7 @@
                 <div class="col-lg-5 col-md-7">
                     <div class="card border-0 shadow-lg" style="border-radius: 16px;">
                         <div class="card-body p-4 p-md-5">
-                            <h1 class="h3 fw-bold mb-2 text-dark">Login Admin</h1>
+                            <h1 class="h3 fw-bold mb-2" style="color: var(--text-main);">Login Admin</h1>
                             <p class="text-muted mb-4">Masuk untuk mengakses halaman admin.</p>
 
                             @if ($errors->any())

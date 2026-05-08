@@ -138,6 +138,53 @@
             color: #fff;
         }
 
+        .btn-back {
+            border-radius: 999px;
+            border: 1px solid var(--border-soft);
+            color: var(--brand-700);
+            font-weight: 700;
+            padding: 0.62rem 1rem;
+            background: transparent;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-back:hover {
+            border-color: var(--brand-500);
+            color: var(--brand-500);
+            background: rgba(46, 91, 135, 0.08);
+        }
+
+        body[data-theme='dark'] .icon-box {
+            background: linear-gradient(135deg, #2c5b87 0%, #21486f 55%, #183551 100%);
+            border: 1px solid rgba(148, 163, 184, 0.28);
+            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+        }
+
+        body[data-theme='dark'] .btn-brand {
+            background: linear-gradient(135deg, #3f74a8 0%, #305e8c 52%, #264d74 100%);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            color: #f8fbff;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.26);
+        }
+
+        body[data-theme='dark'] .btn-brand:hover {
+            background: linear-gradient(135deg, #4c85bc 0%, #3a6e9f 52%, #2d5a84 100%);
+            border-color: rgba(148, 163, 184, 0.48);
+            color: #ffffff;
+        }
+
+        body[data-theme='dark'] .btn-back {
+            color: #d7e5f7;
+            border-color: rgba(148, 163, 184, 0.35);
+        }
+
+        body[data-theme='dark'] .btn-back:hover {
+            color: #edf4ff;
+            border-color: rgba(148, 163, 184, 0.52);
+            background: rgba(148, 163, 184, 0.14);
+        }
+
         .helper {
             color: var(--text-muted);
             font-size: 0.9rem;
@@ -156,7 +203,7 @@
             <i class="bi bi-qr-code-scan"></i>
         </div>
         <h1 class="title h3 text-center mb-2">Login Scan Absensi</h1>
-        <p class="subtitle text-center mb-4">Gunakan akun yang diatur pada menu admin.</p>
+        <p class="subtitle text-center mb-4">Gunakan akun yang sesuai.</p>
 
         @if ($errors->any())
             <div class="alert alert-danger">{{ $errors->first() }}</div>
@@ -178,6 +225,12 @@
 
             <div class="col-12 d-grid">
                 <button type="submit" class="btn btn-brand">Masuk ke Scanner</button>
+            </div>
+
+            <div class="col-12 d-grid">
+                <a href="{{ url('/') }}" class="btn-back text-center">
+                    <i class="bi bi-arrow-left me-1"></i>Kembali ke Beranda
+                </a>
             </div>
         </form>
 

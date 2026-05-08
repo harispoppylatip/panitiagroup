@@ -4,8 +4,7 @@
         <div class="container">
             <div class="mb-4 text-center text-md-start">
                 <h1 class="display-5 fw-bold mb-2">Jadwal Matkul</h1>
-                <p class="text-muted fs-5 mb-0">Data sementara untuk integrasi backend. Silakan Anda sambungkan ke
-                    database/API nanti.</p>
+                {{-- <p class="text-muted fs-5 mb-0">Realtime</p> --}}
             </div>
 
             @if ($error)
@@ -84,29 +83,42 @@
     <style>
         .filter-panel {
             backdrop-filter: blur(4px);
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(18, 38, 63, 0.08);
+            background: var(--surface-elevated);
+            border: 1px solid var(--border-soft);
         }
 
         .schedule-group {
             border-radius: 18px;
             overflow: hidden;
             transition: transform 0.25s ease, box-shadow 0.25s ease;
-            background: rgba(255, 255, 255, 0.96);
+            background: var(--surface-elevated);
         }
 
         .schedule-group:hover {
             transform: translateY(-4px);
-            box-shadow: 0 18px 30px rgba(18, 38, 63, 0.18) !important;
+            box-shadow: 0 18px 30px var(--shadow-soft) !important;
+        }
+
+        .schedule-table {
+            --bs-table-bg: transparent;
+            --bs-table-striped-bg: transparent;
+            --bs-table-active-bg: transparent;
+            --bs-table-hover-bg: rgba(18, 38, 63, 0.03);
+            --bs-table-color: var(--text-main);
+            --bs-table-border-color: var(--border-soft);
         }
 
         .schedule-table thead th {
-            border-bottom: 1px solid rgba(18, 38, 63, 0.12);
+            border-bottom: 1px solid var(--border-soft);
             padding-top: 0.25rem;
         }
 
         .schedule-table tbody tr {
-            border-top: 1px solid rgba(18, 38, 63, 0.08);
+            border-top: 1px solid var(--border-soft);
+        }
+
+        body[data-theme='dark'] .schedule-table {
+            --bs-table-hover-bg: rgba(148, 163, 184, 0.1);
         }
 
         .schedule-table tbody tr:first-child {

@@ -21,7 +21,7 @@
                                 <a href="{{ route('scan.login') }}" class="btn btn-brand px-4 py-2">Masuk Scan Absen</a>
                             </div>
 
-                            <div class="hero-metrics">
+                            {{-- <div class="hero-metrics">
                                 <div class="metric-item">
                                     <span class="metric-value">24+</span>
                                     <span class="metric-label">Program Kerja Aktif</span>
@@ -34,7 +34,7 @@
                                     <span class="metric-value">95%</span>
                                     <span class="metric-label">Target Tercapai</span>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 

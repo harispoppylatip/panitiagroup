@@ -82,6 +82,12 @@ class TugasController extends Controller
         return response()->json(['message' => 'Tugas created successfully.', 'data' => $tugas], 201);
     }
 
+    public function gettugasapi()
+    {
+        $tugas = Tugas::all();
+        return response()->json(['message' => $tugas]);
+    }
+
     public function postnew(Request $request) {
         Tugas::create([
             'judul' => $request->judul,
