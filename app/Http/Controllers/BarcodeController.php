@@ -198,9 +198,9 @@ class BarcodeController extends Controller
 
             // Kirim notifikasi WhatsApp jika API dikonfigurasi
             if (config('api.whatsapp_api') && !empty(config('api.whatsapp_api'))) {
-                Http::post(config('api.whatsapp_api').'send/message', [
+                Http::withBasicAuth(config('api.whatsapp_username'), config('api.Whatsapp_password'))->post(config('api.whatsapp_api').'send/message', [
                     "phone" => "120363332274172697@g.us",
-                    "message" => "Nama: {$user->nama}\nstatus: " . ($apiSuccess ? 'berhasil' : 'gagal') . "\nKeterangan: {$apiMessage} \n \n",
+                    "message" => "Nama: {$user->nama}\nstatus: " . ($apiSuccess ? '✅berhasil' : '🚫gagal') . "\nKeterangan: {$apiMessage} \n \n",
                 ]);
             }
 

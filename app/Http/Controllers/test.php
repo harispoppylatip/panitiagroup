@@ -15,7 +15,7 @@ class test extends Controller
             ]);
         }
 
-        $requets = Http::post(config('api.whatsapp_api').'send/message', [
+        $requets = Http::withBasicAuth(config('api.whatsapp_username'), config('api.Whatsapp_password'))->post(config('api.whatsapp_api').'send/message', [
             "phone" => "120363332274172697@g.us",
             "message" => "Halo dari API"
         ]);

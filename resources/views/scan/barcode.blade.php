@@ -29,6 +29,132 @@
             background: linear-gradient(135deg, #1f3b5c, #12263f);
             color: #fff;
         }
+
+        .scan-page .btn-outline-danger,
+        .scan-page .btn-outline-secondary,
+        .scan-page .btn-outline-success {
+            border-width: 1px;
+        }
+
+        .scan-page .nav-tabs {
+            border-bottom-color: rgba(18, 38, 63, 0.12);
+        }
+
+        .scan-page .nav-tabs .nav-link {
+            color: #5f6f84;
+            border: 1px solid transparent;
+        }
+
+        .scan-page .nav-tabs .nav-link.active {
+            background: #fff;
+            color: #12263f;
+            border-color: rgba(18, 38, 63, 0.12) rgba(18, 38, 63, 0.12) #fff;
+        }
+
+        .scan-page .list-group-item {
+            background: rgba(255, 255, 255, 0.92);
+            color: #1f2a37;
+            border-color: rgba(18, 38, 63, 0.08);
+        }
+
+        .scan-page #respJson pre {
+            background: #f4f7fb;
+            color: #1f2a37;
+            border: 1px solid rgba(18, 38, 63, 0.08);
+        }
+
+        body[data-theme='dark'] .scan-page .scan-topbar,
+        body[data-theme='dark'] .scan-page .card,
+        body[data-theme='dark'] .scan-page .list-group-item {
+            background: rgba(17, 24, 39, 0.9);
+            border-color: rgba(148, 163, 184, 0.16);
+            color: #e5eef9;
+        }
+
+        body[data-theme='dark'] .scan-page .scan-title,
+        body[data-theme='dark'] .scan-page .card-title,
+        body[data-theme='dark'] .scan-page .form-label,
+        body[data-theme='dark'] .scan-page h6,
+        body[data-theme='dark'] .scan-page .list-group-item strong {
+            color: #edf4ff;
+        }
+
+        body[data-theme='dark'] .scan-page .form-control,
+        body[data-theme='dark'] .scan-page .form-select {
+            background: rgba(15, 23, 36, 0.88);
+            color: #edf4ff;
+            border-color: rgba(148, 163, 184, 0.22);
+        }
+
+        body[data-theme='dark'] .scan-page .form-control::placeholder {
+            color: rgba(167, 180, 197, 0.72);
+        }
+
+        body[data-theme='dark'] .scan-page .nav-tabs {
+            border-bottom-color: rgba(148, 163, 184, 0.18);
+        }
+
+        body[data-theme='dark'] .scan-page .nav-tabs .nav-link {
+            color: #a7b4c5;
+            background: transparent;
+        }
+
+        body[data-theme='dark'] .scan-page .nav-tabs .nav-link.active {
+            background: rgba(17, 24, 39, 0.96);
+            color: #edf4ff;
+            border-color: rgba(148, 163, 184, 0.18) rgba(148, 163, 184, 0.18) rgba(17, 24, 39, 0.96);
+        }
+
+        body[data-theme='dark'] .scan-page #respJson pre {
+            background: rgba(15, 23, 36, 0.92);
+            color: #e5eef9;
+            border-color: rgba(148, 163, 184, 0.16);
+        }
+
+        body[data-theme='dark'] .scan-page .btn-brand {
+            background: linear-gradient(135deg, #3b75ae 0%, #2d618f 52%, #21486d 100%);
+            border: 1px solid rgba(148, 163, 184, 0.34);
+            color: #f8fbff;
+        }
+
+        body[data-theme='dark'] .scan-page .btn-brand:hover {
+            background: linear-gradient(135deg, #4a86bc 0%, #38709e 52%, #2a567d 100%);
+            color: #ffffff;
+        }
+
+        body[data-theme='dark'] .scan-page .btn-danger {
+            background: #a43a4b;
+            border-color: #c04a5d;
+            color: #fff;
+        }
+
+        body[data-theme='dark'] .scan-page .btn-outline-danger,
+        body[data-theme='dark'] .scan-page .btn-outline-secondary,
+        body[data-theme='dark'] .scan-page .btn-outline-success {
+            background: rgba(15, 23, 36, 0.65);
+            color: #e5eef9;
+            border-color: rgba(148, 163, 184, 0.24);
+        }
+
+        body[data-theme='dark'] .scan-page .badge.bg-info {
+            background-color: #2e5b87 !important;
+        }
+
+        body[data-theme='dark'] .scan-page .badge.bg-secondary {
+            background-color: #475569 !important;
+        }
+
+        body[data-theme='dark'] .scan-page .badge.bg-light {
+            background-color: rgba(148, 163, 184, 0.2) !important;
+            color: #edf4ff !important;
+        }
+
+        body[data-theme='dark'] .scan-page .text-muted,
+        body[data-theme='dark'] .scan-page small,
+        body[data-theme='dark'] .scan-page .tab-content,
+        body[data-theme='dark'] .scan-page #status {
+            color: #a7b4c5 !important;
+        }
     </style>
 
     <!-- MAIN APP -->

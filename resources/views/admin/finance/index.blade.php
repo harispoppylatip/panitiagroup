@@ -428,6 +428,153 @@
             border-color: rgba(255, 255, 255, 0.88);
         }
 
+        body[data-theme='dark'] .finance-dashboard h2,
+        body[data-theme='dark'] .finance-dashboard h5,
+        body[data-theme='dark'] .finance-dashboard .fw-bold,
+        body[data-theme='dark'] .finance-dashboard .text-muted,
+        body[data-theme='dark'] .finance-dashboard .form-label,
+        body[data-theme='dark'] .finance-dashboard small,
+        body[data-theme='dark'] .finance-dashboard td,
+        body[data-theme='dark'] .finance-dashboard th {
+            color: var(--text-main);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .card,
+        body[data-theme='dark'] .finance-dashboard .table-wrapper,
+        body[data-theme='dark'] .finance-dashboard .table {
+            background: rgba(17, 24, 39, 0.9);
+            color: var(--text-main);
+            border-color: var(--border-soft);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .card.shadow-sm {
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28) !important;
+        }
+
+        body[data-theme='dark'] .finance-dashboard .card-body {
+            color: var(--text-main);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .card:not(.finance-adjustment-card) {
+            background: rgba(17, 24, 39, 0.9);
+            border-color: rgba(148, 163, 184, 0.16);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .table thead th {
+            background: linear-gradient(135deg, #2c5b87, #1f3b5c);
+            color: #f8fbff;
+        }
+
+        body[data-theme='dark'] .finance-dashboard .table tbody td {
+            background: rgba(17, 24, 39, 0.9);
+            color: #e5eef9;
+            border-color: rgba(148, 163, 184, 0.12);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .table tbody tr:hover {
+            background: rgba(46, 91, 135, 0.12);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .alert-success {
+            background: linear-gradient(135deg, rgba(22, 101, 52, 0.2), rgba(34, 197, 94, 0.1));
+            border-color: rgba(74, 222, 128, 0.28);
+            color: #dcfce7;
+        }
+
+        body[data-theme='dark'] .finance-dashboard .alert-danger {
+            background: linear-gradient(135deg, rgba(127, 29, 29, 0.24), rgba(239, 68, 68, 0.12));
+            border-color: rgba(248, 113, 113, 0.28);
+            color: #fee2e2;
+        }
+
+        body[data-theme='dark'] .finance-dashboard .alert-warning {
+            background: linear-gradient(135deg, rgba(120, 53, 15, 0.24), rgba(245, 158, 11, 0.12));
+            border-color: rgba(251, 191, 36, 0.3);
+            color: #fef3c7;
+        }
+
+        body[data-theme='dark'] .finance-dashboard .form-control,
+        body[data-theme='dark'] .finance-dashboard .input-group-text,
+        body[data-theme='dark'] .finance-dashboard textarea,
+        body[data-theme='dark'] .finance-dashboard select {
+            background: rgba(15, 23, 36, 0.92);
+            color: #edf4ff;
+            border-color: rgba(148, 163, 184, 0.22);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .form-control::placeholder,
+        body[data-theme='dark'] .finance-dashboard textarea::placeholder {
+            color: rgba(167, 180, 197, 0.72);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .finance-adjustment-card {
+            background: linear-gradient(135deg, #24486f, #13273d);
+            border-color: rgba(148, 163, 184, 0.18);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .finance-adjustment-card .form-control,
+        body[data-theme='dark'] .finance-dashboard .finance-adjustment-card .input-group-text,
+        body[data-theme='dark'] .finance-dashboard .finance-adjustment-card textarea {
+            background: rgba(15, 23, 36, 0.94);
+            color: #edf4ff;
+            border-color: rgba(148, 163, 184, 0.2);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .finance-adjustment-card .input-group-text {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .finance-adjustment-subtitle,
+        body[data-theme='dark'] .finance-dashboard .finance-adjustment-card .text-white-50 {
+            color: rgba(229, 238, 249, 0.76) !important;
+        }
+
+        body[data-theme='dark'] .finance-dashboard .adjustment-toggle-group .adjustment-toggle {
+            background: rgba(15, 23, 36, 0.85);
+            color: #e5eef9;
+            border-color: rgba(148, 163, 184, 0.22);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .adjustment-toggle-group .btn-check:checked+.adjustment-toggle {
+            background: rgba(229, 238, 249, 0.92);
+            color: #13253c;
+            border-color: rgba(229, 238, 249, 0.92);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .badge {
+            color: inherit;
+        }
+
+        body[data-theme='dark'] .finance-dashboard .btn-primary,
+        body[data-theme='dark'] .finance-dashboard .btn-outline-primary,
+        body[data-theme='dark'] .finance-dashboard .btn-danger,
+        body[data-theme='dark'] .finance-dashboard .btn-light {
+            box-shadow: none;
+        }
+
+        body[data-theme='dark'] .finance-dashboard .btn-outline-primary {
+            color: #d7e5f7;
+            border-color: rgba(148, 163, 184, 0.28);
+            background: rgba(15, 23, 36, 0.6);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .btn-outline-primary:hover {
+            background: rgba(46, 91, 135, 0.18);
+            border-color: rgba(135, 169, 204, 0.6);
+            color: #ffffff;
+        }
+
+        body[data-theme='dark'] .finance-dashboard .btn-light {
+            background: rgba(229, 238, 249, 0.94);
+            color: #13253c;
+            border-color: rgba(229, 238, 249, 0.94);
+        }
+
+        body[data-theme='dark'] .finance-dashboard .btn-light:hover {
+            background: #ffffff;
+            color: #10253f;
+        }
+
         @media (max-width: 576px) {
             .finance-summary-card {
                 padding: 1rem;
