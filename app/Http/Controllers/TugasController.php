@@ -66,28 +66,6 @@ class TugasController extends Controller
         return view('admin.tugas.create');
     }
 
-    public function storeapi(Request $request)
-    {
-        $validatedData = $request->validate([
-            'judul' => 'required|string',
-            'mata_kuliah' => 'required|string',
-            'deadline' => 'required|date_format:Y-m-d',
-            'prioritas' => 'required|string',
-            'deskripsi' => 'nullable|string',
-            'status' => 'required|string',
-        ]);
-
-        $tugas = Tugas::create($validatedData);
-
-        return response()->json(['message' => 'Tugas created successfully.', 'data' => $tugas], 201);
-    }
-
-    public function gettugasapi()
-    {
-        $tugas = Tugas::all();
-        return response()->json(['message' => $tugas]);
-    }
-
     public function postnew(Request $request) {
         Tugas::create([
             'judul' => $request->judul,
@@ -132,4 +110,40 @@ class TugasController extends Controller
         Tugas::destroy($id);
         return redirect()->back();
     }
+
+    // API
+       public function storeapi(Request $request)
+    {
+        $validatedData = $request->validate([
+            'judul' => 'required|string',
+            'mata_kuliah' => 'required|string',
+            'deadline' => 'required|date_format:Y-m-d',
+            'prioritas' => 'required|string',
+            'deskripsi' => 'nullable|string',
+            'status' => 'required|string',
+        ]);
+
+        $tugas = Tugas::create($validatedData);
+
+        return response()->json(['message' => 'Tugas created successfully.', 'data' => $tugas], 201);
+    }
+
+    public function gettugasapi()
+    {
+        $tugas = Tugas::all();
+        return response()->json(['message' => $tugas]);
+    }
+
+    public function deletetugasapi(Request $request) {
+        $id = $request->id;
+        $pesan = '';
+        if(Tugas::destroy($id)) {
+            $pesan = 'berhasil menghapus';
+        } else {
+            $pesan = 'Gagal menghapus';
+            return response()->json(['message'=> $pesan], 401);
+        }
+    
+        return response()->json(['message'=> $pesan], 201);
+        }
 }

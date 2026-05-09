@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 class GrubkasController extends Controller
 {
-    public function index() {
+    private function getGrubkasData() {
         $weeklyFee = FinanceSetting::weeklyFee();
 
         $allMembers = Datasikadmodel::with('latestIuran')
@@ -113,18 +113,33 @@ class GrubkasController extends Controller
             return $log;
         });
 
-        return view('pages.grubkas', compact(
-            'datauser',
-            'activityLogs',
-            'sudahBayarMembers',
-            'belumBayarMembers',
-            'memberStats',
-            'totalKasTerkumpul',
-            'sudahBayar',
-            'belumBayar',
-            'totalAnggota',
-            'weeklyFee'
-        ));
+        return [
+            'datauser' => $datauser,
+            'activityLogs' => $activityLogs,
+            'sudahBayarMembers' => $sudahBayarMembers,
+            'belumBayarMembers' => $belumBayarMembers,
+            'memberStats' => $memberStats,
+            'totalKasTerkumpul' => $totalKasTerkumpul,
+            'sudahBayar' => $sudahBayar,
+            'belumBayar' => $belumBayar,
+            'totalAnggota' => $totalAnggota,
+            'weeklyFee' => $weeklyFee,
+        ];
+    }
+
+    public function index() {
+        $data = $this->getGrubkasData();
+        return view('pages.grubkas', $data);
+    }
+
+    public function grubkasinfoapi(){
+        $data = $this->getGrubkasData();
+        return response()->json([
+            'belumbayar' => $data['belumBayarMembers'],
+            'sudahBayar' => $data['sudahBayar'],
+            'totalKasTerkumpul' => $data['totalKasTerkumpul'],
+            'activityLogs' => $data['activityLogs'],
+            ]);
     }
 
     public function bayar(Request $request){
