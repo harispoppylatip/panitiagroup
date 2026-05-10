@@ -136,7 +136,7 @@ class GrubkasController extends Controller
         $data = $this->getGrubkasData();
         return response()->json([
             'belumbayar' => $data['belumBayarMembers'],
-            'sudahBayar' => $data['sudahBayar'],
+            'sudahBayar' => $data['sudahBayarMembers'],
             'totalKasTerkumpul' => $data['totalKasTerkumpul'],
             'activityLogs' => $data['activityLogs'],
             ]);
