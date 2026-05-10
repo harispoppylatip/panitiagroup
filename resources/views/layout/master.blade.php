@@ -256,11 +256,11 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('grubkas') }}">Kas Grub</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('scan.login') }}">Scan Absen</a></li>
                     {{-- <li class="nav-item"><a class="nav-link" href="{{ route('admin.upload') }}">Upload</a></li> --}}
-                    @auth
+                    {{-- @auth
                         <li class="nav-item"><a class="nav-link" href="{{ route('admin.inserttoken.form') }}">Insert
                                 Token</a>
                         </li>
-                    @endauth
+                    @endauth --}}
                     {{-- <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li> --}}
                     <li class="nav-item ms-lg-2">
                         <button type="button" class="theme-toggle" id="themeToggle">

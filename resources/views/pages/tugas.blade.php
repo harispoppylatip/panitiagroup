@@ -7,8 +7,8 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4 p-md-5">
                         <h1 class="fw-bold mb-2">Daftar Tugas Kuliah</h1>
-                        <p class="text-muted mb-0">Halaman ini hanya tampilan contoh dengan data dummy. Backend penyimpanan
-                            bisa kamu atur nanti.</p>
+                        {{-- <p class="text-muted mb-0">Halaman ini hanya tampilan contoh dengan data dummy. Backend penyimpanan
+                            bisa kamu atur nanti.</p> --}}
                     </div>
                 </div>
             </div>
@@ -36,8 +36,8 @@
                                     class="badge {{ $item['status'] === 'Selesai' ? 'text-bg-success' : ($item['status'] === 'Proses' ? 'text-bg-warning' : 'text-bg-danger') }}">
                                     Status: {{ $item['status'] }}
                                 </span>
-                                <a href="{{ route('tugas') }}" class="btn btn-sm btn-outline-secondary">Lihat Detail
-                                    (dummy)</a>
+                                {{-- <a href="{{ route('tugas') }}" class="btn btn-sm btn-outline-secondary">Lihat Detail
+                                    (dummy)</a> --}}
                             </div>
                         </div>
                     </div>

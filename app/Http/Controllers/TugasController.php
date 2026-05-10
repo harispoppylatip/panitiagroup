@@ -145,5 +145,30 @@ class TugasController extends Controller
         }
     
         return response()->json(['message'=> $pesan], 201);
+    }
+
+    public function edittugasapi(Request $request)
+    {
+        $validatedData = $request->validate([
+            'id' => 'required|exists:tugas,id',
+            'judul' => 'nullable|string',
+            'mata_kuliah' => 'nullable|string',
+            'deadline' => 'nullable|date_format:Y-m-d',
+            'prioritas' => 'nullable|string',
+            'deskripsi' => 'nullable|string',
+            'status' => 'nullable|string',
+        ]);
+
+        $id = $validatedData['id'];
+        $tugas = Tugas::find($id);
+
+        if(!$tugas) {
+            return response()->json(['message' => 'Tugas tidak ditemukan'], 401);
         }
+
+        unset($validatedData['id']);
+        $tugas->update($validatedData);
+
+        return response()->json(['message' => 'Tugas berhasil diperbarui', 'data' => $tugas], 200);
+    }
 }
