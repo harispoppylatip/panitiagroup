@@ -53,6 +53,10 @@ Route::middleware('auth')->prefix('admin')->group(function() {
     });
 
     Route::middleware('role:admin')->group(function () {
+        // Data calibration (hanya admin)
+        Route::get('/finance/calibration', [AdminFinanceController::class, 'showDataCalibrationForm'])->name('admin.finance.calibration');
+        Route::post('/finance/calibration/execute', [AdminFinanceController::class, 'executeDataCalibration'])->name('admin.finance.calibration.execute');
+
         // token control
         Route::get('/inserttoken', [AdminController::class, 'inserttoken'])->name('admin.inserttoken.form');
         Route::get('/membertoken', [tokencontroller::class, 'index'])->name('admin.membertoken');

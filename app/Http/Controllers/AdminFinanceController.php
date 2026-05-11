@@ -7,6 +7,7 @@ use App\Models\FinanceSetting;
 use App\Models\GrubkasActivityLog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminFinanceController extends Controller
 {
@@ -33,16 +34,21 @@ class AdminFinanceController extends Controller
             ->whereIn('transaction_status', ['capture', 'settlement'])
             ->count();
 
-        $recentExpenses = GrubkasActivityLog::where('direction', 'out')
-            ->latest('occurred_at')
+        // Get activity logs with pagination (6 per page)
+        $allActivityLogs = GrubkasActivityLog::latest('occurred_at')
             ->latest('id')
-            ->limit(10)
+            ->paginate(6);
+
+        // Get all logs for summary stats (not paginated)
+        $allLogsForStats = GrubkasActivityLog::latest('occurred_at')
+            ->latest('id')
             ->get();
 
         return view('admin.finance.index', compact(
             'setting',
             'members',
-            'recentExpenses',
+            'allActivityLogs',
+            'allLogsForStats',
             'totalKas',
             'totalPengeluaran',
             'jumlahTransaksi',
@@ -57,8 +63,26 @@ class AdminFinanceController extends Controller
         ]);
 
         $setting = FinanceSetting::singleton();
+        $oldFee = $setting->weekly_fee;
+        $newFee = (int) $validated['weekly_fee'];
         $setting->update([
-            'weekly_fee' => (int) $validated['weekly_fee'],
+            'weekly_fee' => $newFee,
+        ]);
+
+        // Buat log perubahan iuran mingguan
+        $user = Auth::user();
+        $userName = $user?->name ?? 'Unknown User';
+
+        GrubkasActivityLog::create([
+            'user_name' => $userName,
+            'activity_type' => 'weekly_fee_setting',
+            'direction' => 'neutral',
+            'amount' => 0,
+            'title' => 'Pengaturan Iuran Mingguan',
+            'description' => 'Iuran mingguan diubah dari Rp ' . number_format($oldFee, 0, ',', '.') . ' menjadi Rp ' . number_format($newFee, 0, ',', '.'),
+            'order_id' => 'SETTING-' . now()->format('YmdHis') . '-' . random_int(1000, 9999),
+            'transaction_status' => 'manual',
+            'occurred_at' => now(),
         ]);
 
         return redirect()->route('admin.finance.index')->with('success', 'Iuran mingguan berhasil diperbarui.');
@@ -75,10 +99,36 @@ class AdminFinanceController extends Controller
         $member = Datasikadmodel::where('Nim', $nim)->firstOrFail();
         $latestIuran = $member->iuran()->latest('id')->first();
 
+        // Simpan nilai lama untuk tracking perubahan
+        $oldUtang = (int) optional($latestIuran)->Nominal;
+        $oldSaldoPositif = (int) optional($latestIuran)->Saldo_Lebih;
+
+        // Ambil nilai input
+        $inputUtang = (int) $validated['nominal'];
+        $inputSaldoPositif = (int) $validated['saldo_lebih'];
+
+        // Logika pemotongan: jika ada saldo positif dan utang, potong utang dengan saldo positif
+        $finalUtang = $inputUtang;
+        $finalSaldoPositif = $inputSaldoPositif;
+
+        if ($finalSaldoPositif > 0 && $finalUtang > 0) {
+            // Saldo positif potong utang
+            $finalUtang = $finalUtang - $finalSaldoPositif;
+
+            if ($finalUtang < 0) {
+                // Jika utang kurang dari 0, sisanya jadi saldo positif
+                $finalSaldoPositif = abs($finalUtang);
+                $finalUtang = 0;
+            } else {
+                // Jika utang masih ada, saldo positif jadi 0 (sudah habis potong utang)
+                $finalSaldoPositif = 0;
+            }
+        }
+
         $payload = [
-            'Nominal' => (int) $validated['nominal'],
-            'Saldo_Lebih' => (int) $validated['saldo_lebih'],
-            'Status_Bayar' => (int) $validated['nominal'] === 0 ? 1 : 0,
+            'Nominal' => $finalUtang,
+            'Saldo_Lebih' => $finalSaldoPositif,
+            'Status_Bayar' => $finalUtang === 0 ? 1 : 0,
             'Keterangan' => $validated['keterangan'] ?? 'Penyesuaian manual oleh admin',
         ];
 
@@ -90,7 +140,41 @@ class AdminFinanceController extends Controller
             ]));
         }
 
-        return redirect()->route('admin.finance.index')->with('success', 'Utang/saldo anggota berhasil diperbarui.');
+        // Buat log perubahan saldo
+        $changeDetails = [];
+        if ($oldUtang !== $finalUtang) {
+            $changeDetails[] = "Utang: Rp " . number_format($oldUtang, 0, ',', '.') . " → Rp " . number_format($finalUtang, 0, ',', '.');
+        }
+        if ($oldSaldoPositif !== $finalSaldoPositif) {
+            $changeDetails[] = "Saldo Positif: Rp " . number_format($oldSaldoPositif, 0, ',', '.') . " → Rp " . number_format($finalSaldoPositif, 0, ',', '.');
+        }
+
+        if (!empty($changeDetails)) {
+            $user = Auth::user();
+            $roleLabel = $user?->role === 'akuntan' ? 'Akuntan' : 'Admin';
+            $userDisplayName = ($user?->name ?? 'Unknown') . ' (' . $roleLabel . ')';
+
+            $description = implode(' | ', $changeDetails);
+            if ($inputSaldoPositif > 0 && $inputUtang > 0 && $finalSaldoPositif !== $inputSaldoPositif) {
+                $description .= ' | Saldo positif dipotong untuk membayar utang';
+            }
+            $description .= ' | Anggota: ' . $member->nama . ' (' . $member->Nim . ')';
+
+            GrubkasActivityLog::create([
+                'user_nim' => null,
+                'user_name' => $userDisplayName,
+                'activity_type' => 'balance_adjustment',
+                'direction' => 'neutral',
+                'amount' => 0,
+                'title' => 'Penyesuaian Saldo Manual',
+                'description' => $description,
+                'order_id' => 'ADJ-' . now()->format('YmdHis') . '-' . random_int(1000, 9999),
+                'transaction_status' => 'manual',
+                'occurred_at' => now(),
+            ]);
+        }
+
+        return redirect()->route('admin.finance.index')->with('success', 'Utang/saldo anggota berhasil diperbarui dengan penyesuaian otomatis.');
     }
 
     public function storeExpense(Request $request): RedirectResponse
@@ -145,5 +229,67 @@ class AdminFinanceController extends Controller
         ]);
 
         return redirect()->route('admin.finance.index')->with('success', 'Penyesuaian total kas berhasil disinkronkan.');
+    }
+
+    public function showDataCalibrationForm()
+    {
+        // Hanya Admin yang bisa akses
+        if (Auth::user()?->role !== 'admin') {
+            return redirect()->route('admin.finance.index')->with('error', 'Akses ditolak. Hanya Admin yang dapat mengakses fitur ini.');
+        }
+
+        $totalActivityLogs = GrubkasActivityLog::count();
+        $totalMembers = Datasikadmodel::count();
+        $totalIuranRecords = Datasikadmodel::query()
+            ->whereHas('iuran')
+            ->count();
+
+        return view('admin.finance.calibration', compact(
+            'totalActivityLogs',
+            'totalMembers',
+            'totalIuranRecords'
+        ));
+    }
+
+    public function executeDataCalibration(Request $request): RedirectResponse
+    {
+        // Hanya Admin yang bisa akses
+        if (Auth::user()?->role !== 'admin') {
+            return redirect()->route('admin.finance.index')->with('error', 'Akses ditolak. Hanya Admin yang dapat melakukan operasi ini.');
+        }
+
+        // Validasi confirmation code
+        $validated = $request->validate([
+            'confirmation_code' => ['required', 'string'],
+            'confirmation_checkbox' => ['required', 'accepted'],
+        ]);
+
+        $adminName = Auth::user()?->name ?? 'Unknown';
+        $expectedCode = 'RESET-' . now()->format('Ymd');
+
+        if ($validated['confirmation_code'] !== $expectedCode) {
+            return redirect()->route('admin.finance.calibration')->with('error', 'Kode konfirmasi salah. Mohon coba lagi.');
+        }
+
+        try {
+            // Hapus semua activity logs (termasuk log kalibrasi sebelumnya)
+            $deletedLogs = GrubkasActivityLog::count();
+            GrubkasActivityLog::truncate();
+
+            // Hapus/reset semua iuran data dari members
+            $datasikadWithIuran = Datasikadmodel::query()
+                ->whereHas('iuran')
+                ->get();
+            
+            $deletedIuran = 0;
+            foreach ($datasikadWithIuran as $member) {
+                $deletedIuran += $member->iuran()->count();
+                $member->iuran()->delete();
+            }
+
+            return redirect()->route('admin.finance.index')->with('success', "✅ Kalibrasi berhasil! Dihapus: $deletedLogs log transaksi dan $deletedIuran data iuran. Sistem sudah benar-benar bersih.");
+        } catch (\Exception $e) {
+            return redirect()->route('admin.finance.calibration')->with('error', 'Terjadi error saat kalibrasi: ' . $e->getMessage());
+        }
     }
 }

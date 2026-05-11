@@ -4,7 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Panel | Pemuda Akhir Zaman</title>
+    @php
+        $panelRole = auth()->user()?->role;
+        $panelTitle = match ($panelRole) {
+            'akuntan' => 'Akuntan Panel',
+            'admin' => 'Admin Panel',
+            'anggota' => 'Member Panel',
+            default => 'Admin Panel',
+        };
+    @endphp
+    <title>{{ $panelTitle }} | Pemuda Akhir Zaman</title>
 
     {{-- icon --}}
     <link rel="icon" type="image/x-icon" href="https://minio.umkt.ac.id/dev-umkt-static/images/favicon.ico">
@@ -206,7 +215,21 @@
             @endphp
 
             <a class="navbar-brand" href="{{ $homeRoute }}">
-                <i class="bi bi-speedometer2"></i> Admin Panel
+                @php
+                    $roleIcon = match ($currentRole) {
+                        'akuntan' => 'bi-calculator',
+                        'admin' => 'bi-speedometer2',
+                        'anggota' => 'bi-person',
+                        default => 'bi-speedometer2',
+                    };
+                    $roleName = match ($currentRole) {
+                        'akuntan' => 'Akuntan Panel',
+                        'admin' => 'Admin Panel',
+                        'anggota' => 'Member Panel',
+                        default => 'Admin Panel',
+                    };
+                @endphp
+                <i class="bi {{ $roleIcon }}"></i> {{ $roleName }}
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar"
@@ -275,7 +298,15 @@
 
     <footer class="text-center py-3">
         <div class="container">
-            <p class="mb-0">Admin Panel Pemuda Akhir Zaman</p>
+            @php
+                $footerPanelTitle = match (auth()->user()?->role) {
+                    'akuntan' => 'Akuntan Panel',
+                    'admin' => 'Admin Panel',
+                    'anggota' => 'Member Panel',
+                    default => 'Admin Panel',
+                };
+            @endphp
+            <p class="mb-0">{{ $footerPanelTitle }} Pemuda Akhir Zaman</p>
         </div>
     </footer>
 

@@ -20,6 +20,11 @@
                 <h2 class="fw-bold mb-1">Management Uang Kas</h2>
                 <p class="text-muted mb-0">Kelola iuran mingguan, utang/saldo positif anggota, dan pengeluaran manual.</p>
             </div>
+            @if (auth()->user()?->role === 'admin')
+                <a href="{{ route('admin.finance.calibration') }}" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-shield-exclamation"></i> Kalibrasi Data
+                </a>
+            @endif
         </div>
 
         <div class="row g-3 mb-4 finance-summary-grid">
@@ -194,7 +199,15 @@
 
         <div class="card shadow-sm mb-4">
             <div class="card-body">
-                <h5 class="fw-bold mb-3">Kelola Utang dan Saldo Positif Anggota</h5>
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h5 class="fw-bold mb-0">Kelola Utang dan Saldo Positif Anggota</h5>
+                    <div class="badge bg-info">Sistem Pemotongan Otomatis Aktif</div>
+                </div>
+                <div class="alert alert-info mb-3" role="alert">
+                    <strong><i class="bi bi-info-circle me-2"></i>Informasi Penting:</strong> Jika Anda menginput saldo
+                    positif saat ada utang, sistem akan <strong>otomatis memotong utang dengan saldo positif</strong>.
+                    <br><small>Contoh: Utang Rp 10.000 + Saldo Positif Rp 5.000 = Utang Rp 5.000, Saldo Positif Rp 0</small>
+                </div>
                 <div class="table-responsive">
                     <table class="table align-middle">
                         <thead>
@@ -226,16 +239,17 @@
                                             <div class="col-4">
                                                 <input type="number" min="0" class="form-control form-control-sm"
                                                     name="nominal" value="{{ $latest->Nominal ?? 0 }}"
-                                                    placeholder="Utang" required>
+                                                    placeholder="Utang" required title="Input utang anggota">
                                             </div>
                                             <div class="col-4">
                                                 <input type="number" min="0" class="form-control form-control-sm"
                                                     name="saldo_lebih" value="{{ $latest->Saldo_Lebih ?? 0 }}"
-                                                    placeholder="Saldo" required>
+                                                    placeholder="Saldo" required
+                                                    title="Input saldo positif - akan otomatis dipotong ke utang">
                                             </div>
                                             <div class="col-4">
-                                                <button type="submit"
-                                                    class="btn btn-sm btn-outline-primary w-100">Update</button>
+                                                <button type="submit" class="btn btn-sm btn-outline-primary w-100"
+                                                    title="Simpan dan sistem akan otomatis memotong saldo ke utang jika ada">Update</button>
                                             </div>
                                             <div class="col-12">
                                                 <input type="text" class="form-control form-control-sm"
@@ -259,30 +273,167 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
-                <h5 class="fw-bold mb-3">Riwayat Pengeluaran Terbaru</h5>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0">📊 Log Semua Transaksi Keuangan</h5>
+                    <small class="text-muted">Total {{ $allActivityLogs->total() }} transaksi</small>
+                </div>
                 <div class="table-responsive">
-                    <table class="table align-middle mb-0">
+                    <table class="table align-middle mb-0 fs-9">
                         <thead>
-                            <tr>
-                                <th>Waktu</th>
-                                <th>Nominal</th>
-                                <th>Keterangan</th>
+                            <tr class="bg-light">
+                                <th class="text-center" style="width: 140px;">📅 Waktu</th>
+                                <th style="width: 100px;">🏷️ Tipe</th>
+                                <th class="text-end" style="width: 130px;">💰 Nominal</th>
+                                <th>👤 User / Pemilik Dana</th>
+                                <th>📝 Keterangan</th>
+                                <th class="text-center" style="width: 100px;">✓ Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($recentExpenses as $expense)
-                                <tr>
-                                    <td>{{ optional($expense->occurred_at)->format('d-m-Y H:i') }}</td>
-                                    <td>Rp {{ number_format((int) $expense->amount, 0, ',', '.') }}</td>
-                                    <td>{{ $expense->description }}</td>
+                            @forelse ($allActivityLogs as $log)
+                                @php
+                                    // Helper untuk menampilkan warna dan icon berdasarkan jenis transaksi
+                                    $typeLabel = match($log->activity_type) {
+                                        'payment' => '💳 Pembayaran',
+                                        'expense' => '📤 Pengeluaran',
+                                        'manual_adjustment' => '🔧 Penyesuaian Kas',
+                                        'balance_adjustment' => '⚖️ Penyesuaian Saldo',
+                                        'weekly_fee_setting' => '⚙️ Setting Iuran',
+                                        'non_member_transfer' => '🎁 Donasi Non-Member',
+                                        default => '📌 ' . ucfirst(str_replace('_', ' ', $log->activity_type)),
+                                    };
+
+                                    // Warna badge untuk arah transaksi
+                                    if ($log->direction === 'neutral' || in_array($log->activity_type, ['balance_adjustment', 'weekly_fee_setting'])) {
+                                        $directionBadge = '<span class="badge bg-secondary"><i class="bi bi-dash-circle me-1"></i>Penyesuaian</span>';
+                                    } else {
+                                        $directionBadge = $log->direction === 'in' 
+                                            ? '<span class="badge bg-success"><i class="bi bi-arrow-down-circle me-1"></i>Masuk</span>'
+                                            : '<span class="badge bg-danger"><i class="bi bi-arrow-up-circle me-1"></i>Keluar</span>';
+                                    }
+
+                                    // Warna teks untuk nominal
+                                    $nominalClass = ($log->direction === 'in' && !in_array($log->activity_type, ['balance_adjustment', 'weekly_fee_setting'])) 
+                                        ? 'text-success fw-bold' 
+                                        : (($log->direction === 'out' && !in_array($log->activity_type, ['balance_adjustment', 'weekly_fee_setting'])) ? 'text-danger fw-bold' : 'text-muted');
+                                    $nominalSign = $log->direction === 'in' ? '+' : ($log->direction === 'out' ? '-' : '');
+                                @endphp
+                                <tr class="border-bottom">
+                                    <td class="text-center">
+                                        <small class="text-muted d-block">
+                                            {{ optional($log->occurred_at)->format('d-m-Y') }}
+                                        </small>
+                                        <small class="fw-semibold">
+                                            {{ optional($log->occurred_at)->format('H:i') }}
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">{{ $typeLabel }}</small>
+                                    </td>
+                                    <td class="text-end">
+                                        @if (in_array($log->activity_type, ['balance_adjustment', 'weekly_fee_setting']))
+                                            <span class="text-muted">-</span>
+                                        @else
+                                            <span class="{{ $nominalClass }}">
+                                                {{ $nominalSign }} Rp {{ number_format((int) $log->amount, 0, ',', '.') }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($log->user_nim)
+                                            <small class="fw-semibold">{{ $log->user_name }}</small>
+                                            <br>
+                                            <small class="text-muted">NIM: {{ $log->user_nim }}</small>
+                                        @elseif ($log->user_name)
+                                            <small class="fw-semibold">{{ $log->user_name }}</small>
+                                            @if (!str_contains($log->user_name, '('))
+                                                <br>
+                                                <small class="badge bg-warning text-dark">Non-Member</small>
+                                            @endif
+                                        @else
+                                            <small class="text-muted">-</small>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <small>{{ $log->description }}</small>
+                                        @if ($log->order_id)
+                                            <br>
+                                            <small class="text-muted">ID: {{ $log->order_id }}</small>
+                                        @endif
+                                    </td>
+                                    <td class="text-center">
+                                        @php
+                                            $statusBadge = match($log->transaction_status) {
+                                                'capture', 'settlement' => '<span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Berhasil</span>',
+                                                'pending' => '<span class="badge bg-warning text-dark"><i class="bi bi-clock me-1"></i>Pending</span>',
+                                                'manual' => '<span class="badge bg-info"><i class="bi bi-person-check me-1"></i>Manual</span>',
+                                                'failed' => '<span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Gagal</span>',
+                                                default => '<span class="badge bg-secondary">' . ucfirst($log->transaction_status) . '</span>',
+                                            };
+                                        @endphp
+                                        {!! $statusBadge !!}
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="3" class="text-center text-muted">Belum ada pengeluaran manual.</td>
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        <i class="bi bi-inbox" style="font-size: 2rem; opacity: 0.5;"></i>
+                                        <p class="mb-0 mt-2">Belum ada transaksi keuangan.</p>
+                                    </td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <small class="text-muted">
+                        Menampilkan {{ $allActivityLogs->firstItem() ?? 0 }} - {{ $allActivityLogs->lastItem() ?? 0 }} dari {{ $allActivityLogs->total() }} transaksi
+                    </small>
+                    <nav aria-label="Page navigation">
+                        {{ $allActivityLogs->links('pagination::bootstrap-5') }}
+                    </nav>
+                </div>
+
+                <!-- Summary Stats -->
+                <div class="row g-2 mt-4 pt-3 border-top">
+                    @php
+                        // Exclude adjustment types dari total flow
+                        $adjustmentTypes = ['balance_adjustment', 'weekly_fee_setting'];
+                        $realTransactions = $allLogsForStats->filter(function($log) use ($adjustmentTypes) {
+                            return !in_array($log->activity_type, $adjustmentTypes);
+                        });
+
+                        $totalMasuk = $realTransactions->where('direction', 'in')->sum('amount');
+                        $totalKeluar = $realTransactions->where('direction', 'out')->sum('amount');
+                        $totalBayarSuccessful = $realTransactions->where('activity_type', 'payment')->where('direction', 'in')->sum('amount');
+                        $totalPengeluaranKas = $realTransactions->where('activity_type', 'expense')->sum('amount');
+                    @endphp
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="p-3 bg-success bg-opacity-10 rounded">
+                            <small class="text-muted d-block">Total Masuk</small>
+                            <strong class="text-success">Rp {{ number_format((int) $totalMasuk, 0, ',', '.') }}</strong>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="p-3 bg-danger bg-opacity-10 rounded">
+                            <small class="text-muted d-block">Total Keluar</small>
+                            <strong class="text-danger">Rp {{ number_format((int) $totalKeluar, 0, ',', '.') }}</strong>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="p-3 bg-warning bg-opacity-10 rounded">
+                            <small class="text-muted d-block">Pembayaran Sukses</small>
+                            <strong class="text-warning">Rp {{ number_format((int) $totalBayarSuccessful, 0, ',', '.') }}</strong>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="p-3 bg-info bg-opacity-10 rounded">
+                            <small class="text-muted d-block">Pengeluaran Kas</small>
+                            <strong class="text-info">Rp {{ number_format((int) $totalPengeluaranKas, 0, ',', '.') }}</strong>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

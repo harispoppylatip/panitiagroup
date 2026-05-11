@@ -17,10 +17,18 @@ class AdminAuthController extends Controller
 
     public function login(Request $request): RedirectResponse
     {
-        $credentials = $request->validate([
-            'username' => ['required', 'string'],
+        $request->validate([
+            'login_input' => ['required', 'string'],
             'password' => ['required'],
         ]);
+
+        $loginInput = $request->input('login_input');
+        $password = $request->input('password');
+
+        // Check if input is email or username
+        $credentials = filter_var($loginInput, FILTER_VALIDATE_EMAIL)
+            ? ['email' => $loginInput, 'password' => $password]
+            : ['username' => $loginInput, 'password' => $password];
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
@@ -30,21 +38,21 @@ class AdminAuthController extends Controller
                 Auth::logout();
 
                 return back()
-                    ->withErrors(['username' => 'Akun tidak valid'])
-                    ->onlyInput('username');
+                    ->withErrors(['login_input' => 'Akun tidak valid'])
+                    ->onlyInput('login_input');
             }
 
-                    if ($user->role === 'scanabsen') {
-                    Auth::logout();
-                    $request->session()->invalidate();
-                    $request->session()->regenerateToken();
+            if ($user->role === 'scanabsen') {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
 
-                    return back()
-                        ->withErrors(['username' => 'Akun scanabsen hanya bisa login lewat halaman absensi'])
-                        ->onlyInput('username');
-                    }
+                return back()
+                    ->withErrors(['login_input' => 'Akun scanabsen hanya bisa login lewat halaman absensi'])
+                    ->onlyInput('login_input');
+            }
 
-                    $role = $user->role;
+            $role = $user->role;
 
             $destination = match ($role) {
                 'admin' => route('admin.beranda.index'),
@@ -57,8 +65,8 @@ class AdminAuthController extends Controller
         }
 
         return back()
-            ->withErrors(['username' => 'Username atau password salah'])
-            ->onlyInput('username');
+            ->withErrors(['login_input' => 'Email/Username atau password salah'])
+            ->onlyInput('login_input');
     }
 
     public function logout(Request $request): RedirectResponse
