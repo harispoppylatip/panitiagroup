@@ -47,11 +47,20 @@ class TugasController extends Controller
         return $tugas ?? $this->dummyTugas()[0];
     }
 
-    public function front()
+    public function front(Request $request)
     {
-        $tugas = Tugas::all();
+        $status = $request->input('status');
+        $query = Tugas::query();
 
-        return view('pages.tugas', compact('tugas'));
+        // Apply status filter if provided
+        if ($status && $status !== 'semua') {
+            $query->where('status', $status);
+        }
+
+        // Paginate with 10 items per page
+        $tugas = $query->paginate(10);
+
+        return view('pages.tugas', compact('tugas', 'status'));
     }
 
     public function index()
