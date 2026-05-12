@@ -38,6 +38,125 @@
                     </div>
                 </div>
 
+                <!-- Grubkas Information Section -->
+                <div class="col-12">
+                    <details class="grubkas-info-card">
+                        <summary class="grubkas-info-summary">
+                            <div class="grubkas-summary-content">
+                                <div class="grubkas-summary-left">
+                                    <div class="grubkas-summary-badge">
+                                        <i class="bi bi-wallet2"></i> Sistem Pengelolaan Kas
+                                    </div>
+                                    <h3 class="grubkas-summary-title">Detail Grubkas kami</h3>
+                                    {{-- <p class="grubkas-summary-subtitle">Transparansi penuh untuk setiap transaksi anggota --}}
+                                    </p>
+                                </div>
+                                <i class="bi bi-chevron-down grubkas-summary-chevron"></i>
+                            </div>
+                        </summary>
+
+                        <div class="grubkas-info-content">
+                            <div class="grubkas-info-grid">
+                                <!-- Tentang Grubkas -->
+                                <div class="grubkas-info-block">
+                                    <div class="grubkas-info-label">
+                                        <i class="bi bi-info-circle"></i> Tentang Grubkas
+                                    </div>
+                                    <p class="grubkas-info-description">
+                                        Grubkas ini kami buat sebagai sistem pengelolaan kas kelompok yang transparan dan
+                                        terintegrasi.
+                                        Setiap anggota dapat memantau iuran, melacak transaksi, dan melihat penggunaan dana
+                                        secara real-time. Semua transaksi tercatat dengan jelas untuk memastikan kepercayaan
+                                        antar anggota.
+                                    </p>
+                                </div>
+
+                                <!-- Iuran & Metode Pembayaran -->
+                                <div class="grubkas-pricing-grid">
+                                    <div class="grubkas-price-item grubkas-price-item--main">
+                                        <div class="price-label">Nominal Iuran Mingguan</div>
+                                        <div class="price-amount">Rp{{ number_format((int) $weeklyFee, 0, ',', '.') }}</div>
+                                        <div class="price-note">/orang/minggu</div>
+                                    </div>
+                                    <div class="grubkas-price-item grubkas-price-item--secure">
+                                        <div class="price-icon">
+                                            <i class="bi bi-credit-card"></i>
+                                        </div>
+                                        <div class="price-title">Pembayaran Aman</div>
+                                        <div class="price-text">Diproses via Midtrans</div>
+                                    </div>
+                                </div>
+
+                                <!-- Fungsi Grubkas -->
+                                <div class="grubkas-functions">
+                                    <div class="functions-label">Fungsi Grubkas</div>
+                                    <div class="functions-grid">
+                                        <div class="function-item">
+                                            <div class="function-icon">
+                                                <i class="bi bi-eye"></i>
+                                            </div>
+                                            <div class="function-text">
+                                                <div class="function-title">Transparansi Penuh</div>
+                                                <div class="function-desc">Lihat setiap transaksi</div>
+                                            </div>
+                                        </div>
+                                        <div class="function-item">
+                                            <div class="function-icon">
+                                                <i class="bi bi-clock-history"></i>
+                                            </div>
+                                            <div class="function-text">
+                                                <div class="function-title">Riwayat Lengkap</div>
+                                                <div class="function-desc">Catatan transaksi akurat</div>
+                                            </div>
+                                        </div>
+                                        <div class="function-item">
+                                            <div class="function-icon">
+                                                <i class="bi bi-bar-chart"></i>
+                                            </div>
+                                            <div class="function-text">
+                                                <div class="function-title">Laporan Real-time</div>
+                                                <div class="function-desc">Update saldo langsung</div>
+                                            </div>
+                                        </div>
+                                        <div class="function-item">
+                                            <div class="function-icon">
+                                                <i class="bi bi-shield-check"></i>
+                                            </div>
+                                            <div class="function-text">
+                                                <div class="function-title">Akuntabilitas</div>
+                                                <div class="function-desc">Pertanggungjawaban jelas</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Kegunaan Iuran -->
+                                <div class="grubkas-allocation">
+                                    <div class="allocation-label">Kegunaan Iuran Grubkas</div>
+                                    <ul class="allocation-list">
+                                        <li><i class="bi bi-check2-circle"></i> <span>Dana untuk kegiatan rutin
+                                                kelompok</span></li>
+                                        <li><i class="bi bi-check2-circle"></i> <span>Pembiayaan pertemuan dan rapat
+                                                kelompok</span></li>
+                                        <li><i class="bi bi-check2-circle"></i> <span>Keperluan operasional dan kebutuhan
+                                                bersama</span></li>
+                                        <li><i class="bi bi-check2-circle"></i> <span>Dukungan acara dan program kerja
+                                                kelompok</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grubkas-info-footer">
+                            <p class="grubkas-info-footer-text">
+                                <i class="bi bi-info-circle"></i> Setiap transaksi dilindungi dan dikelola melalui sistem
+                                pembayaran terpercaya untuk memastikan keamanan dan transparansi dalam pengelolaan kas
+                                kelompok.
+                            </p>
+                        </div>
+                    </details>
+                </div>
+
                 <!-- Stats Cards -->
                 <div class="col-12">
                     <div class="row g-3">
@@ -231,8 +350,9 @@
                                 <div class="payment-info-icon"><i class="bi bi-ticket-perforated-fill"></i></div>
                                 <div>
                                     <p class="payment-info-title mb-1">Iuran Keanggotaan Mingguan</p>
-                                    <p class="payment-info-text mb-2">Kontribusi rutin mingguan untuk kas bersama Pemuda
-                                        akhir zaman.</p>
+                                    <p class="payment-info-text mb-2">Iuran keanggotaan sebesar
+                                        Rp{{ number_format((int) $weeklyFee, 0, ',', '.') }} per minggu per
+                                        anggota untuk mendukung kegiatan rutin dan operasional komunitas mahasiswa.</p>
                                     <p class="payment-info-amount mb-0">Rp
                                         {{ number_format((int) $weeklyFee, 0, ',', '.') }} <span>/ minggu per
                                             anggota</span></p>
@@ -1398,6 +1518,443 @@
 
         body[data-theme='dark'] .btn-payment:hover {
             box-shadow: 0 4px 12px rgba(214, 173, 98, 0.3);
+        }
+
+        /* Grubkas Information Card Styles */
+        .grubkas-info-card {
+            background: var(--surface-elevated);
+            border: 1px solid var(--border-soft);
+            border-radius: 1.25rem;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .grubkas-info-card[open] {
+            border-color: rgba(84, 204, 116, 0.4);
+            box-shadow: 0 8px 24px rgba(84, 204, 116, 0.12);
+        }
+
+        .grubkas-info-card::-webkit-details-marker {
+            display: none;
+        }
+
+        .grubkas-info-summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 0;
+            display: block;
+            background: linear-gradient(135deg, rgba(46, 91, 135, 0.08), rgba(84, 204, 116, 0.08));
+            border-bottom: 1px solid var(--border-soft);
+            transition: all 0.3s ease;
+        }
+
+        .grubkas-info-card[open]>.grubkas-info-summary {
+            border-bottom-color: rgba(84, 204, 116, 0.2);
+        }
+
+        .grubkas-info-summary:hover {
+            background: linear-gradient(135deg, rgba(46, 91, 135, 0.12), rgba(84, 204, 116, 0.12));
+        }
+
+        .grubkas-info-summary:focus-visible {
+            outline: 2px solid rgba(84, 204, 116, 0.5);
+            outline-offset: 2px;
+        }
+
+        .grubkas-summary-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .grubkas-summary-left {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .grubkas-summary-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(84, 204, 116, 0.15);
+            color: #54cc74;
+            padding: 0.4rem 0.8rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            width: fit-content;
+        }
+
+        .grubkas-summary-title {
+            margin: 0;
+            font-family: 'Manrope', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        .grubkas-summary-subtitle {
+            margin: 0;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .grubkas-summary-chevron {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .grubkas-info-card[open] .grubkas-summary-chevron {
+            transform: rotate(180deg);
+            color: #54cc74;
+        }
+
+        .grubkas-info-content {
+            padding: 1.75rem;
+            border-top: 1px solid var(--border-soft);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .grubkas-info-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .grubkas-info-block {
+            border: 1px solid var(--border-soft);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .grubkas-info-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .grubkas-info-label i {
+            font-size: 1rem;
+            color: #54cc74;
+        }
+
+        .grubkas-info-description {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.65;
+            color: var(--text-main);
+        }
+
+        .grubkas-pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .grubkas-price-item {
+            border: 1px solid var(--border-soft);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .grubkas-price-item--main {
+            background: linear-gradient(135deg, rgba(46, 91, 135, 0.12), rgba(84, 204, 116, 0.08));
+            border-color: rgba(84, 204, 116, 0.3);
+        }
+
+        .grubkas-price-item--main:hover {
+            border-color: rgba(84, 204, 116, 0.6);
+            background: linear-gradient(135deg, rgba(46, 91, 135, 0.18), rgba(84, 204, 116, 0.12));
+        }
+
+        .grubkas-price-item--secure {
+            background: linear-gradient(135deg, rgba(84, 204, 116, 0.08), rgba(76, 175, 80, 0.08));
+            border-color: rgba(76, 175, 80, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .grubkas-price-item--secure:hover {
+            border-color: rgba(76, 175, 80, 0.6);
+            background: linear-gradient(135deg, rgba(84, 204, 116, 0.12), rgba(76, 175, 80, 0.12));
+        }
+
+        .price-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .price-amount {
+            font-family: 'Manrope', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #54cc74;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .price-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .price-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: rgba(76, 175, 80, 0.15);
+            color: #4caf50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .price-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0.5rem 0 0.25rem;
+        }
+
+        .price-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .grubkas-functions {
+            border: 1px solid var(--border-soft);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .functions-label {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .functions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .function-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            padding: 0.85rem;
+            border-radius: 0.85rem;
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.2s ease;
+        }
+
+        .function-item:hover {
+            background: rgba(84, 204, 116, 0.08);
+        }
+
+        .function-icon {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.6rem;
+            background: rgba(84, 204, 116, 0.15);
+            color: #54cc74;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .function-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .function-title {
+            margin: 0 0 0.2rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        .function-desc {
+            margin: 0;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.35;
+        }
+
+        .grubkas-allocation {
+            border: 1px solid var(--border-soft);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            background: rgba(84, 204, 116, 0.05);
+            border-color: rgba(84, 204, 116, 0.2);
+        }
+
+        .allocation-label {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .allocation-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .allocation-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.65rem;
+            font-size: 0.9375rem;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .allocation-list i {
+            flex-shrink: 0;
+            color: #54cc74;
+            font-size: 1rem;
+            margin-top: 0.1rem;
+        }
+
+        .grubkas-info-footer {
+            border-top: 1px solid var(--border-soft);
+            padding: 1.5rem;
+            background: rgba(84, 204, 116, 0.03);
+            text-align: center;
+        }
+
+        .grubkas-info-footer-text {
+            margin: 0;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .grubkas-info-footer-text i {
+            color: #54cc74;
+            margin-right: 0.5rem;
+        }
+
+        /* Dark theme support for grubkas info */
+        body[data-theme='dark'] .grubkas-info-card {
+            border-color: rgba(148, 163, 184, 0.2);
+        }
+
+        body[data-theme='dark'] .grubkas-info-summary {
+            background: linear-gradient(135deg, rgba(30, 58, 95, 0.3), rgba(40, 80, 60, 0.2));
+            border-color: rgba(148, 163, 184, 0.15);
+        }
+
+        body[data-theme='dark'] .grubkas-info-card[open] .grubkas-info-summary {
+            border-color: rgba(84, 204, 116, 0.25);
+        }
+
+        body[data-theme='dark'] .grubkas-info-card[open] {
+            border-color: rgba(148, 163, 184, 0.35);
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .grubkas-summary-content {
+                padding: 1.25rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .grubkas-summary-left {
+                flex-basis: 100%;
+            }
+
+            .grubkas-summary-title {
+                font-size: 1.1rem;
+            }
+
+            .grubkas-info-content {
+                padding: 1.25rem;
+            }
+
+            .grubkas-info-title {
+                font-size: 1.25rem;
+            }
+
+            .grubkas-pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .functions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grubkas-price-item--secure {
+                padding: 1rem;
+            }
+
+            .grubkas-info-block {
+                padding: 1rem;
+            }
+
+            .grubkas-functions,
+            .grubkas-allocation {
+                padding: 1rem;
+            }
         }
     </style>
 
