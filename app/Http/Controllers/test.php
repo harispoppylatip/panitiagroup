@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Datasikadmodel;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class test extends Controller
 {
@@ -22,4 +24,13 @@ class test extends Controller
 
         dd($requets);
     }
+
+   public function callback(Request $request) {
+    $data = $request->all();
+    Log::info('Webhook masuk', $data);   
+    return response()->json([
+        'pesan' => 'Berhasil Mendapatkan Data',
+        'isi_pesan' => $data
+    ]);
+   }
 }
