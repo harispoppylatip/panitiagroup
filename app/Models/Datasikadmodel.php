@@ -20,6 +20,8 @@ class Datasikadmodel extends Model
 
     public function latestIuran()
     {
-        return $this->hasOne(grubkas::class, 'user_nim', 'Nim')->latestOfMany();
+        return $this->hasOne(grubkas::class, 'user_nim', 'Nim')
+            ->latest('created_at')
+            ->latest('id');
     }
 }

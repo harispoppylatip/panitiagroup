@@ -91,6 +91,17 @@
                                     mingguan.</small>
                             </div>
                             <div class="col-12">
+                                <label class="form-label">Otomatis Iuran Mingguan</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="auto_weekly_enabled" name="auto_weekly_enabled" value="1" {{ old('auto_weekly_enabled', $setting->auto_weekly_enabled) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="auto_weekly_enabled">Aktifkan penambahan iuran otomatis setiap minggu</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="default_weekly_description" class="form-label">Keterangan Default Iuran Mingguan</label>
+                                <input type="text" class="form-control" id="default_weekly_description" name="default_weekly_description" value="{{ old('default_weekly_description', $setting->default_weekly_description) }}" placeholder="Opsional: Deskripsi untuk entri iuran otomatis">
+                            </div>
+                            <div class="col-12">
                                 <button type="submit" class="btn btn-primary">Simpan Nominal Iuran</button>
                             </div>
                         </form>
@@ -201,7 +212,7 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <h5 class="fw-bold mb-0">Kelola Utang dan Saldo Positif Anggota</h5>
-                    <div class="badge bg-info">Sistem Pemotongan Otomatis Aktif</div>
+                    <div class="badge bg-info">{{ $setting->auto_weekly_enabled ? 'Sistem Pemotongan Otomatis Aktif' : 'Sistem Pemotongan Otomatis Nonaktif' }}</div>
                 </div>
                 <div class="alert alert-info mb-3" role="alert">
                     <strong><i class="bi bi-info-circle me-2"></i>Informasi Penting:</strong> Jika Anda menginput saldo
@@ -241,11 +252,16 @@
                                                     name="nominal" value="{{ $latest->Nominal ?? 0 }}"
                                                     placeholder="Utang" required title="Input utang anggota">
                                             </div>
-                                            <div class="col-4">
+                                            <div class="col-3">
                                                 <input type="number" min="0" class="form-control form-control-sm"
-                                                    name="saldo_lebih" value="{{ $latest->Saldo_Lebih ?? 0 }}"
-                                                    placeholder="Saldo" required
-                                                    title="Input saldo positif - akan otomatis dipotong ke utang">
+                                                    name="saldo_lebih" value="" placeholder="Tambahkan saldo (Rp)"
+                                                    title="Kosongkan untuk tidak mengubah; masukkan jumlah untuk menambah saldo">
+                                            </div>
+                                            <div class="col-2">
+                                                <select name="saldo_action" class="form-select form-select-sm" title="Mode input saldo">
+                                                    <option value="add" selected>Tambah</option>
+                                                    <option value="set">Set</option>
+                                                </select>
                                             </div>
                                             <div class="col-4">
                                                 <button type="submit" class="btn btn-sm btn-outline-primary w-100"
@@ -268,6 +284,173 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+
+        <!-- Verifikasi Pembayaran Section -->
+        <div class="card shadow-sm mb-4" id="verifikasi-pembayaran">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <div>
+                        <h5 class="fw-bold mb-0">
+                            <i class="bi bi-check2-square text-primary"></i> Verifikasi Pembayaran
+                        </h5>
+                        <small class="text-muted">Review dan verifikasi bukti pembayaran dari anggota</small>
+                    </div>
+                    @if($pendingPaymentsCount && $pendingPaymentsCount > 0)
+                        <span class="badge bg-warning">{{ $pendingPaymentsCount }} Menunggu</span>
+                    @endif
+                </div>
+
+                @if($pendingPayments && $pendingPayments->count() > 0)
+                    @if($pendingPayments->count() > 0)
+                        <div class="alert alert-warning" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <strong>{{ $pendingPayments->count() }} pembayaran menunggu verifikasi</strong>
+                        </div>
+                    @endif
+
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0 fs-9">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th style="width: 120px;">Order ID</th>
+                                    <th style="width: 140px;">Nama / NIM</th>
+                                    <th style="width: 100px; text-align: center;">Nominal</th>
+                                    <th style="width: 120px;">Upload Pada</th>
+                                    <th style="width: 100px; text-align: center;">Bukti</th>
+                                    <th style="width: 180px; text-align: center;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($pendingPayments as $payment)
+                                    <tr class="border-bottom">
+                                        <td>
+                                            <small class="font-monospace text-primary fw-bold">
+                                                {{ substr($payment->order_id, 0, 16) }}...
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <div class="fw-bold">{{ $payment->user_name ?? 'Non-Anggota' }}</div>
+                                            @if($payment->user_nim)
+                                                <small class="text-muted">{{ $payment->user_nim }}</small>
+                                            @else
+                                                <small class="badge bg-secondary">Manual</small>
+                                            @endif
+                                        </td>
+                                        <td class="text-end text-primary fw-bold">
+                                            Rp {{ number_format((int) $payment->amount, 0, ',', '.') }}
+                                        </td>
+                                        <td>
+                                            <small>{{ $payment->occurred_at?->format('d M Y H:i') ?? '-' }}</small>
+                                        </td>
+                                        <td class="text-center">
+                                            @if($payment->proof_path)
+                                                <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
+                                                    data-bs-target="#proofModal{{ $payment->id }}" title="Lihat bukti pembayaran">
+                                                    <i class="bi bi-file-image"></i> Lihat
+                                                </button>
+                                            @else
+                                                <span class="badge bg-secondary">Tanpa Bukti</span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="d-flex gap-2 justify-content-center flex-wrap">
+                                                <form action="{{ route('admin.payment.verify', $payment->order_id) }}"
+                                                    method="POST" class="d-inline"
+                                                    onsubmit="return confirm('Verifikasi pembayaran ini?')">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-success" title="Terima pembayaran">
+                                                        <i class="bi bi-check-circle"></i> Terima
+                                                    </button>
+                                                </form>
+                                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#rejectModal{{ $payment->id }}" title="Tolak pembayaran">
+                                                    <i class="bi bi-x-circle"></i> Tolak
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Proof Image Modal -->
+                                    @if($payment->proof_path)
+                                        <div class="modal fade" id="proofModal{{ $payment->id }}" tabindex="-1">
+                                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Bukti Pembayaran</h5>
+                                                        <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body d-flex justify-content-center">
+                                                        <img src="{{ asset('storage/' . $payment->proof_path) }}"
+                                                            alt="Bukti Pembayaran" class="img-fluid rounded d-block mx-auto payment-proof-modal-image"
+                                                            style="max-height: 500px; object-fit: contain;">
+                                                        <p class="text-muted mt-2 small">
+                                                            {{ $payment->proof_name ?? 'Bukti Pembayaran' }}
+                                                        </p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Tutup</button>
+                                                        <a href="{{ asset('storage/' . $payment->proof_path) }}"
+                                                            download class="btn btn-primary">
+                                                            <i class="bi bi-download"></i> Download
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                    <!-- Reject Modal -->
+                                    <div class="modal fade" id="rejectModal{{ $payment->id }}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Tolak Pembayaran</h5>
+                                                    <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <form action="{{ route('admin.payment.reject', $payment->order_id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <div class="modal-body">
+                                                        <p class="text-muted">Order: <code>{{ $payment->order_id }}</code></p>
+                                                        <div class="mb-3">
+                                                            <label for="reason{{ $payment->id }}"
+                                                                class="form-label">Alasan Penolakan</label>
+                                                            <textarea class="form-control" id="reason{{ $payment->id }}"
+                                                                name="rejection_reason" rows="3"
+                                                                placeholder="Contoh: Bukti tidak jelas, nominal tidak sesuai"
+                                                                required></textarea>
+                                                        </div>
+                                                        <div class="alert alert-info small">
+                                                            <i class="bi bi-info-circle"></i>
+                                                            Pembayaran akan dibatalkan dan user diminta upload ulang.
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-danger">
+                                                            <i class="bi bi-exclamation-circle"></i> Tolak Pembayaran
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="text-center py-4">
+                        <i class="bi bi-check-circle text-success" style="font-size: 2rem;"></i>
+                        <p class="text-muted mt-2">Tidak ada pembayaran yang menunggu verifikasi.</p>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -399,16 +582,11 @@
                 <!-- Summary Stats -->
                 <div class="row g-2 mt-4 pt-3 border-top">
                     @php
-                        // Exclude adjustment types dari total flow
-                        $adjustmentTypes = ['balance_adjustment', 'weekly_fee_setting'];
-                        $realTransactions = $allLogsForStats->filter(function($log) use ($adjustmentTypes) {
-                            return !in_array($log->activity_type, $adjustmentTypes);
-                        });
-
-                        $totalMasuk = $realTransactions->where('direction', 'in')->sum('amount');
-                        $totalKeluar = $realTransactions->where('direction', 'out')->sum('amount');
-                        $totalBayarSuccessful = $realTransactions->where('activity_type', 'payment')->where('direction', 'in')->sum('amount');
-                        $totalPengeluaranKas = $realTransactions->where('activity_type', 'expense')->sum('amount');
+                        // Calculate totals directly (already filtered to in/out only in controller)
+                        $totalMasuk = $allLogsForStats->where('direction', 'in')->sum('amount');
+                        $totalKeluar = $allLogsForStats->where('direction', 'out')->sum('amount');
+                        $totalBayarSuccessful = $allLogsForStats->where('activity_type', 'payment')->where('direction', 'in')->sum('amount');
+                        $totalPengeluaranKas = $allLogsForStats->where('activity_type', 'expense')->sum('amount');
                     @endphp
                     <div class="col-12 col-sm-6 col-lg-3">
                         <div class="p-3 bg-success bg-opacity-10 rounded">
@@ -734,6 +912,10 @@
             .finance-summary-value {
                 font-size: 1.2rem;
             }
+        }
+
+        .payment-proof-modal-image {
+            max-width: 100%;
         }
     </style>
 @endsection

@@ -27,8 +27,15 @@ class updatenominalmingguan extends Command
      */
     public function handle()
     {
+        // Respect global setting to enable/disable automatic weekly fee
+        if (!FinanceSetting::isWeeklyEnabled()) {
+            $this->info("Otomatis iuran mingguan dinonaktifkan di pengaturan. Tidak ada perubahan yang dibuat.");
+            return self::SUCCESS;
+        }
+
         $data = Datasikadmodel::get();
         $nominalMingguan = FinanceSetting::weeklyFee();
+        $defaultKeterangan = FinanceSetting::defaultWeeklyDescription();
         $updated = 0;
         $created = 0;
 
@@ -42,7 +49,7 @@ class updatenominalmingguan extends Command
                     'Nominal' => $nominalMingguan,
                     'Status_Bayar' => 0,
                     'Saldo_Lebih' => 0,
-                    'Keterangan' => 'Iuran mingguan awal',
+                    'Keterangan' => $defaultKeterangan,
                 ]);
                 $created++;
             } else {
@@ -63,6 +70,7 @@ class updatenominalmingguan extends Command
                     'Nominal' => $nominalBaru,
                     'Saldo_Lebih' => $saldoLebihBaru,
                     'Status_Bayar' => $nominalBaru === 0 ? 1 : 0,
+                    'Keterangan' => $iuranTerakhir->Keterangan ?? $defaultKeterangan,
                 ]);
                 $updated++;
             }

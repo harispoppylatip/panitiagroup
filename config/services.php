@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'qris' => [
+        'api_key' => env('QRIS_API_KEY'),
+        'api_url' => 'https://temanqris.com/api/qris',
+        'webhook_url' => env('WEBHOOK_URL'),
+    ],
+
 ];

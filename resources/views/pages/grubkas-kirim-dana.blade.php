@@ -1,9 +1,6 @@
 @extends('layout.master')
 
 @section('head')
-    <script type="text/javascript"
-        src="{{ config('midtrans.is_production', false) ? 'https://app.midtrans.com/snap/snap.js' : 'https://app.sandbox.midtrans.com/snap/snap.js' }}"
-        data-client-key="{{ config('midtrans.Client_Key') }}"></script>
 @endsection
 
 @section('konten')
@@ -37,7 +34,7 @@
 
                         <div class="send-fund-divider"></div>
 
-                        <form action="{{ route('grubkas.kirim-dana.non-anggota') }}" method="POST" id="send-fund-form"
+                        <form action="{{ route('grubkas.kirim-dana.initiate') }}" method="POST" id="send-fund-form"
                             class="mt-3">
                             @csrf
 
@@ -80,7 +77,7 @@
                             </div>
 
                             <button class="btn btn-payment w-100 mt-3" type="submit">
-                                <span>Kirim Dana</span>
+                                <span>Bayar</span>
                             </button>
 
                             <p class="payment-footer">Setiap kirim dana akan dicatat ke log kas dan otomatis menambah total
@@ -312,22 +309,7 @@
             recipientInput.addEventListener('input', updateSummary);
             updateSummary();
 
-            @if (!empty($snapToken) && !empty($openSnapOnLoad))
-                window.snap.pay('{{ $snapToken }}', {
-                    onSuccess: function(result) {
-                        window.location.href = '{{ route('grubkas') }}';
-                    },
-                    onPending: function(result) {
-                        console.log('Pembayaran pending:', result);
-                    },
-                    onError: function(result) {
-                        console.log('Pembayaran error:', result);
-                    },
-                    onClose: function() {
-                        console.log('Customer menutup popup tanpa menyelesaikan pembayaran');
-                    }
-                });
-            @endif
+
         });
     </script>
 @endsection

@@ -6,7 +6,6 @@ use App\Http\Controllers\TugasController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/testapi', [test::class, 'callback']);
-Route::post('/midtrans-callback', [GrubkasController::class, 'callback']);
 Route::middleware('whatsapp_auth')->group(function() {
     Route::post('/tugas/store', [TugasController::class, 'storeapi']);
     Route::post('/tugas/edit', [TugasController::class, 'edittugasapi']);

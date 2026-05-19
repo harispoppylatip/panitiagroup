@@ -8,6 +8,7 @@ use App\Models\GrubkasActivityLog;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class AdminFinanceController extends Controller
 {
@@ -20,35 +21,51 @@ class AdminFinanceController extends Controller
             ->get();
 
         $totalKas = (int) GrubkasActivityLog::query()
+            ->whereIn('direction', ['in', 'out'])
+            ->whereIn('transaction_status', ['paid', 'manual'])
             ->selectRaw("COALESCE(SUM(CASE WHEN direction = 'out' THEN -amount ELSE amount END), 0) as total")
             ->value('total');
 
         $totalPengeluaran = (int) GrubkasActivityLog::query()
             ->where('direction', 'out')
+            ->whereIn('transaction_status', ['paid', 'manual'])
             ->sum('amount');
 
         $jumlahTransaksi = (int) GrubkasActivityLog::query()->count();
 
         $pembayaranBerhasil = (int) GrubkasActivityLog::query()
             ->where('direction', 'in')
-            ->whereIn('transaction_status', ['capture', 'settlement'])
+            ->where('transaction_status', 'paid')
             ->count();
 
-        // Get activity logs with pagination (6 per page)
+        // Get activity logs with pagination (6 per page) - ADMIN SEES ALL LOGS including adjustments
         $allActivityLogs = GrubkasActivityLog::latest('occurred_at')
             ->latest('id')
             ->paginate(6);
 
-        // Get all logs for summary stats (not paginated)
-        $allLogsForStats = GrubkasActivityLog::latest('occurred_at')
+        // Get all logs for summary stats (not paginated) - ONLY in/out transactions for financial summary
+        $allLogsForStats = GrubkasActivityLog::whereIn('direction', ['in', 'out'])
+            ->whereIn('transaction_status', ['paid', 'manual'])
+            ->latest('occurred_at')
             ->latest('id')
             ->get();
+
+        // Get pending payments for verification
+        $pendingPayments = GrubkasActivityLog::where('transaction_status', 'awaiting_confirmation')
+            ->latest('occurred_at')
+            ->limit(10)
+            ->get();
+
+        $pendingPaymentsCount = GrubkasActivityLog::where('transaction_status', 'awaiting_confirmation')
+            ->count();
 
         return view('admin.finance.index', compact(
             'setting',
             'members',
             'allActivityLogs',
             'allLogsForStats',
+            'pendingPayments',
+            'pendingPaymentsCount',
             'totalKas',
             'totalPengeluaran',
             'jumlahTransaksi',
@@ -60,6 +77,8 @@ class AdminFinanceController extends Controller
     {
         $validated = $request->validate([
             'weekly_fee' => ['required', 'integer', 'min:0', 'max:100000000'],
+            'auto_weekly_enabled' => ['nullable', 'in:0,1'],
+            'default_weekly_description' => ['nullable', 'string', 'max:255'],
         ]);
 
         $setting = FinanceSetting::singleton();
@@ -67,6 +86,8 @@ class AdminFinanceController extends Controller
         $newFee = (int) $validated['weekly_fee'];
         $setting->update([
             'weekly_fee' => $newFee,
+            'auto_weekly_enabled' => isset($validated['auto_weekly_enabled']) ? (bool) $validated['auto_weekly_enabled'] : $setting->auto_weekly_enabled,
+            'default_weekly_description' => $validated['default_weekly_description'] ?? $setting->default_weekly_description,
         ]);
 
         // Buat log perubahan iuran mingguan
@@ -79,7 +100,7 @@ class AdminFinanceController extends Controller
             'direction' => 'neutral',
             'amount' => 0,
             'title' => 'Pengaturan Iuran Mingguan',
-            'description' => 'Iuran mingguan diubah dari Rp ' . number_format($oldFee, 0, ',', '.') . ' menjadi Rp ' . number_format($newFee, 0, ',', '.'),
+            'description' => 'Iuran mingguan diubah dari Rp ' . number_format($oldFee, 0, ',', '.') . ' menjadi Rp ' . number_format($newFee, 0, ',', '.') . ' | Otomatis: ' . ($setting->auto_weekly_enabled ? 'aktif' : 'mati') . ' | Keterangan default: ' . ($setting->default_weekly_description ?? '-'),
             'order_id' => 'SETTING-' . now()->format('YmdHis') . '-' . random_int(1000, 9999),
             'transaction_status' => 'manual',
             'occurred_at' => now(),
@@ -92,7 +113,9 @@ class AdminFinanceController extends Controller
     {
         $validated = $request->validate([
             'nominal' => ['required', 'integer', 'min:0', 'max:100000000'],
-            'saldo_lebih' => ['required', 'integer', 'min:0', 'max:100000000'],
+            // saldo_lebih can be provided as an absolute value or an incremental add.
+            'saldo_lebih' => ['nullable', 'integer', 'min:0', 'max:100000000'],
+            'saldo_action' => ['nullable', 'in:add,set'],
             'keterangan' => ['nullable', 'string', 'max:255'],
         ]);
 
@@ -105,7 +128,22 @@ class AdminFinanceController extends Controller
 
         // Ambil nilai input
         $inputUtang = (int) $validated['nominal'];
-        $inputSaldoPositif = (int) $validated['saldo_lebih'];
+        $enteredSaldo = isset($validated['saldo_lebih']) ? (int) $validated['saldo_lebih'] : null;
+        $saldoAction = $validated['saldo_action'] ?? 'add';
+
+        // Determine final saldo: if action is 'add' (default), we treat enteredSaldo as amount to add
+        if ($enteredSaldo === null) {
+            // No change to saldo
+            $inputSaldoPositif = $oldSaldoPositif;
+            $paymentAmount = 0;
+        } elseif ($saldoAction === 'set') {
+            $inputSaldoPositif = $enteredSaldo;
+            $paymentAmount = $inputSaldoPositif - $oldSaldoPositif;
+        } else {
+            // add mode
+            $inputSaldoPositif = $oldSaldoPositif + $enteredSaldo;
+            $paymentAmount = $enteredSaldo;
+        }
 
         // Logika pemotongan: jika ada saldo positif dan utang, potong utang dengan saldo positif
         $finalUtang = $inputUtang;
@@ -159,6 +197,24 @@ class AdminFinanceController extends Controller
                 $description .= ' | Saldo positif dipotong untuk membayar utang';
             }
             $description .= ' | Anggota: ' . $member->nama . ' (' . $member->Nim . ')';
+
+            // Jika ada pembayaran masuk (inputSaldoPositif > 0), catat sebagai kas masuk
+            if ($paymentAmount > 0) {
+                GrubkasActivityLog::create([
+                    'user_nim' => $member->Nim,
+                    'user_name' => $member->nama,
+                    'activity_type' => 'payment',
+                    'direction' => 'in',
+                    'amount' => $paymentAmount,
+                    'title' => 'Pembayaran Cash/Transfer: ' . $member->nama,
+                    'description' => 'Pembayaran diterima dari member (cash/transfer) | ' . ($validated['keterangan'] ?? 'Pembayaran manual'),
+                    'order_id' => 'PMT-' . now()->format('YmdHis') . '-' . Str::substr($member->Nim, -4) . '-' . random_int(1000, 9999),
+                    'transaction_status' => 'manual',
+                    'occurred_at' => now(),
+                ]);
+            }
+
+            // Jika ada perubahan, catat log penyesuaian saldo juga untuk audit trail
 
             GrubkasActivityLog::create([
                 'user_nim' => null,

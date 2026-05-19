@@ -34,7 +34,7 @@
                     <div class="kas-total-card">
                         <p class="kas-total-label">TOTAL KAS TERKUMPUL</p>
                         <h2 class="kas-total-amount">Rp {{ number_format((int) $totalKasTerkumpul, 0, ',', '.') }}</h2>
-                        <p class="kas-total-info">Dikekola via Midtrans - Terakhir diperbarui hari ini</p>
+                        <p class="kas-total-info">Dikelola secara internal - Terakhir diperbarui hari ini</p>
                     </div>
                 </div>
 
@@ -83,7 +83,7 @@
                                             <i class="bi bi-credit-card"></i>
                                         </div>
                                         <div class="price-title">Pembayaran Aman</div>
-                                        <div class="price-text">Diproses via Midtrans</div>
+                                        <div class="price-text">Pembayaran aman</div>
                                     </div>
                                 </div>
 
@@ -371,7 +371,7 @@
                                 <div class="member-picker-grid" id="member-picker-grid">
                                     @forelse ($belumBayarMembers as $item)
                                         <button type="button" class="member-picker-item" data-nim="{{ $item['nim'] }}"
-                                            data-name="{{ $item['nama'] }}">
+                                            data-name="{{ $item['nama'] }}" data-nominal="{{ $item['nominal'] }}">
                                             <span
                                                 class="member-picker-initial">{{ $item['initials'] !== '' ? $item['initials'] : 'NA' }}</span>
                                             <span class="member-picker-name">{{ $item['nama'] }}</span>
@@ -393,16 +393,16 @@
                                     </div>
                                     <div class="payment-summary-row payment-summary-total">
                                         <span>Total</span>
-                                        <strong>Rp {{ number_format((int) $weeklyFee, 0, ',', '.') }}</strong>
+                                        <strong id="payment-total-amount">Rp 0</strong>
                                     </div>
                                 </div>
 
                                 <button class="btn btn-payment w-100 mt-3" id="payment-submit-btn" type="submit"
                                     @if (count($belumBayarMembers) === 0) disabled @endif>
-                                    <span>Bayar Rp {{ number_format((int) $weeklyFee, 0, ',', '.') }} via Midtrans</span>
+                                    <span id="payment-button-text">Bayar Rp 0</span>
                                 </button>
 
-                                <p class="payment-footer"><i class="bi bi-lock-fill me-1"></i> Secured by Midtrans · SSL
+                                <p class="payment-footer"><i class="bi bi-lock-fill me-1"></i> Transaksi terenkripsi · SSL
                                     Encrypted</p>
                             </div>
                         </div>
@@ -2025,6 +2025,14 @@
                 if (!element) {
                     payerInfoInput.value = '';
                     selectedNameEl.textContent = '-';
+                    var totalAmountEl = document.getElementById('payment-total-amount');
+                    var buttonTextEl = document.getElementById('payment-button-text');
+                    if (totalAmountEl) {
+                        totalAmountEl.textContent = 'Rp 0';
+                    }
+                    if (buttonTextEl) {
+                        buttonTextEl.textContent = 'Bayar Rp 0';
+                    }
                     if (paymentSubmitBtn) {
                         paymentSubmitBtn.setAttribute('disabled', 'disabled');
                     }
@@ -2035,6 +2043,32 @@
                 element.setAttribute('aria-pressed', 'true');
                 payerInfoInput.value = element.getAttribute('data-nim') || '';
                 selectedNameEl.textContent = element.getAttribute('data-name') || '-';
+
+                // Update total amount dynamically based on selected member's nominal
+                var nominal = parseInt(element.getAttribute('data-nominal') || '0', 10);
+                var totalAmountEl = document.getElementById('payment-total-amount');
+                var buttonTextEl = document.getElementById('payment-button-text');
+
+                if (totalAmountEl) {
+                    // Format nominal ke currency
+                    var formattedNominal = new Intl.NumberFormat('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }).format(nominal);
+                    totalAmountEl.textContent = formattedNominal;
+                }
+
+                if (buttonTextEl) {
+                    var formattedButtonText = new Intl.NumberFormat('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }).format(nominal);
+                    buttonTextEl.textContent = 'Bayar ' + formattedButtonText;
+                }
 
                 if (paymentSubmitBtn && payerInfoInput.value !== '') {
                     paymentSubmitBtn.removeAttribute('disabled');

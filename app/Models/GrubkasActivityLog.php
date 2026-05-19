@@ -18,6 +18,8 @@ class GrubkasActivityLog extends Model
         'description',
         'order_id',
         'transaction_status',
+        'proof_path',
+        'proof_name',
         'occurred_at',
     ];
 
