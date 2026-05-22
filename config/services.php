@@ -28,17 +28,16 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'temanqris' => [
+        'apikey' => env('QRIS_API_KEY'),
+        'qris_webhook' => env('WEBHOOK_URL')
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
-    ],
-
-    'qris' => [
-        'api_key' => env('QRIS_API_KEY'),
-        'api_url' => 'https://temanqris.com/api/qris',
-        'webhook_url' => env('WEBHOOK_URL'),
     ],
 
 ];

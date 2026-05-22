@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Datasikadmodel;
-use App\Models\grubkas;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -30,9 +29,6 @@ class tokencontroller extends Controller
         ]);
 
         Datasikadmodel::create($validated);
-        grubkas::create([
-            'user_nim' => $request->Nim
-        ]);
 
         return redirect()->route('admin.membertoken')->with('success', 'Token berhasil ditambahkan');
     }

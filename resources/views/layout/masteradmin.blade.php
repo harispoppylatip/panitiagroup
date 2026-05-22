@@ -205,12 +205,11 @@
         <div class="container-fluid">
             @php
                 $currentRole = auth()->user()?->role;
-                $homeRoute = $currentRole === 'akuntan' ? route('admin.finance.index') : route('admin.beranda.index');
+                $homeRoute = route('admin.beranda.index');
                 $sharedMenus = [
                     ['label' => 'Beranda', 'route' => 'admin.beranda.index', 'active' => 'admin.beranda.*'],
                     ['label' => 'Tugas', 'route' => 'admin.tugas.index', 'active' => 'admin.tugas.*'],
                 ];
-                $financeMenuVisible = in_array($currentRole, ['admin', 'akuntan'], true);
                 $adminOnlyMenuVisible = $currentRole === 'admin';
             @endphp
 
@@ -247,13 +246,6 @@
                             </li>
                         @endif
                     @endforeach
-
-                    @if ($financeMenuVisible)
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.finance.*') ? 'active' : '' }}"
-                                href="{{ route('admin.finance.index') }}">Management Uang</a>
-                        </li>
-                    @endif
 
                     @if ($adminOnlyMenuVisible)
                         <li class="nav-item">

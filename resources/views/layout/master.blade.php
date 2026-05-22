@@ -154,6 +154,12 @@
                 background-color: var(--nav-menu-bg) !important;
                 border-top: 1px solid var(--border-soft);
                 padding: 0.5rem 0;
+                visibility: visible !important;
+            }
+
+            .navbar .navbar-collapse.collapsing,
+            .navbar .navbar-collapse.show {
+                visibility: visible !important;
             }
 
             .navbar .navbar-nav {
@@ -253,7 +259,7 @@
                     <li class="nav-item"><a class="nav-link active" href="/">Beranda</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('jadwal') }}">Jadwal Kuliah</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('tugas') }}">Tugas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('grubkas') }}">Kas Grub</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('grubkas.index') }}">Kas Grub</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('scan.login') }}">Scan Absen</a></li>
                     {{-- <li class="nav-item"><a class="nav-link" href="{{ route('admin.upload') }}">Upload</a></li> --}}
                     {{-- @auth

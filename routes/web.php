@@ -12,10 +12,9 @@ use App\Http\Controllers\tokencontroller;
 use App\Http\Controllers\BarcodeController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BerandaController;
-use App\Http\Controllers\GrubkasController;
-use App\Http\Controllers\AdminFinanceController;
-use App\Http\Controllers\PaymentVerificationController;
+use App\Http\Controllers\payment\grubkascontroller;
 use App\Http\Controllers\test;
+use App\Models\grubkas;
 
 Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
@@ -45,27 +44,6 @@ Route::middleware('auth')->prefix('admin')->group(function() {
     });
 
     Route::middleware('role:admin,akuntan')->group(function () {
-        // management keuangan kas
-        Route::get('/finance', [AdminFinanceController::class, 'index'])->name('admin.finance.index');
-        Route::put('/finance/weekly-fee', [AdminFinanceController::class, 'updateWeeklyFee'])->name('admin.finance.weekly-fee');
-        Route::put('/finance/member/{nim}', [AdminFinanceController::class, 'updateMemberBalance'])->name('admin.finance.member.update');
-        Route::post('/finance/expense', [AdminFinanceController::class, 'storeExpense'])->name('admin.finance.expense.store');
-        Route::post('/finance/cash-adjustment', [AdminFinanceController::class, 'storeCashAdjustment'])->name('admin.finance.cash-adjustment.store');
-
-        // payment verification
-        Route::get('/payment-verification', [PaymentVerificationController::class, 'index'])->name('admin.payment.verification.index');
-        Route::post('/payment-verification/{orderId}/verify', [PaymentVerificationController::class, 'verify'])->name('admin.payment.verify');
-        Route::post('/payment-verification/{orderId}/reject', [PaymentVerificationController::class, 'reject'])->name('admin.payment.reject');
-        Route::post('/payment-verification/{orderId}/approve', [PaymentVerificationController::class, 'approve'])->name('admin.payment.approve');
-        Route::get('/payment-history', [PaymentVerificationController::class, 'paidHistory'])->name('admin.payment.history');
-        Route::get('/payment-history/{id}', [PaymentVerificationController::class, 'showPaymentDetail'])->name('admin.payment.detail');
-    });
-
-    Route::middleware('role:admin')->group(function () {
-        // Data calibration (hanya admin)
-        Route::get('/finance/calibration', [AdminFinanceController::class, 'showDataCalibrationForm'])->name('admin.finance.calibration');
-        Route::post('/finance/calibration/execute', [AdminFinanceController::class, 'executeDataCalibration'])->name('admin.finance.calibration.execute');
-
         // token control
         Route::get('/inserttoken', [AdminController::class, 'inserttoken'])->name('admin.inserttoken.form');
         Route::get('/membertoken', [tokencontroller::class, 'index'])->name('admin.membertoken');
@@ -98,6 +76,14 @@ Route::get('/', [controllerpost::class, 'home']);
 Route::get('/jadwal', [ambiljadwalapi::class, 'index'])->name('jadwal');
 Route::get('/tugas', [TugasController::class, 'front'])->name('tugas');
 
+// pembayaran grubkas - static pages only
+Route::resource('/grubkas', grubkascontroller::class);
+Route::post('/grubkas/detail', [grubkascontroller::class, 'detail'])->name('grubkas.detail');
+Route::post('/grubkas/checkout', [grubkascontroller::class, 'bayar'])->name('grubkas.checkout.page');
+Route::post('/grubkas/checkout/upload', [grubkascontroller::class, 'upload'])->name('grubkas.checkout.upload');
+Route::post('/grubkas/checkout/confirm', [grubkascontroller::class, 'confirm'])->name('grubkas.checkout.confirm');
+Route::view('/grubkas/kirim-dana', 'pages.grubkas-kirim-dana')->name('grubkas.kirim-dana.page');
+
 // scanner
 Route::get('/loginbarcode', [controllerscanner::class, 'loginbarcode'])->name('scan.login');
 Route::post('/sesi/login', [controllerscanner::class, 'login']);
@@ -109,21 +95,13 @@ Route::middleware(['auth', 'role:scanabsen'])->group(function () {
     Route::post('/scan/submit', [BarcodeController::class, 'submitScan'])->name('scan.submit');
 });
 
-// pembayaran grubkas
-Route::get('/grubkas',[GrubkasController::class,'index'])->name('grubkas');
-Route::post('/bayar', [GrubkasController::class, 'bayar']);
-Route::get('/grubkas/checkout', [GrubkasController::class, 'checkout'])->name('grubkas.checkout.page');
-Route::post('/grubkas/checkout/upload', [GrubkasController::class, 'checkoutUpload'])->name('grubkas.checkout.upload');
-Route::post('/grubkas/checkout/confirm', [GrubkasController::class, 'checkoutConfirm'])->name('grubkas.checkout.confirm');
-Route::get('/grubkas/kirim-dana', [GrubkasController::class, 'halamanKirimDanaNonAnggota'])->name('grubkas.kirim-dana.page');
-Route::post('/kirim-dana/non-anggota', [GrubkasController::class, 'kirimDanaNonAnggota'])->name('grubkas.kirim-dana.non-anggota');
-Route::post('/grubkas/kirim-dana/initiate', [GrubkasController::class, 'sendFundsInitiate'])->name('grubkas.kirim-dana.initiate');
-Route::post('/grubkas/kirim-dana/upload', [GrubkasController::class, 'kirimDanaUpload'])->name('grubkas.kirim-dana.upload');
-
-// Webhook for payment gateway (no auth required - public)
-Route::post('/api/webhook/qris', [GrubkasController::class, 'processPaymentWebhook'])->name('webhook.qris.payment');
-
 
 // jadwal
-Route::get('/test', [test::class, 'index']);
+Route::get('/test', function(){
+    grubkas::create([
+        'Nim_Key' => '2411102441203',
+        'Utang_Anggota' => '10000',
+    ]);
+    echo 'sussess';
+});
 Route::get('/update', [test::class, 'updatemingguan']);

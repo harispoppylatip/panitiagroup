@@ -34,7 +34,11 @@
                                 <div class="col-md-4 text-center">
                                     <div class="qr-box mx-auto"
                                         style="width:220px;height:220px;border:1px dashed #d1d5db;display:flex;align-items:center;justify-content:center;border-radius:8px;">
-                                        <img src="{{ $qrimage }}" alt="qiris">
+                                        @if (!empty($qrimage))
+                                            <img src="{{ $qrimage }}" alt="qiris">
+                                        @else
+                                            <span class="text-muted small px-3">QR belum tersedia.</span>
+                                        @endif
                                     </div>
                                     <small class="text-muted d-block mt-2">Expired: {{ $expired ?? '-' }}</small>
                                 </div>
@@ -43,36 +47,30 @@
                                     <form method="POST" action="{{ route('grubkas.checkout.upload') }}"
                                         enctype="multipart/form-data">
                                         @csrf
-                                        <input type="hidden" name="nim" value="{{ $nim }}" />
-                                        <input type="hidden" name="activity_type"
-                                            value="{{ session('grubkas_checkout.activity_type', 'payment') }}" />
-                                        <input type="hidden" name="direction"
-                                            value="{{ session('grubkas_checkout.direction', session('grubkas_checkout.activity_type') === 'send_funds' ? 'out' : 'in') }}" />
-                                        <input type="hidden" name="recipient_name"
-                                            value="{{ session('grubkas_checkout.name') ?? '' }}" />
-                                        <input type="hidden" name="amount" value="{{ $amount }}" />
-                                        <input type="hidden" name="description" value="{{ $description }}" />
-                                        <input type="hidden" name="order_id"
-                                            value="{{ session('grubkas_checkout.order_id', $order_id ?? '') }}" />
-                                        <input type="hidden" name="link_code"
-                                            value="{{ session('grubkas_checkout.link_code', $link_code ?? '') }}" />
+                                        <input type="hidden" name="nim"
+                                            value="{{ old('nim') ?? (request('nim') ?? '') }}" />
+                                        <input type="hidden" name="name" value="{{ $name ?? '' }}" />
+                                        <input type="hidden" name="amount" value="{{ $amount ?? '' }}" />
+                                        <input type="hidden" name="link_code" value="{{ $link_code ?? '' }}" />
 
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Unggah Bukti Pembayaran</label>
                                             <input type="file" name="gambar" class="form-control" accept="image/*"
                                                 required />
-                                            <small class="text-muted d-block mt-2">Unggah bukti transfer atau screenshot pembayaran. <strong>Max 5MB</strong></small>
+                                            <small class="text-muted d-block mt-2">Unggah bukti transfer atau screenshot
+                                                pembayaran. <strong>Max 5MB</strong></small>
                                         </div>
 
                                         <div class="d-flex gap-2">
                                             <button type="submit" class="btn btn-success">Unggah Bukti</button>
-                                            <a href="{{ route('grubkas') }}" class="btn btn-outline-secondary">Batal</a>
+                                            <a href="{{ route('grubkas.index') }}"
+                                                class="btn btn-outline-secondary">Batal</a>
                                         </div>
                                     </form>
 
                                     <form method="POST" action="{{ route('grubkas.checkout.confirm') }}" class="mt-3">
                                         @csrf
-                                        <input type="hidden" name="nim" value="{{ $nim }}" />
+                                        {{-- <input type="hidden" name="nim" value="{{ $nim }}" />
                                         <input type="hidden" name="amount" value="{{ $amount }}" />
                                         <input type="hidden" name="description" value="{{ $description }}" />
                                         <input type="hidden" name="order_id"
@@ -82,7 +80,7 @@
                                         <input type="hidden" name="proof_path"
                                             value="{{ session('proof_path') ?? '' }}" />
                                         <input type="hidden" name="proof_name"
-                                            value="{{ session('proof_name') ?? '' }}" />
+                                            value="{{ session('proof_name') ?? '' }}" /> --}}
                                         <button type="submit" class="btn btn-brand" @disabled(!session('proof_path'))>
                                             Saya Sudah Bayar
                                         </button>

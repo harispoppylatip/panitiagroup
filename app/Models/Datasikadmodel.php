@@ -12,16 +12,4 @@ class Datasikadmodel extends Model
     protected $keyType = 'int';
     protected $fillable = ['nama', 'Nim', 'access_token', 'refresh_token', 'status_onoff', 'urlpost'];
     public $timestamps = true;
-
-    public function iuran()
-    {
-        return $this->hasMany(grubkas::class, 'user_nim', 'Nim');
-    }
-
-    public function latestIuran()
-    {
-        return $this->hasOne(grubkas::class, 'user_nim', 'Nim')
-            ->latest('created_at')
-            ->latest('id');
-    }
 }

@@ -1,2099 +1,452 @@
 @extends('layout.master')
+
 @section('konten')
-    <section class="kas-grub-section">
-        <div class="container">
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ session('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-
-            <div class="row g-4 mb-5">
-                <!-- Header Section -->
-                <div class="col-12">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <div>
-                            <h1 class="kas-title mb-2">Kas Grub</h1>
-                            <p class="kas-subtitle mb-0">Iuran mingguan Rp
-                                {{ number_format((int) $weeklyFee, 0, ',', '.') }}/orang</p>
-                        </div>
-                        <button class="btn btn-sm btn-outline-secondary">
-                            <i class="bi bi-three-dots-vertical"></i>
-                        </button>
-                    </div>
-
-                    <!-- Total Kas Card -->
-                    <div class="kas-total-card">
-                        <p class="kas-total-label">TOTAL KAS TERKUMPUL</p>
-                        <h2 class="kas-total-amount">Rp {{ number_format((int) $totalKasTerkumpul, 0, ',', '.') }}</h2>
-                        <p class="kas-total-info">Dikelola secara internal - Terakhir diperbarui hari ini</p>
-                    </div>
-                </div>
-
-                <!-- Grubkas Information Section -->
-                <div class="col-12">
-                    <details class="grubkas-info-card">
-                        <summary class="grubkas-info-summary">
-                            <div class="grubkas-summary-content">
-                                <div class="grubkas-summary-left">
-                                    <div class="grubkas-summary-badge">
-                                        <i class="bi bi-wallet2"></i> Sistem Pengelolaan Kas
-                                    </div>
-                                    <h3 class="grubkas-summary-title">Detail Grubkas kami</h3>
-                                    {{-- <p class="grubkas-summary-subtitle">Transparansi penuh untuk setiap transaksi anggota --}}
-                                    </p>
-                                </div>
-                                <i class="bi bi-chevron-down grubkas-summary-chevron"></i>
-                            </div>
-                        </summary>
-
-                        <div class="grubkas-info-content">
-                            <div class="grubkas-info-grid">
-                                <!-- Tentang Grubkas -->
-                                <div class="grubkas-info-block">
-                                    <div class="grubkas-info-label">
-                                        <i class="bi bi-info-circle"></i> Tentang Grubkas
-                                    </div>
-                                    <p class="grubkas-info-description">
-                                        Grubkas ini kami buat sebagai sistem pengelolaan kas kelompok yang transparan dan
-                                        terintegrasi.
-                                        Setiap anggota dapat memantau iuran, melacak transaksi, dan melihat penggunaan dana
-                                        secara real-time. Semua transaksi tercatat dengan jelas untuk memastikan kepercayaan
-                                        antar anggota.
-                                    </p>
-                                </div>
-
-                                <!-- Iuran & Metode Pembayaran -->
-                                <div class="grubkas-pricing-grid">
-                                    <div class="grubkas-price-item grubkas-price-item--main">
-                                        <div class="price-label">Nominal Iuran Mingguan</div>
-                                        <div class="price-amount">Rp{{ number_format((int) $weeklyFee, 0, ',', '.') }}</div>
-                                        <div class="price-note">/orang/minggu</div>
-                                    </div>
-                                    <div class="grubkas-price-item grubkas-price-item--secure">
-                                        <div class="price-icon">
-                                            <i class="bi bi-credit-card"></i>
-                                        </div>
-                                        <div class="price-title">Pembayaran Aman</div>
-                                        <div class="price-text">Pembayaran aman</div>
-                                    </div>
-                                </div>
-
-                                <!-- Fungsi Grubkas -->
-                                <div class="grubkas-functions">
-                                    <div class="functions-label">Fungsi Grubkas</div>
-                                    <div class="functions-grid">
-                                        <div class="function-item">
-                                            <div class="function-icon">
-                                                <i class="bi bi-eye"></i>
-                                            </div>
-                                            <div class="function-text">
-                                                <div class="function-title">Transparansi Penuh</div>
-                                                <div class="function-desc">Lihat setiap transaksi</div>
-                                            </div>
-                                        </div>
-                                        <div class="function-item">
-                                            <div class="function-icon">
-                                                <i class="bi bi-clock-history"></i>
-                                            </div>
-                                            <div class="function-text">
-                                                <div class="function-title">Riwayat Lengkap</div>
-                                                <div class="function-desc">Catatan transaksi akurat</div>
-                                            </div>
-                                        </div>
-                                        <div class="function-item">
-                                            <div class="function-icon">
-                                                <i class="bi bi-bar-chart"></i>
-                                            </div>
-                                            <div class="function-text">
-                                                <div class="function-title">Laporan Real-time</div>
-                                                <div class="function-desc">Update saldo langsung</div>
-                                            </div>
-                                        </div>
-                                        <div class="function-item">
-                                            <div class="function-icon">
-                                                <i class="bi bi-shield-check"></i>
-                                            </div>
-                                            <div class="function-text">
-                                                <div class="function-title">Akuntabilitas</div>
-                                                <div class="function-desc">Pertanggungjawaban jelas</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Kegunaan Iuran -->
-                                <div class="grubkas-allocation">
-                                    <div class="allocation-label">Kegunaan Iuran Grubkas</div>
-                                    <ul class="allocation-list">
-                                        <li><i class="bi bi-check2-circle"></i> <span>Dana untuk kegiatan rutin
-                                                kelompok</span></li>
-                                        <li><i class="bi bi-check2-circle"></i> <span>Pembiayaan pertemuan dan rapat
-                                                kelompok</span></li>
-                                        <li><i class="bi bi-check2-circle"></i> <span>Keperluan operasional dan kebutuhan
-                                                bersama</span></li>
-                                        <li><i class="bi bi-check2-circle"></i> <span>Dukungan acara dan program kerja
-                                                kelompok</span></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="grubkas-info-footer">
-                            <p class="grubkas-info-footer-text">
-                                <i class="bi bi-info-circle"></i> Setiap transaksi dilindungi dan dikelola melalui sistem
-                                pembayaran terpercaya untuk memastikan keamanan dan transparansi dalam pengelolaan kas
-                                kelompok.
-                            </p>
-                        </div>
-                    </details>
-                </div>
-
-                <!-- Stats Cards -->
-                <div class="col-12">
-                    <div class="row g-3">
-                        <div class="col-4 col-md-4">
-                            <details class="stat-dropdown stat-dropdown--success">
-                                <summary class="stat-card stat-summary">
-                                    <div class="stat-value stat-value--success">{{ $sudahBayar }}</div>
-                                    <div class="stat-label">Sudah bayar minggu ini</div>
-                                    <i class="bi bi-chevron-down stat-chevron"></i>
-                                </summary>
-                                <div class="stat-dropdown-panel">
-                                    @forelse ($sudahBayarMembers as $member)
-                                        <div class="stat-member-item">
-                                            <div class="stat-member-avatar stat-member-avatar--success">
-                                                {{ $member['initials'] }}
-                                            </div>
-                                            <div class="stat-member-content">
-                                                <p class="stat-member-name">{{ $member['nama'] }}</p>
-                                                <p class="stat-member-meta">{{ $member['nim'] }} ·
-                                                    {{ $member['keterangan'] }}</p>
-                                            </div>
-                                            <span class="stat-pill stat-pill--success">Lunas</span>
-                                        </div>
-                                    @empty
-                                        <div class="stat-empty-state">Belum ada anggota yang tercatat lunas.</div>
-                                    @endforelse
-                                </div>
-                            </details>
-                        </div>
-                        <div class="col-4 col-md-4">
-                            <details class="stat-dropdown stat-dropdown--warning">
-                                <summary class="stat-card stat-summary">
-                                    <div class="stat-value stat-value--warning">{{ $belumBayar }}</div>
-                                    <div class="stat-label">Belum bayar</div>
-                                    <i class="bi bi-chevron-down stat-chevron"></i>
-                                </summary>
-                                <div class="stat-dropdown-panel">
-                                    @forelse ($belumBayarMembers as $member)
-                                        <div class="stat-member-item">
-                                            <div class="stat-member-avatar stat-member-avatar--warning">
-                                                {{ $member['initials'] }}
-                                            </div>
-                                            <div class="stat-member-content">
-                                                <p class="stat-member-name">{{ $member['nama'] }}</p>
-                                                <p class="stat-member-meta">{{ $member['nim'] }} ·
-                                                    {{ $member['keterangan'] }}</p>
-                                            </div>
-                                            <span class="stat-pill stat-pill--warning">Pending</span>
-                                        </div>
-                                    @empty
-                                        <div class="stat-empty-state">Semua anggota sudah membayar.</div>
-                                    @endforelse
-                                </div>
-                            </details>
-                        </div>
-                        <div class="col-4 col-md-4">
-                            <details class="stat-dropdown stat-dropdown--info">
-                                <summary class="stat-card stat-summary">
-                                    <div class="stat-value stat-value--info">{{ $totalAnggota }}</div>
-                                    <div class="stat-label">Total anggota</div>
-                                    <i class="bi bi-chevron-down stat-chevron"></i>
-                                </summary>
-                                <div class="stat-dropdown-panel stat-dropdown-panel--total">
-                                    @forelse ($memberStats as $member)
-                                        <div class="stat-member-item">
-                                            <div
-                                                class="stat-member-avatar stat-member-avatar--{{ $member['status_class'] }}">
-                                                {{ $member['initials'] }}
-                                            </div>
-                                            <div class="stat-member-content">
-                                                <p class="stat-member-name">{{ $member['nama'] }}</p>
-                                                <p class="stat-member-meta">{{ $member['nim'] }} ·
-                                                    {{ $member['keterangan'] }}</p>
-                                            </div>
-                                            <span
-                                                class="stat-pill stat-pill--{{ $member['status_class'] }}">{{ $member['status_label'] }}</span>
-                                        </div>
-                                    @empty
-                                        <div class="stat-empty-state">Belum ada data anggota.</div>
-                                    @endforelse
-                                </div>
-                            </details>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-4">
-                <!-- Activity Section -->
-                <div class="col-lg-6">
-                    <div class="activity-section">
-                        <div class="section-header mb-3">
-                            <h3 class="section-title">Aktivitas terbaru</h3>
-                        </div>
-
-                        <div class="activity-tabs mb-3">
-                            <button class="tab-btn active" type="button" data-filter="minggu-1">Minggu 1</button>
-                            <button class="tab-btn" type="button" data-filter="minggu-2">Minggu 2</button>
-                            <button class="tab-btn" type="button" data-filter="bulan-ini">Bulan ini</button>
-                            <button class="tab-btn" type="button" data-filter="bulan-lalu">Bulan lalu</button>
-                            <button class="tab-btn" type="button" data-filter="semua">Semua</button>
-                        </div>
-
-                        <div class="activity-list" id="activity-list">
-                            @forelse ($activityLogs as $log)
-                                <details class="activity-dropdown"
-                                    data-periods="{{ implode(',', $log->period_keys ?? ['semua']) }}">
-                                    <summary class="activity-summary">
-                                        <div class="activity-item">
-                                            <div class="activity-icon {{ $log->direction === 'out' ? 'down' : 'up' }}">
-                                                <i
-                                                    class="bi {{ $log->direction === 'out' ? 'bi-arrow-down' : 'bi-arrow-up' }}"></i>
-                                            </div>
-                                            <div class="activity-content">
-                                                <p class="activity-name">{{ $log->title }}</p>
-                                                <p class="activity-date">
-                                                    {{ optional($log->occurred_at)->translatedFormat('l, d M Y') ?? '-' }}
-                                                    ·
-                                                    {{ optional($log->occurred_at)->format('H:i') ?? '-' }}
-                                                </p>
-                                            </div>
-                                            <div class="activity-summary-right">
-                                                <div
-                                                    class="activity-amount {{ $log->direction === 'out' ? 'negative' : 'positive' }}">
-                                                    {{ $log->direction === 'out' ? '-' : '+' }}Rp
-                                                    {{ number_format((int) $log->amount, 0, ',', '.') }}
-                                                </div>
-                                                <i class="bi bi-chevron-down activity-chevron"></i>
-                                            </div>
-                                        </div>
-                                    </summary>
-
-                                    <div class="activity-detail-panel">
-                                        <div class="activity-detail-grid">
-                                            <div class="activity-detail-row">
-                                                <span class="activity-detail-label">Waktu</span>
-                                                <span class="activity-detail-value">
-                                                    {{ optional($log->occurred_at)->translatedFormat('d-m-Y H:i') ?? '-' }}
-                                                </span>
-                                            </div>
-                                            <div class="activity-detail-row">
-                                                <span class="activity-detail-label">Nominal</span>
-                                                <span class="activity-detail-value">
-                                                    Rp {{ number_format((int) $log->amount, 0, ',', '.') }}
-                                                </span>
-                                            </div>
-                                            <div class="activity-detail-row">
-                                                <span class="activity-detail-label">Keterangan</span>
-                                                <span class="activity-detail-value">
-                                                    {{ $log->description ?: 'Tidak ada keterangan' }}
-                                                </span>
-                                            </div>
-                                            <div class="activity-detail-row">
-                                                <span class="activity-detail-label">Status</span>
-                                                <span class="activity-detail-value">
-                                                    {{ $log->transaction_status ?: '-' }}
-                                                </span>
-                                            </div>
-                                            @if ($log->order_id)
-                                                <div class="activity-detail-row">
-                                                    <span class="activity-detail-label">Order ID</span>
-                                                    <span class="activity-detail-value">{{ $log->order_id }}</span>
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </details>
-                            @empty
-                                <div class="activity-item">
-                                    <div class="activity-content">
-                                        <p class="activity-name">Belum ada aktivitas pembayaran</p>
-                                        <p class="activity-date">Transaksi yang berhasil akan muncul di sini</p>
-                                    </div>
-                                </div>
-                            @endforelse
-
-                            <div class="activity-filter-empty d-none" id="activity-filter-empty">
-                                <p class="activity-name">Tidak ada aktivitas pada periode ini</p>
-                                <p class="activity-date">Coba pilih tab periode lain untuk melihat data transaksi.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Payment Section -->
-                <div class="col-lg-6">
-                    <form action="/bayar" method="POST">
-                        @csrf
-                        <div class="payment-section">
-                            <div class="payment-info-banner mb-3">
-                                <div class="payment-info-icon"><i class="bi bi-ticket-perforated-fill"></i></div>
-                                <div>
-                                    <p class="payment-info-title mb-1">Iuran Keanggotaan Mingguan</p>
-                                    <p class="payment-info-text mb-2">Iuran keanggotaan sebesar
-                                        Rp{{ number_format((int) $weeklyFee, 0, ',', '.') }} per minggu per
-                                        anggota untuk mendukung kegiatan rutin dan operasional komunitas mahasiswa.</p>
-                                    <p class="payment-info-amount mb-0">Rp
-                                        {{ number_format((int) $weeklyFee, 0, ',', '.') }} <span>/ minggu per
-                                            anggota</span></p>
-                                </div>
-                            </div>
-
-                            <div class="payment-checkout-panel">
-                                <div class="section-header mb-3 pb-2">
-                                    <h3 class="section-title">Bayar Iuran Minggu Ini</h3>
-                                    <p class="payment-panel-subtitle mb-0">Pilih nama kamu lalu lanjut ke pembayaran</p>
-                                </div>
-
-                                <p class="member-grid-title">Pilih Nama Anggota</p>
-                                <input type="hidden" id="payer-info" name="payer_info" value="" required>
-
-                                <div class="member-picker-grid" id="member-picker-grid">
-                                    @forelse ($belumBayarMembers as $item)
-                                        <button type="button" class="member-picker-item" data-nim="{{ $item['nim'] }}"
-                                            data-name="{{ $item['nama'] }}" data-nominal="{{ $item['nominal'] }}">
-                                            <span
-                                                class="member-picker-initial">{{ $item['initials'] !== '' ? $item['initials'] : 'NA' }}</span>
-                                            <span class="member-picker-name">{{ $item['nama'] }}</span>
-                                            <span class="member-picker-check"><i class="bi bi-check-lg"></i></span>
-                                        </button>
-                                    @empty
-                                        <div class="member-picker-empty">Semua anggota sudah lunas minggu ini.</div>
-                                    @endforelse
-                                </div>
-
-                                <div class="payment-summary-box mt-3">
-                                    <div class="payment-summary-row">
-                                        <span>Produk</span>
-                                        <strong>Iuran Keanggotaan Mingguan</strong>
-                                    </div>
-                                    <div class="payment-summary-row">
-                                        <span>Atas nama</span>
-                                        <strong id="payment-selected-name">-</strong>
-                                    </div>
-                                    <div class="payment-summary-row payment-summary-total">
-                                        <span>Total</span>
-                                        <strong id="payment-total-amount">Rp 0</strong>
-                                    </div>
-                                </div>
-
-                                <button class="btn btn-payment w-100 mt-3" id="payment-submit-btn" type="submit"
-                                    @if (count($belumBayarMembers) === 0) disabled @endif>
-                                    <span id="payment-button-text">Bayar Rp 0</span>
-                                </button>
-
-                                <p class="payment-footer"><i class="bi bi-lock-fill me-1"></i> Transaksi terenkripsi · SSL
-                                    Encrypted</p>
-                            </div>
-                        </div>
-                    </form>
-
-                    <div class="send-fund-section mt-4">
-                        <div class="section-header mb-3">
-                            <h3 class="section-title">Kirim Dana</h3>
-                            <p class="send-fund-subtitle mb-0">Bukan anggota? Kirim dana bebas untuk keperluan apa saja.
-                            </p>
-                        </div>
-                        <div class="send-fund-cta">
-                            <div class="send-fund-cta-icon">
-                                <i class="bi bi-cash-coin"></i>
-                            </div>
-                            <div class="send-fund-cta-content">
-                                <p class="send-fund-cta-title">Bukan anggota?</p>
-                                <p class="send-fund-cta-text">Buka halaman kirim dana untuk mencatat donasi atau transfer
-                                    kas.</p>
-                            </div>
-                            <a href="{{ route('grubkas.kirim-dana.page') }}"
-                                class="btn btn-outline-secondary send-fund-cta-btn">
-                                Kirim Dana <i class="bi bi-arrow-right ms-1"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <style>
-        .kas-grub-section {
-            padding: 2rem 0;
-            min-height: calc(100vh - 70px);
-        }
-
-        /* Header Styles */
-        .kas-title {
-            font-family: 'Manrope', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
+        .grubkas-page {
+            padding: 1.5rem 0 2.5rem;
+            background:
+                radial-gradient(circle at top left, rgba(46, 91, 135, 0.12), transparent 32%),
+                radial-gradient(circle at bottom right, rgba(195, 143, 60, 0.10), transparent 30%),
+                var(--surface);
             color: var(--text-main);
-            margin: 0;
+            min-height: calc(100vh - 76px);
         }
 
-        .kas-subtitle {
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            margin: 0;
+        .grubkas-shell {
+            max-width: 940px;
+            margin: 0 auto;
+            padding: 0 1rem;
         }
 
-        /* Total Kas Card */
-        .kas-total-card {
-            background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
-            border-radius: 1.25rem;
-            padding: 2rem;
-            color: white;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 16px rgba(46, 91, 135, 0.2);
-        }
-
-        .kas-total-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            opacity: 0.8;
-            margin-bottom: 0.5rem;
-            margin: 0 0 0.5rem 0;
-        }
-
-        .kas-total-amount {
-            font-family: 'Manrope', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 0.5rem;
-            color: white;
-        }
-
-        .kas-total-info {
-            font-size: 0.875rem;
-            opacity: 0.9;
-            margin: 0;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        /* Stat Cards */
-        .stat-card {
+        .grubkas-card {
             background: var(--surface-elevated);
             border: 1px solid var(--border-soft);
-            border-radius: 1rem;
-            padding: 1.5rem 1rem;
-            text-align: center;
-            transition: all 0.3s ease;
+            border-radius: 12px;
+            box-shadow: 0 16px 34px var(--shadow-soft);
         }
 
-        .stat-card:hover {
-            border-color: var(--brand-500);
-            box-shadow: 0 2px 8px rgba(46, 91, 135, 0.1);
+        .summary-card {
+            border: 1px solid rgba(46, 91, 135, 0.20);
+            background: linear-gradient(135deg, var(--brand-700), var(--brand-900));
+            box-shadow: 0 16px 34px rgba(18, 38, 63, 0.18);
         }
 
-        .stat-dropdown {
-            position: relative;
-        }
-
-        .stat-summary {
-            list-style: none;
-            cursor: pointer;
-            position: relative;
-            padding-bottom: 2rem;
-        }
-
-        .stat-summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .stat-summary:focus-visible {
-            outline: 2px solid var(--brand-500);
-            outline-offset: 2px;
-        }
-
-        .stat-chevron {
-            position: absolute;
-            right: 1rem;
-            bottom: 0.9rem;
-            color: var(--text-muted);
-            transition: transform 0.2s ease;
-            font-size: 0.8rem;
-        }
-
-        .stat-dropdown[open] .stat-chevron {
-            transform: rotate(180deg);
-        }
-
-        .stat-dropdown-panel {
-            margin-top: 0.5rem;
-            border: 1px solid var(--border-soft);
-            border-radius: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 0.75rem;
-            max-height: 22rem;
-            overflow: auto;
-        }
-
-        .stat-dropdown-panel--total {
-            max-height: 28rem;
-        }
-
-        .stat-member-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .stat-member-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .stat-member-avatar {
-            width: 2rem;
-            height: 2rem;
-            border-radius: 0.55rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        .stat-member-avatar--success {
-            background: rgba(34, 197, 94, 0.18);
-            color: #22c55e;
-        }
-
-        .stat-member-avatar--warning {
-            background: rgba(245, 158, 11, 0.18);
-            color: #d97706;
-        }
-
-        .stat-member-avatar--info {
-            background: rgba(59, 130, 246, 0.18);
-            color: #60a5fa;
-        }
-
-        .stat-member-content {
-            flex: 1;
-            min-width: 0;
-            text-align: left;
-        }
-
-        .stat-member-name {
-            margin: 0;
-            color: var(--text-main);
-            font-weight: 700;
-            font-size: 0.875rem;
-            line-height: 1.35;
-        }
-
-        .stat-member-meta {
-            margin: 0.15rem 0 0;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            line-height: 1.35;
-        }
-
-        .stat-pill {
+        .summary-icon,
+        .activity-icon,
+        .send-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.25rem 0.55rem;
-            border-radius: 999px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            line-height: 1;
-            flex-shrink: 0;
+            flex: 0 0 42px;
         }
 
-        .stat-pill--success {
-            background: rgba(34, 197, 94, 0.16);
-            color: #22c55e;
-        }
-
-        .stat-pill--warning {
-            background: rgba(245, 158, 11, 0.16);
-            color: #d97706;
-        }
-
-        .stat-pill--info {
-            background: rgba(59, 130, 246, 0.16);
-            color: #60a5fa;
-        }
-
-        .stat-empty-state {
-            padding: 0.75rem 0.25rem;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            text-align: left;
-        }
-
-        .stat-value {
-            font-family: 'Manrope', sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--brand-500);
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-value--success {
-            color: #84cc16;
-        }
-
-        .stat-value--warning {
-            color: #f59e0b;
-        }
-
-        .stat-value--info {
-            color: #60a5fa;
-        }
-
-        .stat-label {
-            font-size: 0.8125rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        /* Section Styles */
-        .section-header {
-            border-bottom: 1px solid var(--border-soft);
-            padding-bottom: 1rem;
+        .summary-icon {
+            background: rgba(255, 255, 255, 0.14);
+            color: #f5c36b;
         }
 
         .section-title {
-            font-family: 'Manrope', sans-serif;
-            font-size: 1.125rem;
-            font-weight: 700;
+            font-size: 0.98rem;
+            font-weight: 800;
             color: var(--text-main);
-            margin: 0;
+            margin-bottom: 0.15rem;
         }
 
-        /* Activity Section */
-        .activity-section {
-            background: var(--surface-elevated);
-            border: 1px solid var(--border-soft);
-            border-radius: 1rem;
-            padding: 1.5rem;
-        }
-
-        .activity-tabs {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            background: transparent;
-            border: none;
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-            font-weight: 600;
+        .section-subtitle {
+            font-size: 0.86rem;
             color: var(--text-muted);
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s ease;
         }
 
-        .tab-btn.active {
-            color: var(--brand-500);
-            border-bottom-color: var(--brand-500);
+        .member-card {
+            border: 1px solid var(--border-soft);
+            border-radius: 10px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.96));
+            color: var(--text-main);
+            padding: 0.9rem 1rem;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            width: 100%;
+            text-align: left;
         }
 
-        .activity-list {
+        .member-card:hover,
+        .member-card.is-selected {
+            border-color: rgba(46, 91, 135, 0.45);
+            background: linear-gradient(180deg, rgba(236, 245, 252, 0.98), rgba(226, 237, 247, 0.98));
+            transform: translateY(-1px);
+        }
+
+        .member-card .badge-initial {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(148, 163, 184, 0.18);
+            color: var(--brand-700);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 800;
+            margin-right: 0.7rem;
+            flex: 0 0 26px;
+        }
+
+        .member-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            line-height: 1.15;
+        }
+
+        .member-tag {
+            display: block;
+            margin-top: 0.15rem;
+            font-size: 0.7rem;
+            color: var(--accent);
+        }
+
+        .invoice-row {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             gap: 1rem;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .invoice-row strong {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .invoice-total {
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-soft);
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .pay-button {
+            border-radius: 10px;
+            border: 1px solid rgba(46, 91, 135, 0.18);
+            background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+            color: #ffffff;
+            font-weight: 700;
+            height: 44px;
+            width: 100%;
+            opacity: 0.98;
+        }
+
+        .security-note {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            text-align: center;
         }
 
         .activity-item {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-soft);
-        }
-
-        .activity-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .activity-filter-empty {
-            border: 1px dashed var(--border-soft);
-            border-radius: 0.9rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .activity-dropdown {
-            border: 1px solid var(--border-soft);
-            border-radius: 1rem;
-            background: rgba(255, 255, 255, 0.02);
-            overflow: hidden;
-        }
-
-        .activity-dropdown[open] {
-            border-color: rgba(46, 91, 135, 0.25);
-            box-shadow: 0 6px 18px rgba(46, 91, 135, 0.08);
-        }
-
-        .activity-summary {
-            list-style: none;
-            cursor: pointer;
-            padding: 1rem;
-        }
-
-        .activity-summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .activity-summary:focus-visible {
-            outline: 2px solid var(--brand-500);
-            outline-offset: 2px;
-        }
-
-        .activity-summary .activity-item {
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .activity-summary-right {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            flex-shrink: 0;
-        }
-
-        .activity-chevron {
-            color: var(--text-muted);
-            transition: transform 0.2s ease;
-        }
-
-        .activity-dropdown[open] .activity-chevron {
-            transform: rotate(180deg);
-        }
-
-        .activity-detail-panel {
+            padding: 0.9rem 0;
             border-top: 1px solid var(--border-soft);
-            padding: 1rem;
-            background: rgba(46, 91, 135, 0.03);
         }
 
-        .activity-detail-grid {
-            display: grid;
-            gap: 0.75rem;
+        .activity-item:first-of-type {
+            border-top: 0;
+            padding-top: 0.25rem;
         }
 
-        .activity-detail-row {
-            display: grid;
-            gap: 0.25rem;
-        }
-
-        .activity-detail-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-        }
-
-        .activity-detail-value {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-main);
-            line-height: 1.5;
-            word-break: break-word;
-        }
-
-        .activity-icon {
-            flex-shrink: 0;
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
+        .activity-left {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            font-weight: 700;
+            gap: 0.8rem;
         }
 
         .activity-icon.up {
-            background: rgba(34, 197, 94, 0.1);
-            color: #22c55e;
+            background: rgba(34, 197, 94, 0.14);
+            color: #2f855a;
         }
 
         .activity-icon.down {
-            background: rgba(220, 38, 38, 0.1);
-            color: #dc2626;
-        }
-
-        .activity-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .activity-name {
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 0.25rem;
-            margin: 0 0 0.25rem 0;
-            font-size: 0.9375rem;
-        }
-
-        .activity-date {
-            font-size: 0.8125rem;
+            background: rgba(148, 163, 184, 0.14);
             color: var(--text-muted);
-            margin: 0;
+        }
+
+        .activity-title {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.1rem;
+        }
+
+        .activity-meta {
+            color: var(--text-muted);
+            font-size: 0.78rem;
         }
 
         .activity-amount {
-            font-weight: 700;
-            font-family: 'Manrope', sans-serif;
-            font-size: 0.875rem;
-            flex-shrink: 0;
-        }
-
-        .activity-amount.positive {
-            color: #22c55e;
-        }
-
-        .activity-amount.negative {
-            color: #dc2626;
-        }
-
-        /* Payment Section */
-        .payment-section {
-            background: var(--surface-elevated);
-            border: 1px solid var(--border-soft);
-            border-radius: 1rem;
-            padding: 1.5rem;
-        }
-
-        .payment-info-banner {
-            display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-            background: linear-gradient(135deg, #315b8b, #1f3d62);
-            border: 1px solid rgba(149, 197, 247, 0.55);
-            border-radius: 0.9rem;
-            padding: 1rem;
-        }
-
-        body[data-theme='dark'] .payment-info-banner {
-            background: linear-gradient(135deg, #1f466f 0%, #183854 55%, #102739 100%);
-            border-color: rgba(148, 163, 184, 0.32);
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
-        }
-
-        body[data-theme='dark'] .payment-info-icon {
-            background: rgba(229, 238, 249, 0.14);
-            color: #f4f8ff;
-        }
-
-        body[data-theme='dark'] .payment-info-title {
-            color: #f4f8ff;
-        }
-
-        body[data-theme='dark'] .payment-info-text {
-            color: rgba(229, 238, 249, 0.88);
-        }
-
-        body[data-theme='dark'] .payment-info-amount span {
-            color: rgba(229, 238, 249, 0.9);
-        }
-
-        .payment-info-icon {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 0.7rem;
-            background: rgba(222, 239, 255, 0.22);
-            color: #f3f9ff;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-
-        .payment-info-title {
-            color: #f1f7ff;
-            font-weight: 700;
-            font-size: 1.05rem;
-            margin: 0;
-        }
-
-        .payment-info-text {
-            color: rgba(236, 245, 255, 0.9);
-            font-size: 0.83rem;
-            line-height: 1.45;
-            margin: 0;
-        }
-
-        .payment-info-amount {
-            font-size: 2rem;
-            line-height: 1;
-            font-family: 'Manrope', sans-serif;
+            font-size: 0.88rem;
             font-weight: 800;
-            color: #ffffff;
-            margin: 0;
         }
 
-        .payment-info-amount span {
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: rgba(223, 238, 255, 0.95);
+        .amount-positive {
+            color: #2f855a;
         }
 
-        .payment-checkout-panel {
+        .amount-negative {
+            color: #b45309;
+        }
+
+        .send-banner {
+            background: linear-gradient(135deg, rgba(46, 91, 135, 0.08), rgba(195, 143, 60, 0.08));
             border: 1px solid var(--border-soft);
-            border-radius: 0.9rem;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 1rem;
         }
 
-        .payment-panel-subtitle {
-            color: var(--text-muted);
-            font-size: 0.84rem;
-            margin-top: 0.35rem;
+        .send-icon {
+            background: rgba(46, 91, 135, 0.12);
+            color: var(--brand-500);
         }
 
-        .member-grid-title {
-            margin: 0 0 0.7rem;
-            font-size: 0.79rem;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: var(--text-muted);
-        }
-
-        .member-picker-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.55rem;
-        }
-
-        .member-picker-item {
-            width: 100%;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            border: 1px solid var(--border-soft);
-            border-radius: 0.65rem;
-            background: transparent;
-            color: var(--text-main);
-            padding: 0.6rem 0.7rem;
-            transition: border-color 0.2s ease, background-color 0.2s ease;
-        }
-
-        .member-picker-item:hover {
-            border-color: rgba(132, 182, 236, 0.7);
-        }
-
-        .member-picker-item.is-selected {
-            border-color: rgba(132, 182, 236, 0.9);
-            background: rgba(46, 91, 135, 0.35);
-        }
-
-        .member-picker-initial {
-            width: 1.7rem;
-            height: 1.7rem;
-            border-radius: 0.45rem;
-            background: rgba(46, 91, 135, 0.5);
-            color: #99c2ee;
-            font-size: 0.7rem;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .member-picker-name {
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: var(--text-main);
-            flex: 1;
-            min-width: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .member-picker-check {
-            opacity: 0;
-            color: #9fc8f3;
-            font-size: 0.92rem;
-        }
-
-        .member-picker-item.is-selected .member-picker-check {
-            opacity: 1;
-        }
-
-        .member-picker-empty {
-            grid-column: 1 / -1;
-            border: 1px dashed var(--border-soft);
-            border-radius: 0.7rem;
-            padding: 0.8rem;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-align: center;
-        }
-
-        .payment-summary-box {
-            border: 1px solid var(--border-soft);
-            border-radius: 0.75rem;
-            padding: 0.85rem 0.9rem;
-            background: rgba(0, 0, 0, 0.15);
-        }
-
-        .payment-summary-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 1rem;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 0.35rem;
-        }
-
-        .payment-summary-row strong {
-            color: var(--text-main);
-            font-weight: 700;
-            text-align: right;
-        }
-
-        .payment-summary-total {
-            margin-top: 0.55rem;
-            padding-top: 0.55rem;
-            border-top: 1px solid var(--border-soft);
-            margin-bottom: 0;
-        }
-
-        .payment-summary-total strong {
-            font-size: 1.05rem;
-        }
-
-        .payment-amount-card {
+        .btn-send {
+            border-radius: 10px;
             background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
-            border-radius: 1rem;
-            padding: 1.5rem;
-            color: white;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .payment-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            opacity: 0.8;
-            margin: 0 0 0.5rem 0;
-        }
-
-        .payment-amount {
-            font-family: 'Manrope', sans-serif;
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            margin: 0 0 0.5rem 0;
-            color: white;
-        }
-
-        .payment-deadline {
-            font-size: 0.8125rem;
-            opacity: 0.9;
-            margin: 0;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .payment-methods-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            margin-bottom: 0.75rem;
-            margin: 0 0 0.75rem 0;
-        }
-
-        .payment-methods {
-            margin-bottom: 1.5rem;
-        }
-
-        .payer-select {
-            margin-top: 1rem;
-        }
-
-        .payer-select-label {
-            display: block;
-            font-size: 0.8125rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            margin: 0 0 0.5rem 0;
-            letter-spacing: 0.02em;
-        }
-
-        .payer-select-input {
-            width: 100%;
-            border: 1px solid var(--border-soft);
-            border-radius: 0.75rem;
-            padding: 0.75rem 0.9rem;
-            font-size: 0.9375rem;
-            font-weight: 600;
-            color: var(--text-main);
-            background-color: #fff;
-            transition: all 0.3s ease;
-        }
-
-        .payer-select-input:focus {
-            border-color: var(--brand-500);
-            box-shadow: 0 0 0 0.2rem rgba(46, 91, 135, 0.15);
-            outline: none;
-        }
-
-        .payment-option {
-            position: relative;
-            margin-bottom: 0.75rem;
-        }
-
-        .payment-option input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .payment-option-label {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border-soft);
-            border-radius: 0.75rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 0;
-        }
-
-        .payment-option input[type="radio"]:checked+.payment-option-label {
-            background: rgba(46, 91, 135, 0.05);
-            border-color: var(--brand-500);
-        }
-
-        .option-radio {
-            flex-shrink: 0;
-            width: 1.25rem;
-            height: 1.25rem;
-            border: 2px solid var(--border-soft);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .payment-option input[type="radio"]:checked+.payment-option-label .option-radio {
-            border-color: var(--brand-500);
-            background: var(--brand-500);
-        }
-
-        .payment-option input[type="radio"]:checked+.payment-option-label .option-radio::after {
-            content: '✓';
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
-
-        .option-text {
-            font-weight: 600;
-            color: var(--text-main);
-            font-size: 0.9375rem;
-        }
-
-        .btn-payment {
-            background: linear-gradient(135deg, var(--accent), #b07b2e);
             border: none;
-            color: white;
-            font-weight: 700;
-            font-size: 1rem;
-            border-radius: 0.75rem;
-            padding: 1rem;
-            transition: all 0.3s ease;
-            font-family: 'Manrope', sans-serif;
-        }
-
-        .btn-payment:hover {
-            background: linear-gradient(135deg, #b07b2e, #8f6426);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(195, 143, 60, 0.3);
-        }
-
-        .payment-footer {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 0.75rem;
-            margin: 0.75rem 0 0 0;
-        }
-
-        .send-fund-section {
-            background: var(--surface-elevated);
-            border: 1px solid var(--border-soft);
-            border-radius: 1rem;
-            padding: 1.25rem;
-        }
-
-        .send-fund-subtitle {
-            font-size: 0.86rem;
-            color: var(--text-muted);
-            margin-top: 0.35rem;
-        }
-
-        .send-fund-cta {
-            display: flex;
-            align-items: center;
-            gap: 0.85rem;
-            border: 1px solid var(--border-soft);
-            border-radius: 0.9rem;
-            padding: 0.95rem;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .send-fund-cta-icon {
-            width: 2.25rem;
-            height: 2.25rem;
-            border-radius: 0.6rem;
-            background: rgba(34, 197, 94, 0.16);
-            color: #16a34a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.05rem;
-            flex-shrink: 0;
-        }
-
-        .send-fund-cta-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .send-fund-cta-title {
-            margin: 0;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .send-fund-cta-text {
-            margin: 0.2rem 0 0;
-            color: var(--text-muted);
-            font-size: 0.82rem;
-            line-height: 1.35;
-        }
-
-        .send-fund-cta-btn {
+            color: #ffffff;
+            font-weight: 800;
             white-space: nowrap;
         }
 
-        .send-fund-label {
-            display: block;
-            font-size: 0.79rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 0.4rem;
+        .btn-send:hover {
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--brand-700), var(--brand-900));
         }
 
-        .send-fund-input,
-        .send-fund-textarea {
-            width: 100%;
-            border: 1px solid var(--border-soft);
-            border-radius: 0.7rem;
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text-main);
-            padding: 0.72rem 0.85rem;
-            font-size: 0.92rem;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        .muted-divider {
+            border-color: var(--border-soft);
         }
 
-        .send-fund-textarea {
-            resize: vertical;
-            min-height: 90px;
+        body[data-theme='dark'] .grubkas-page {
+            background:
+                radial-gradient(circle at top left, rgba(46, 91, 135, 0.18), transparent 32%),
+                radial-gradient(circle at bottom right, rgba(195, 143, 60, 0.12), transparent 30%),
+                var(--surface);
         }
 
-        .send-fund-input:focus,
-        .send-fund-textarea:focus {
-            outline: none;
-            border-color: var(--brand-500);
-            box-shadow: 0 0 0 0.18rem rgba(46, 91, 135, 0.15);
-        }
-
-        .send-fund-hint {
-            font-size: 0.76rem;
-            color: var(--text-muted);
-            margin: 0.4rem 0 0;
-        }
-
-        .quick-amount-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 0.5rem;
-        }
-
-        .quick-amount-btn {
-            border: 1px solid var(--border-soft);
-            background: transparent;
-            color: var(--text-main);
-            border-radius: 0.6rem;
-            padding: 0.58rem 0.25rem;
-            font-size: 0.9rem;
-            font-weight: 700;
-            transition: all 0.2s ease;
-        }
-
-        .quick-amount-btn:hover {
-            border-color: var(--brand-500);
-            color: var(--brand-500);
-        }
-
-        .quick-amount-btn.active {
-            background: rgba(46, 91, 135, 0.15);
-            border-color: rgba(46, 91, 135, 0.4);
-            color: var(--brand-500);
-        }
-
-        /* Mobile adjustments: stack member status under name to avoid collisions */
-        @media (max-width: 576px) {
-            .stat-member-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.45rem;
-                padding: 0.6rem 0;
-            }
-
-            .stat-member-avatar {
-                width: 2.2rem;
-                height: 2.2rem;
-                border-radius: 0.45rem;
-                flex-shrink: 0;
-            }
-
-            .stat-member-content {
-                width: 100%;
-                min-width: 0;
-            }
-
-            .stat-member-name {
-                white-space: normal;
-                overflow: visible;
-                text-overflow: unset;
-                margin-bottom: 0.25rem;
-            }
-
-            .stat-member-meta {
-                display: block;
-                margin-bottom: 0.25rem;
-            }
-
-            .stat-pill {
-                display: inline-block;
-                margin-top: 0.25rem;
-                align-self: flex-start;
-            }
-        }
-
-        .send-fund-summary {
-            margin-top: 0.5rem;
-            border: 1px solid var(--border-soft);
-            border-radius: 0.75rem;
-            padding: 0.75rem 0.85rem;
-            background: rgba(255, 255, 255, 0.02);
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 1rem;
-        }
-
-        .send-fund-summary-label {
-            margin: 0;
-            font-size: 0.74rem;
-            color: var(--text-muted);
-            font-weight: 700;
-            letter-spacing: 0.03em;
-        }
-
-        .send-fund-summary-value {
-            margin: 0.3rem 0 0;
-            font-size: 0.92rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .send-fund-summary-amount {
-            margin: 0.3rem 0 0;
-            font-size: 1.5rem;
-            font-weight: 800;
-            font-family: 'Manrope', sans-serif;
-            color: #84cc16;
-            line-height: 1;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .kas-title {
-                font-size: 1.5rem;
-            }
-
-            .kas-total-amount,
-            .payment-amount {
-                font-size: 1.75rem;
-            }
-
-            .row.g-4 {
-                row-gap: 1.5rem;
-            }
-
-            .activity-section,
-            .payment-section {
-                margin-bottom: 1rem;
-            }
-
-            .tab-btn {
-                padding: 0.45rem 0.7rem;
-                font-size: 0.8rem;
-            }
-
-            .send-fund-cta {
-                align-items: flex-start;
-                flex-wrap: wrap;
-            }
-
-            .payment-info-amount {
-                font-size: 1.55rem;
-            }
-
-            .member-picker-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Dark theme support */
-        body[data-theme='dark'] .kas-total-card {
-            background: linear-gradient(135deg, #1f3b5c 0%, #16314f 50%, #0f2238 100%);
-            border: 1px solid rgba(148, 163, 184, 0.25);
-            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
-        }
-
-        body[data-theme='dark'] .kas-total-label {
-            color: rgba(229, 238, 249, 0.85);
-        }
-
-        body[data-theme='dark'] .kas-total-info {
-            color: rgba(229, 238, 249, 0.78);
-        }
-
-        body[data-theme='dark'] .stat-card:hover {
-            box-shadow: 0 2px 8px rgba(135, 169, 204, 0.15);
-        }
-
-        body[data-theme='dark'] .btn-payment:hover {
-            box-shadow: 0 4px 12px rgba(214, 173, 98, 0.3);
-        }
-
-        /* Grubkas Information Card Styles */
-        .grubkas-info-card {
+        body[data-theme='dark'] .grubkas-card,
+        body[data-theme='dark'] .member-card {
             background: var(--surface-elevated);
-            border: 1px solid var(--border-soft);
-            border-radius: 1.25rem;
-            overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-
-        .grubkas-info-card[open] {
-            border-color: rgba(84, 204, 116, 0.4);
-            box-shadow: 0 8px 24px rgba(84, 204, 116, 0.12);
-        }
-
-        .grubkas-info-card::-webkit-details-marker {
-            display: none;
-        }
-
-        .grubkas-info-summary {
-            list-style: none;
-            cursor: pointer;
-            padding: 0;
-            display: block;
-            background: linear-gradient(135deg, rgba(46, 91, 135, 0.08), rgba(84, 204, 116, 0.08));
-            border-bottom: 1px solid var(--border-soft);
-            transition: all 0.3s ease;
-        }
-
-        .grubkas-info-card[open]>.grubkas-info-summary {
-            border-bottom-color: rgba(84, 204, 116, 0.2);
-        }
-
-        .grubkas-info-summary:hover {
-            background: linear-gradient(135deg, rgba(46, 91, 135, 0.12), rgba(84, 204, 116, 0.12));
-        }
-
-        .grubkas-info-summary:focus-visible {
-            outline: 2px solid rgba(84, 204, 116, 0.5);
-            outline-offset: 2px;
-        }
-
-        .grubkas-summary-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            padding: 1.5rem;
-        }
-
-        .grubkas-summary-left {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .grubkas-summary-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            background: rgba(84, 204, 116, 0.15);
-            color: #54cc74;
-            padding: 0.4rem 0.8rem;
-            border-radius: 999px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-            width: fit-content;
-        }
-
-        .grubkas-summary-title {
-            margin: 0;
-            font-family: 'Manrope', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: var(--text-main);
-            line-height: 1.3;
-        }
-
-        .grubkas-summary-subtitle {
-            margin: 0;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        .grubkas-summary-chevron {
-            color: var(--text-muted);
-            font-size: 1.25rem;
-            transition: transform 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        .grubkas-info-card[open] .grubkas-summary-chevron {
-            transform: rotate(180deg);
-            color: #54cc74;
-        }
-
-        .grubkas-info-content {
-            padding: 1.75rem;
-            border-top: 1px solid var(--border-soft);
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .grubkas-info-grid {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .grubkas-info-block {
-            border: 1px solid var(--border-soft);
-            border-radius: 1rem;
-            padding: 1.25rem;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .grubkas-info-label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-            margin-bottom: 0.75rem;
-        }
-
-        .grubkas-info-label i {
-            font-size: 1rem;
-            color: #54cc74;
-        }
-
-        .grubkas-info-description {
-            margin: 0;
-            font-size: 0.95rem;
-            line-height: 1.65;
             color: var(--text-main);
         }
 
-        .grubkas-pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1rem;
+        body[data-theme='dark'] .summary-card {
+            background: linear-gradient(135deg, #2f5f8e 0%, #224a72 52%, #1a3a5a 100%);
+            border-color: rgba(148, 163, 184, 0.18);
         }
 
-        .grubkas-price-item {
-            border: 1px solid var(--border-soft);
-            border-radius: 1rem;
-            padding: 1.25rem;
-            text-align: center;
-            transition: all 0.3s ease;
+        body[data-theme='dark'] .summary-icon {
+            background: rgba(255, 255, 255, 0.14);
+            color: #f5c36b;
         }
 
-        .grubkas-price-item--main {
-            background: linear-gradient(135deg, rgba(46, 91, 135, 0.12), rgba(84, 204, 116, 0.08));
-            border-color: rgba(84, 204, 116, 0.3);
+        body[data-theme='dark'] .send-banner {
+            background: linear-gradient(135deg, rgba(46, 91, 135, 0.12), rgba(195, 143, 60, 0.08));
         }
 
-        .grubkas-price-item--main:hover {
-            border-color: rgba(84, 204, 116, 0.6);
-            background: linear-gradient(135deg, rgba(46, 91, 135, 0.18), rgba(84, 204, 116, 0.12));
-        }
-
-        .grubkas-price-item--secure {
-            background: linear-gradient(135deg, rgba(84, 204, 116, 0.08), rgba(76, 175, 80, 0.08));
-            border-color: rgba(76, 175, 80, 0.3);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .grubkas-price-item--secure:hover {
-            border-color: rgba(76, 175, 80, 0.6);
-            background: linear-gradient(135deg, rgba(84, 204, 116, 0.12), rgba(76, 175, 80, 0.12));
-        }
-
-        .price-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin: 0;
-        }
-
-        .price-amount {
-            font-family: 'Manrope', sans-serif;
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: #54cc74;
-            margin: 0;
-            line-height: 1;
-        }
-
-        .price-note {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin: 0;
-        }
-
-        .price-icon {
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            background: rgba(76, 175, 80, 0.15);
-            color: #4caf50;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-        }
-
-        .price-title {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin: 0.5rem 0 0.25rem;
-        }
-
-        .price-text {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin: 0;
-        }
-
-        .grubkas-functions {
-            border: 1px solid var(--border-soft);
-            border-radius: 1rem;
-            padding: 1.25rem;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .functions-label {
-            display: flex;
-            align-items: center;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
-
-        .functions-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1rem;
-        }
-
-        .function-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.85rem;
-            padding: 0.85rem;
-            border-radius: 0.85rem;
-            background: rgba(255, 255, 255, 0.02);
-            transition: all 0.2s ease;
-        }
-
-        .function-item:hover {
-            background: rgba(84, 204, 116, 0.08);
-        }
-
-        .function-icon {
-            width: 2rem;
-            height: 2rem;
-            border-radius: 0.6rem;
-            background: rgba(84, 204, 116, 0.15);
-            color: #54cc74;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.95rem;
-            flex-shrink: 0;
-        }
-
-        .function-text {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .function-title {
-            margin: 0 0 0.2rem;
-            font-size: 0.875rem;
-            font-weight: 700;
-            color: var(--text-main);
-            line-height: 1.3;
-        }
-
-        .function-desc {
-            margin: 0;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            line-height: 1.35;
-        }
-
-        .grubkas-allocation {
-            border: 1px solid var(--border-soft);
-            border-radius: 1rem;
-            padding: 1.25rem;
-            background: rgba(84, 204, 116, 0.05);
-            border-color: rgba(84, 204, 116, 0.2);
-        }
-
-        .allocation-label {
-            display: flex;
-            align-items: center;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-        }
-
-        .allocation-list {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.65rem;
-        }
-
-        .allocation-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.65rem;
-            font-size: 0.9375rem;
-            color: var(--text-main);
-            line-height: 1.5;
-        }
-
-        .allocation-list i {
-            flex-shrink: 0;
-            color: #54cc74;
-            font-size: 1rem;
-            margin-top: 0.1rem;
-        }
-
-        .grubkas-info-footer {
-            border-top: 1px solid var(--border-soft);
-            padding: 1.5rem;
-            background: rgba(84, 204, 116, 0.03);
-            text-align: center;
-        }
-
-        .grubkas-info-footer-text {
-            margin: 0;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        .grubkas-info-footer-text i {
-            color: #54cc74;
-            margin-right: 0.5rem;
-        }
-
-        /* Dark theme support for grubkas info */
-        body[data-theme='dark'] .grubkas-info-card {
-            border-color: rgba(148, 163, 184, 0.2);
-        }
-
-        body[data-theme='dark'] .grubkas-info-summary {
-            background: linear-gradient(135deg, rgba(30, 58, 95, 0.3), rgba(40, 80, 60, 0.2));
-            border-color: rgba(148, 163, 184, 0.15);
-        }
-
-        body[data-theme='dark'] .grubkas-info-card[open] .grubkas-info-summary {
-            border-color: rgba(84, 204, 116, 0.25);
-        }
-
-        body[data-theme='dark'] .grubkas-info-card[open] {
-            border-color: rgba(148, 163, 184, 0.35);
-        }
-
-        /* Mobile responsive */
-        @media (max-width: 768px) {
-            .grubkas-summary-content {
-                padding: 1.25rem;
-                flex-wrap: wrap;
-                gap: 0.5rem;
+        @media (max-width: 575.98px) {
+            .grubkas-page {
+                padding-top: 1rem;
             }
 
-            .grubkas-summary-left {
-                flex-basis: 100%;
+            .invoice-row,
+            .activity-item {
+                gap: 0.75rem;
             }
 
-            .grubkas-summary-title {
-                font-size: 1.1rem;
-            }
-
-            .grubkas-info-content {
-                padding: 1.25rem;
-            }
-
-            .grubkas-info-title {
-                font-size: 1.25rem;
-            }
-
-            .grubkas-pricing-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .functions-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .grubkas-price-item--secure {
-                padding: 1rem;
-            }
-
-            .grubkas-info-block {
-                padding: 1rem;
-            }
-
-            .grubkas-functions,
-            .grubkas-allocation {
-                padding: 1rem;
+            .summary-card .display-6 {
+                font-size: 1.9rem;
             }
         }
     </style>
 
+    <div class="grubkas-page">
+        <div class="grubkas-shell">
+            <div class="card summary-card text-white rounded-4 mb-3">
+                <div class="card-body p-3 p-md-4">
+                    <div class="d-flex gap-3 align-items-start">
+                        <div class="summary-icon">
+                            <i class="bi bi-tag-fill fs-5"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h1 class="h6 fw-bold mb-1 text-white">Iuran Keanggotaan Mingguan</h1>
+                            <p class="mb-3 small text-white-50">Kontribusi rutin mingguan untuk kas bersama Panitia Akhir
+                                Zaman. Dana digunakan untuk kegiatan, konsumsi rapat, dan operasional kelompok.</p>
+                            <div class="d-flex flex-wrap align-items-end gap-2">
+                                <div class="display-6 fw-bold mb-0">Rp 10.000</div>
+                                <div class="fw-semibold text-white-50 mb-1">/minggu per anggota</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card grubkas-card rounded-4 mb-3">
+                <div class="card-body p-0">
+                    <div class="px-3 px-md-4 py-3 border-bottom" style="border-color: rgba(255,255,255,0.08) !important;">
+                        <div class="section-title">Bayar Iuran Minggu Ini</div>
+                        <div class="section-subtitle">Pilih nama kamu lalu lanjut ke pembayaran</div>
+                    </div>
+
+                    <div class="px-3 px-md-4 py-3 border-bottom muted-divider">
+                        <div class="text-uppercase small fw-bold text-white-50 mb-3">Pilih nama anggota</div>
+
+                        <form action="{{ route('grubkas.detail') }}" method="POST" id="formBayar">
+                            @csrf
+
+                            <div class="row g-2 g-md-3">
+                                @foreach ($datauser as $item)
+                                    <div class="col-md-6">
+                                        <button type="button" class="member-card" data-nama="{{ $item->datasikad->nama }}"
+                                            data-nim="{{ $item->datasikad->Nim }}" data-tagihan="10000"
+                                            onclick="pilihMember(this)">
+                                            <span class="d-flex align-items-center">
+                                                <span
+                                                    class="badge-initial">{{ strtoupper(substr($item->datasikad->nama, 0, 2)) }}</span>
+                                                <span>
+                                                    <span class="member-name d-block"
+                                                        name='nama'>{{ $item->datasikad->nama }}</span>
+                                                    <span class="member-tag">Tagihan: Rp
+                                                        {{ number_format($item->Utang_Anggota, 0, ',', '.') }}</span>
+                                                </span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <input type="hidden" name="nama" id="nama">
+                            <input type="hidden" name="nim" id="nim">
+                            <input type="hidden" name="tagihan" id="tagihan">
+
+                            <div class="px-0 pt-3">
+                                <div class="invoice-row">
+                                    <span>Produk</span>
+                                    <strong>Iuran Keanggotaan Mingguan</strong>
+                                </div>
+                                <div class="invoice-row">
+                                    <span>Atas nama</span>
+                                    <strong id="previewNama">— belum dipilih —</strong>
+                                </div>
+                                <div class="invoice-row">
+                                    <span>NIM</span>
+                                    <strong id="previewNim">—</strong>
+                                </div>
+                                <div class="invoice-row invoice-total mb-3">
+                                    <span>Total Bayar</span>
+                                    <strong id="previewTagihan">Rp 0</strong>
+                                </div>
+
+                                <button class="btn pay-button mb-2" type="submit" id="btnBayar" disabled>
+                                    Bayar via Midtrans
+                                </button>
+                                <div class="security-note">
+                                    <i class="bi bi-lock-fill me-1"></i>
+                                    Secured by Midtrans - SSL Encrypted
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card grubkas-card rounded-4 mb-3">
+                <div class="card-body p-0">
+                    <div class="px-3 px-md-4 py-3 border-bottom d-flex justify-content-between align-items-center"
+                        style="border-color: rgba(255,255,255,0.08) !important;">
+                        <div>
+                            <div class="section-title mb-1">Aktivitas terbaru</div>
+                        </div>
+                        <span class="badge rounded-pill text-bg-secondary">Minggu ini</span>
+                    </div>
+
+                    <div class="px-3 px-md-4 py-2">
+                        <div class="activity-item">
+                            <div class="activity-left">
+                                <div class="activity-icon up"><i class="bi bi-arrow-up-short fs-4"></i></div>
+                                <div>
+                                    <div class="activity-title">Lisa Kurnia</div>
+                                    <div class="activity-meta">Kamis, 09 Mei - 07:55</div>
+                                </div>
+                            </div>
+                            <div class="activity-amount amount-positive">+Rp 10.000</div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-left">
+                                <div class="activity-icon up"><i class="bi bi-arrow-up-short fs-4"></i></div>
+                                <div>
+                                    <div class="activity-title">Andi Reza</div>
+                                    <div class="activity-meta">Rabu, 08 Mei - 16:20</div>
+                                </div>
+                            </div>
+                            <div class="activity-amount amount-positive">+Rp 10.000</div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-left">
+                                <div class="activity-icon down"><i class="bi bi-arrow-down-short fs-4"></i></div>
+                                <div>
+                                    <div class="activity-title">Pengeluaran Kas</div>
+                                    <div class="activity-meta">Minggu, 05 Mei - 19:00</div>
+                                </div>
+                            </div>
+                            <div class="activity-amount amount-negative">-Rp150.000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card grubkas-card send-banner rounded-4">
+                <div class="card-body p-3 p-md-4">
+                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="send-icon">
+                                <i class="bi bi-currency-dollar fs-5"></i>
+                            </div>
+                            <div>
+                                <div class="section-title">Kirim Dana</div>
+                                <div class="section-subtitle">Bukan anggota? Kirim dana bebas untuk keperluan apa saja
+                                </div>
+                            </div>
+                        </div>
+                        <a href="{{ route('grubkas.kirim-dana.page') }}" class="btn btn-send px-3 py-2">
+                            Kirim Dana <i class="bi bi-arrow-right-short fs-5 align-middle"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var tabButtons = document.querySelectorAll('.activity-tabs .tab-btn[data-filter]');
-            var activityItems = document.querySelectorAll('#activity-list .activity-dropdown');
-            var emptyState = document.getElementById('activity-filter-empty');
-            var pickerItems = document.querySelectorAll('.member-picker-item[data-nim]');
-            var payerInfoInput = document.getElementById('payer-info');
-            var selectedNameEl = document.getElementById('payment-selected-name');
-            var paymentSubmitBtn = document.getElementById('payment-submit-btn');
-            var paymentForm = document.querySelector('form[action="/bayar"]');
+        function pilihMember(button) {
+            const nama = button.dataset.nama;
+            const nim = button.dataset.nim;
+            const tagihan = button.dataset.tagihan;
 
-            function applyActivityFilter(filterKey) {
-                var visibleCount = 0;
+            document.querySelectorAll('.member-card').forEach((item) => item.classList.remove('is-selected'));
+            button.classList.add('is-selected');
 
-                activityItems.forEach(function(item) {
-                    var periodValues = (item.getAttribute('data-periods') || '')
-                        .split(',')
-                        .map(function(value) {
-                            return value.trim();
-                        })
-                        .filter(Boolean);
+            document.getElementById('nama').value = nama;
+            document.getElementById('nim').value = nim;
+            document.getElementById('tagihan').value = tagihan;
 
-                    var isVisible = periodValues.indexOf(filterKey) !== -1;
+            document.getElementById('previewNama').innerText = nama;
+            document.getElementById('previewNim').innerText = nim;
+            document.getElementById('previewTagihan').innerText = 'Rp ' + Number(tagihan).toLocaleString('id-ID');
 
-                    item.classList.toggle('d-none', !isVisible);
-
-                    if (isVisible) {
-                        visibleCount += 1;
-                    } else {
-                        item.removeAttribute('open');
-                    }
-                });
-
-                if (emptyState) {
-                    emptyState.classList.toggle('d-none', visibleCount > 0);
-                }
-            }
-
-            if (tabButtons.length && activityItems.length) {
-                tabButtons.forEach(function(button) {
-                    button.addEventListener('click', function() {
-                        tabButtons.forEach(function(otherButton) {
-                            otherButton.classList.remove('active');
-                        });
-
-                        button.classList.add('active');
-                        applyActivityFilter(button.getAttribute('data-filter'));
-                    });
-                });
-
-                var activeButton = document.querySelector('.activity-tabs .tab-btn.active[data-filter]');
-                applyActivityFilter(activeButton ? activeButton.getAttribute('data-filter') : 'minggu-1');
-            }
-
-            function setSelectedMember(element) {
-                if (!payerInfoInput || !selectedNameEl) {
-                    return;
-                }
-
-                pickerItems.forEach(function(item) {
-                    item.classList.remove('is-selected');
-                    item.setAttribute('aria-pressed', 'false');
-                });
-
-                if (!element) {
-                    payerInfoInput.value = '';
-                    selectedNameEl.textContent = '-';
-                    var totalAmountEl = document.getElementById('payment-total-amount');
-                    var buttonTextEl = document.getElementById('payment-button-text');
-                    if (totalAmountEl) {
-                        totalAmountEl.textContent = 'Rp 0';
-                    }
-                    if (buttonTextEl) {
-                        buttonTextEl.textContent = 'Bayar Rp 0';
-                    }
-                    if (paymentSubmitBtn) {
-                        paymentSubmitBtn.setAttribute('disabled', 'disabled');
-                    }
-                    return;
-                }
-
-                element.classList.add('is-selected');
-                element.setAttribute('aria-pressed', 'true');
-                payerInfoInput.value = element.getAttribute('data-nim') || '';
-                selectedNameEl.textContent = element.getAttribute('data-name') || '-';
-
-                // Update total amount dynamically based on selected member's nominal
-                var nominal = parseInt(element.getAttribute('data-nominal') || '0', 10);
-                var totalAmountEl = document.getElementById('payment-total-amount');
-                var buttonTextEl = document.getElementById('payment-button-text');
-
-                if (totalAmountEl) {
-                    // Format nominal ke currency
-                    var formattedNominal = new Intl.NumberFormat('id-ID', {
-                        style: 'currency',
-                        currency: 'IDR',
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0
-                    }).format(nominal);
-                    totalAmountEl.textContent = formattedNominal;
-                }
-
-                if (buttonTextEl) {
-                    var formattedButtonText = new Intl.NumberFormat('id-ID', {
-                        style: 'currency',
-                        currency: 'IDR',
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0
-                    }).format(nominal);
-                    buttonTextEl.textContent = 'Bayar ' + formattedButtonText;
-                }
-
-                if (paymentSubmitBtn && payerInfoInput.value !== '') {
-                    paymentSubmitBtn.removeAttribute('disabled');
-                }
-            }
-
-            if (pickerItems.length) {
-                pickerItems.forEach(function(item) {
-                    item.setAttribute('aria-pressed', 'false');
-                    item.addEventListener('click', function() {
-                        setSelectedMember(item);
-                    });
-                });
-
-                setSelectedMember(null);
-            }
-
-            if (paymentForm) {
-                paymentForm.addEventListener('submit', function(event) {
-                    if (!payerInfoInput || payerInfoInput.value.trim() === '') {
-                        event.preventDefault();
-                        alert('Pilih nama anggota terlebih dahulu.');
-                    }
-                });
-            }
-        });
+            document.getElementById('btnBayar').disabled = false;
+        }
     </script>
 @endsection
