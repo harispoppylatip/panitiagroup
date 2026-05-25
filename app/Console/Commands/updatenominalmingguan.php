@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Datasikadmodel;
 use App\Models\grubkas;
+use App\Models\StatusPembayaranModel;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,8 @@ class updatenominalmingguan extends Command
 
     public function handle()
     {
+        $this->ensureStatusPembayaranDefaults();
+
         $setting = $this->ambilSettingFinance();
         $weeklyFee = (int) ($setting['weekly_fee'] ?? 10000);
         $deskripsi = $setting['default_weekly_description'] ?: 'Tagihan mingguan otomatis';
@@ -58,6 +61,26 @@ class updatenominalmingguan extends Command
         ]);
 
         $this->info('Tagihan mingguan berhasil diperbarui untuk ' . $jumlah . ' anggota.');
+    }
+
+    private function ensureStatusPembayaranDefaults(): void
+    {
+        if (!Schema::hasTable('Status_Pembayaran')) {
+            return;
+        }
+
+        $defaults = [
+            1 => 'Belum Bayar',
+            2 => 'Menunggu Konfirmasi',
+            3 => 'Sudah Bayar',
+        ];
+
+        foreach ($defaults as $statusId => $statusLabel) {
+            StatusPembayaranModel::firstOrCreate(
+                ['Status_id' => $statusId],
+                ['Status' => $statusLabel]
+            );
+        }
     }
 
     private function ambilSettingFinance(): array
