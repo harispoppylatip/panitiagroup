@@ -383,26 +383,46 @@
             @csrf
             <div class="payment-header">
                 <div class="payment-title">Jumlah yang Mau Dibayar</div>
+                <div class="payment-subtitle">Status: {{ $paymentStatusLabel ?? 'Belum Bayar' }}</div>
             </div>
 
             <div class="card-body p-3 p-md-4 payment-inner">
                 <input type="hidden" name="nama" value="{{ $data->datasikad->nama }}">
                 <input type="hidden" name="nim" value="{{ $data->datasikad->Nim }}">
-                <input type="hidden" name="uang" id="paymentAmountInput" value="{{ $data->Utang_Anggota }}">
+                <input type="hidden" name="uang" id="paymentAmountInput"
+                    value="{{ max(0, (int) $data->Utang_Anggota) }}">
 
                 <div class="choice-grid mb-3" id="paymentChoices">
                     <button type="button" class="choice-card is-button is-active" data-choice="20"
-                        data-amount="{{ $data->Utang_Anggota }}" data-label="Iuran + Lunasi"
-                        data-display="Rp {{ number_format($data->Utang_Anggota, 0, ',', '.') }}">
+                        data-amount="{{ max(0, (int) $data->Utang_Anggota) }}" data-label="Iuran + Lunasi"
+                        data-display="Rp {{ number_format(max(0, (int) $data->Utang_Anggota), 0, ',', '.') }}"
+                        @disabled(!($canPay ?? true))>
                         <div class="choice-label">Lunasi</div>
-                        <div class="choice-value">Rp {{ number_format($data->Utang_Anggota, 0, ',', '.') }}</div>
+                        <div class="choice-value">Rp {{ number_format(max(0, (int) $data->Utang_Anggota), 0, ',', '.') }}
+                        </div>
                     </button>
                     <button type="button" class="choice-card is-button" data-choice="custom" data-label="Jumlah lain"
-                        data-display="Custom">
+                        data-display="Custom" @disabled(!($canPay ?? true))>
                         <div class="choice-label">Jumlah lain</div>
                         <div class="choice-value">Custom</div>
                     </button>
                 </div>
+
+                @unless ($canPay ?? true)
+                    <div class="alert alert-warning mb-3">
+                        Tagihan saat ini nol, jadi pembayaran via Midtrans tidak tersedia.
+                    </div>
+                @endunless
+
+                @if (!empty($rejectionReason))
+                    <div class="alert alert-danger mb-3">
+                        <strong>Pembayaran ditolak:</strong> {{ $rejectionReason }}
+                    </div>
+                @elseif (($data->Status_Pembayaran ?? 1) === 2)
+                    <div class="alert alert-info mb-3">
+                        Pembayaran sedang menunggu konfirmasi admin.
+                    </div>
+                @endif
 
                 <div class="custom-amount-box" id="customAmountBox">
                     <div class="custom-amount-label">Masukkan jumlah yang mau dibayar</div>
@@ -423,9 +443,16 @@
                         <div class="label">NIM</div>
                         <div class="value">{{ $data->datasikad->Nim }}</div>
                     </div>
+                    <div class="detail-row">
+                        <div class="label">Status pembayaran</div>
+                        <div
+                            class="value {{ ($data->Status_Pembayaran ?? 1) === 3 ? 'is-success' : (($data->Status_Pembayaran ?? 1) === 2 ? 'is-warning' : '') }}">
+                            {{ $paymentStatusLabel ?? 'Belum Bayar' }}</div>
+                    </div>
                     <div class="detail-row mb-0">
                         <div class="label">Total utang</div>
-                        <div class="value is-warning">{{ number_format($data->Utang_Anggota, 0, ',', '.') }}</div>
+                        <div class="value is-warning">{{ number_format(max(0, (int) $data->Utang_Anggota), 0, ',', '.') }}
+                        </div>
                     </div>
 
                     <hr class="detail-divider">
@@ -433,12 +460,12 @@
                     <div class="detail-row mb-0">
                         <div class="label fw-bold text-main">Bayar Sekarang</div>
                         <div class="value is-primary" id="currentPayAmount">Rp
-                            {{ number_format($data->Utang_Anggota, 0, ',', '.') }}</div>
+                            {{ number_format(max(0, (int) $data->Utang_Anggota), 0, ',', '.') }}</div>
                     </div>
                 </div>
 
-                <button type="submit" class="pay-button mb-2" id="payNowButton">Bayar
-                    {{ number_format($data->Utang_Anggota, 0, ',', '.') }}</button>
+                <button type="submit" class="pay-button mb-2" id="payNowButton" @disabled(!($canPay ?? true))>
+                    {{ $canPay ?? true ? 'Bayar ' . number_format(max(0, (int) $data->Utang_Anggota), 0, ',', '.') : 'Tidak ada tagihan' }}</button>
             </div>
         </form>
     </div>
@@ -454,6 +481,10 @@
             const customAmountBox = document.getElementById('customAmountBox');
             const customAmountInput = document.getElementById('customAmountInput');
             const applyCustomAmountButton = document.getElementById('applyCustomAmount');
+
+            if (payNowButton.disabled) {
+                return;
+            }
 
             if (!choiceButtons.length || !currentPayAmount || !payNowButton || !paymentForm ||
                 !paymentAmountInput || !customAmountBox || !customAmountInput || !applyCustomAmountButton) {

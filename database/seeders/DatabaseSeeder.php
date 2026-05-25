@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             DefaultAdminUserSeeder::class,
             UserSeeder::class,
+            StatusPembayaranSeeder::class,
+            grubkasdashboardseeder::class
         ]);
     }
 }

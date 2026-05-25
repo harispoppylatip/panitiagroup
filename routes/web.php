@@ -12,6 +12,7 @@ use App\Http\Controllers\tokencontroller;
 use App\Http\Controllers\BarcodeController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\payment\admingrubkas;
 use App\Http\Controllers\payment\grubkascontroller;
 use App\Http\Controllers\test;
 use App\Models\grubkas;
@@ -44,6 +45,16 @@ Route::middleware('auth')->prefix('admin')->group(function() {
     });
 
     Route::middleware('role:admin,akuntan')->group(function () {
+        Route::get('/finance', [admingrubkas::class, 'index'])->name('admin.finance.index');
+        Route::post('/finance/settings', [admingrubkas::class, 'updateSettings'])->name('admin.finance.settings.update');
+        Route::post('/finance/manual-cash', [admingrubkas::class, 'storeManualCash'])->name('admin.finance.manual-cash.store');
+        Route::post('/finance/manual-debt', [admingrubkas::class, 'storeManualDebt'])->name('admin.finance.manual-debt.store');
+        Route::post('/finance/{nim}/approve', [admingrubkas::class, 'approvePayment'])->name('admin.finance.payment.approve');
+        Route::post('/finance/{nim}/reject', [admingrubkas::class, 'rejectPayment'])->name('admin.finance.payment.reject');
+        Route::middleware('role:admin')->group(function () {
+            Route::post('/finance/reset', [admingrubkas::class, 'resetAll'])->name('admin.finance.reset');
+        });
+
         // token control
         Route::get('/inserttoken', [AdminController::class, 'inserttoken'])->name('admin.inserttoken.form');
         Route::get('/membertoken', [tokencontroller::class, 'index'])->name('admin.membertoken');
@@ -99,9 +110,11 @@ Route::middleware(['auth', 'role:scanabsen'])->group(function () {
 // jadwal
 Route::get('/test', function(){
     grubkas::create([
-        'Nim_Key' => '2411102441203',
+        'Nim_key' => '2411102441203',
         'Utang_Anggota' => '10000',
     ]);
     echo 'sussess';
 });
+
+Route::get('/uy', [test::class, 'index']);
 Route::get('/update', [test::class, 'updatemingguan']);

@@ -15,12 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('Nim_key', 20);
             $table->foreign('Nim_key')->references('Nim')->on('datasikad')->cascadeOnDelete();
-            $table->integer('Utang_Anggota')->default(0);
             $table->integer('Saldo_Lebih')->default(0);
-            $table->text('Pending_Konfirmasi')->default('belum bayar');
+            $table->integer('Utang_Anggota')->default(0);
             $table->text('Keterangan')->nullable();
-            $table->text('link_code')->nullable();
-            $table->text('order_id')->nullable();
+            $table->text('Bukti_Pembayaran')->nullable();
+            $table->integer('Status_Pembayaran')->default(1);
             $table->timestamps();
         });
     }

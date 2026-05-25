@@ -2,6 +2,41 @@
 
 @section('konten')
     <style>
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.85rem;
+        }
+
+        .stat-card {
+            border-radius: 1rem;
+            padding: 0.95rem 1rem;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-label {
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.68);
+            font-weight: 800;
+        }
+
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-top: 0.3rem;
+            color: #ffffff;
+        }
+
+        .stat-meta {
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.68);
+            margin-top: 0.2rem;
+        }
+
         .grubkas-page {
             padding: 1.5rem 0 2.5rem;
             background:
@@ -106,6 +141,37 @@
             color: var(--accent);
         }
 
+        .member-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.72rem;
+            font-weight: 800;
+            margin-top: 0.2rem;
+            opacity: 0.9;
+        }
+
+        .member-status.is-paid {
+            color: #86efac;
+        }
+
+        .member-status.is-pending {
+            color: #fcd34d;
+        }
+
+        .member-status.is-unpaid {
+            color: #bfdbfe;
+        }
+
+        .member-status.is-rejected {
+            color: #fca5a5;
+        }
+
+        .member-card.is-disabled {
+            opacity: 0.58;
+            cursor: not-allowed;
+        }
+
         .invoice-row {
             display: flex;
             justify-content: space-between;
@@ -199,6 +265,14 @@
             color: #b45309;
         }
 
+        .activity-amount.amount-positive {
+            color: #86efac;
+        }
+
+        .activity-amount.amount-negative {
+            color: #fca5a5;
+        }
+
         .send-banner {
             background: linear-gradient(135deg, rgba(46, 91, 135, 0.08), rgba(195, 143, 60, 0.08));
             border: 1px solid var(--border-soft);
@@ -267,6 +341,10 @@
             .summary-card .display-6 {
                 font-size: 1.9rem;
             }
+
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 
@@ -283,8 +361,26 @@
                             <p class="mb-3 small text-white-50">Kontribusi rutin mingguan untuk kas bersama Panitia Akhir
                                 Zaman. Dana digunakan untuk kegiatan, konsumsi rapat, dan operasional kelompok.</p>
                             <div class="d-flex flex-wrap align-items-end gap-2">
-                                <div class="display-6 fw-bold mb-0">Rp 10.000</div>
-                                <div class="fw-semibold text-white-50 mb-1">/minggu per anggota</div>
+                                <div class="display-6 fw-bold mb-0">Rp {{ number_format($totalKas, 0, ',', '.') }}</div>
+                                <div class="fw-semibold text-white-50 mb-1">saldo kas saat ini</div>
+                            </div>
+
+                            <div class="stat-grid">
+                                <div class="stat-card">
+                                    <div class="stat-label">Total masuk</div>
+                                    <div class="stat-value">Rp {{ number_format($totalMasuk, 0, ',', '.') }}</div>
+                                    <div class="stat-meta">Pembayaran yang sudah dikonfirmasi</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Total keluar</div>
+                                    <div class="stat-value">Rp {{ number_format($totalKeluar, 0, ',', '.') }}</div>
+                                    <div class="stat-meta">Pengeluaran kas terbaru</div>
+                                </div>
+                                {{-- <div class="stat-card">
+                                    <div class="stat-label">Aktivitas terbaru</div>
+                                    <div class="stat-value">{{ count($activityLogs) }} entri</div>
+                                    <div class="stat-meta">Masuk dan keluar terakhir</div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -306,10 +402,29 @@
 
                             <div class="row g-2 g-md-3">
                                 @foreach ($datauser as $item)
+                                    @php
+                                        $tagihan = max(0, (int) $item->Utang_Anggota);
+                                        $statusId = (int) $item->Status_Pembayaran;
+                                        $statusLabel = match ($statusId) {
+                                            1 => 'Belum Bayar',
+                                            2 => 'Menunggu Konfirmasi',
+                                            3 => 'Sudah Bayar',
+                                            4 => 'Ditolak',
+                                            default => 'Status Tidak Diketahui',
+                                        };
+                                        $statusClass = match ($statusId) {
+                                            1 => 'is-unpaid',
+                                            2 => 'is-pending',
+                                            3 => 'is-paid',
+                                            4 => 'is-rejected',
+                                            default => 'is-unpaid',
+                                        };
+                                    @endphp
                                     <div class="col-md-6">
-                                        <button type="button" class="member-card" data-nama="{{ $item->datasikad->nama }}"
-                                            data-nim="{{ $item->datasikad->Nim }}" data-tagihan="10000"
-                                            onclick="pilihMember(this)">
+                                        <button type="button" class="member-card {{ $tagihan < 1 ? 'is-disabled' : '' }}"
+                                            data-nama="{{ $item->datasikad->nama }}" data-nim="{{ $item->datasikad->Nim }}"
+                                            data-tagihan="{{ $tagihan }}" data-status="{{ $statusLabel }}"
+                                            @disabled($tagihan < 1) onclick="pilihMember(this)">
                                             <span class="d-flex align-items-center">
                                                 <span
                                                     class="badge-initial">{{ strtoupper(substr($item->datasikad->nama, 0, 2)) }}</span>
@@ -317,7 +432,9 @@
                                                     <span class="member-name d-block"
                                                         name='nama'>{{ $item->datasikad->nama }}</span>
                                                     <span class="member-tag">Tagihan: Rp
-                                                        {{ number_format($item->Utang_Anggota, 0, ',', '.') }}</span>
+                                                        {{ number_format($tagihan, 0, ',', '.') }}</span>
+                                                    <span class="member-status {{ $statusClass }}"><i
+                                                            class="bi bi-flag-fill"></i>{{ $statusLabel }}</span>
                                                 </span>
                                             </span>
                                         </button>
@@ -347,12 +464,15 @@
                                     <strong id="previewTagihan">Rp 0</strong>
                                 </div>
 
+                                <div id="previewStatus" class="small text-white-50 mb-3">Pilih anggota untuk melihat status
+                                    pembayaran.</div>
+
                                 <button class="btn pay-button mb-2" type="submit" id="btnBayar" disabled>
-                                    Bayar via Midtrans
+                                    Detail pembayaran
                                 </button>
                                 <div class="security-note">
                                     <i class="bi bi-lock-fill me-1"></i>
-                                    Secured by Midtrans - SSL Encrypted
+                                    Detail pembayaran aman - SSL Encrypted
                                 </div>
                             </div>
                         </form>
@@ -371,38 +491,25 @@
                     </div>
 
                     <div class="px-3 px-md-4 py-2">
-                        <div class="activity-item">
-                            <div class="activity-left">
-                                <div class="activity-icon up"><i class="bi bi-arrow-up-short fs-4"></i></div>
-                                <div>
-                                    <div class="activity-title">Lisa Kurnia</div>
-                                    <div class="activity-meta">Kamis, 09 Mei - 07:55</div>
+                        @forelse ($activityLogs as $activity)
+                            <div class="activity-item">
+                                <div class="activity-left">
+                                    <div class="activity-icon {{ $activity['type'] === 'out' ? 'down' : 'up' }}"><i
+                                            class="bi {{ $activity['type'] === 'out' ? 'bi-arrow-down-short' : 'bi-arrow-up-short' }} fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <div class="activity-title">{{ $activity['title'] }}</div>
+                                        <div class="activity-meta">{{ $activity['detail'] ?: 'Aktivitas kas terbaru' }} ·
+                                            {{ $activity['time'] }}</div>
+                                    </div>
                                 </div>
+                                <div
+                                    class="activity-amount {{ $activity['type'] === 'out' ? 'amount-negative' : 'amount-positive' }}">
+                                    {{ $activity['amount'] }}</div>
                             </div>
-                            <div class="activity-amount amount-positive">+Rp 10.000</div>
-                        </div>
-
-                        <div class="activity-item">
-                            <div class="activity-left">
-                                <div class="activity-icon up"><i class="bi bi-arrow-up-short fs-4"></i></div>
-                                <div>
-                                    <div class="activity-title">Andi Reza</div>
-                                    <div class="activity-meta">Rabu, 08 Mei - 16:20</div>
-                                </div>
-                            </div>
-                            <div class="activity-amount amount-positive">+Rp 10.000</div>
-                        </div>
-
-                        <div class="activity-item">
-                            <div class="activity-left">
-                                <div class="activity-icon down"><i class="bi bi-arrow-down-short fs-4"></i></div>
-                                <div>
-                                    <div class="activity-title">Pengeluaran Kas</div>
-                                    <div class="activity-meta">Minggu, 05 Mei - 19:00</div>
-                                </div>
-                            </div>
-                            <div class="activity-amount amount-negative">-Rp150.000</div>
-                        </div>
+                        @empty
+                            <div class="text-center text-white-50 py-3">Belum ada aktivitas kas yang tercatat.</div>
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -431,9 +538,14 @@
 
     <script>
         function pilihMember(button) {
+            if (button.disabled) {
+                return;
+            }
+
             const nama = button.dataset.nama;
             const nim = button.dataset.nim;
             const tagihan = button.dataset.tagihan;
+            const status = button.dataset.status || 'Status Tidak Diketahui';
 
             document.querySelectorAll('.member-card').forEach((item) => item.classList.remove('is-selected'));
             button.classList.add('is-selected');
@@ -444,9 +556,12 @@
 
             document.getElementById('previewNama').innerText = nama;
             document.getElementById('previewNim').innerText = nim;
-            document.getElementById('previewTagihan').innerText = 'Rp ' + Number(tagihan).toLocaleString('id-ID');
+            document.getElementById('previewTagihan').innerText = Number(tagihan) > 0 ? 'Rp ' + Number(tagihan)
+                .toLocaleString('id-ID') : 'Rp 0';
+            document.getElementById('previewStatus').innerText = 'Status pembayaran: ' + status + (Number(tagihan) > 0 ?
+                '' : ' · tidak ada tagihan yang bisa dibayar.');
 
-            document.getElementById('btnBayar').disabled = false;
+            document.getElementById('btnBayar').disabled = Number(tagihan) < 1;
         }
     </script>
 @endsection

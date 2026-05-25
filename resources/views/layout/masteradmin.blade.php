@@ -128,6 +128,27 @@
             }
         }
 
+        @media (max-width: 767.98px) {
+            .navbar .navbar-collapse {
+                border-top: 1px solid var(--border-soft);
+                padding: 0.5rem 0;
+                visibility: visible !important;
+            }
+
+            .navbar .navbar-collapse.collapsing,
+            .navbar .navbar-collapse.show {
+                visibility: visible !important;
+            }
+
+            .navbar .navbar-nav {
+                width: 100%;
+            }
+
+            .navbar .nav-link {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+
         .navbar-brand {
             color: #fff !important;
             font-weight: 800;
@@ -246,6 +267,13 @@
                             </li>
                         @endif
                     @endforeach
+
+                    @if (in_array($currentRole, ['admin', 'akuntan'], true))
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.finance.*') ? 'active' : '' }}"
+                                href="{{ route('admin.finance.index') }}">Keuangan</a>
+                        </li>
+                    @endif
 
                     @if ($adminOnlyMenuVisible)
                         <li class="nav-item">
