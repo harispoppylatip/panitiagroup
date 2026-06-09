@@ -118,3 +118,18 @@ Route::get('/test', function(){
 
 Route::get('/uy', [test::class, 'index']);
 Route::get('/update', [test::class, 'updatemingguan']);
+
+
+Route::get('/mqtt-test', function () {
+    return view('pages.mqtt-test');
+});
+
+use Illuminate\Support\Facades\Cache;
+
+Route::get('/mqtt-data', function () {
+
+    return response()->json(
+        Cache::get('latest_bms', [])
+    );
+
+});

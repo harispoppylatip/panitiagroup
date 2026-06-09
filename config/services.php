@@ -40,4 +40,10 @@ return [
         ],
     ],
 
+    'mqtt' => [
+        'Mqtt_broker' => env('MQTT_BROKER'),
+        'Client_ID' => env('CLIENT_ID'),
+        'Client_Subcribe' => env('MQTT_SUBSCRIBE'),
+    ],
+
 ];
