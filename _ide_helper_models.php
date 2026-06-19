@@ -59,9 +59,28 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews query()
+ */
+	class MakamNews extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property int $id
+ * @property int $Status_id
+ * @property string $Status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusPembayaranModel newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusPembayaranModel newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusPembayaranModel query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusPembayaranModel whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusPembayaranModel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusPembayaranModel whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusPembayaranModel whereStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusPembayaranModel whereUpdatedAt($value)
  */
 	class StatusPembayaranModel extends \Eloquent {}
 }
@@ -175,9 +194,12 @@ namespace App\Models{
  * @property int $Utang_Anggota
  * @property string|null $Keterangan
  * @property string|null $Bukti_Pembayaran
- * @property string $Pending_Konfirmasi
+ * @property int $Nominal_Bayar
+ * @property string|null $Tanggal_Pembayaran
+ * @property int $Status_Pembayaran
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\StatusPembayaranModel $Status
  * @property-read \App\Models\Datasikadmodel $datasikad
  * @method static \Illuminate\Database\Eloquent\Builder<static>|grubkas newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|grubkas newQuery()
@@ -187,8 +209,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|grubkas whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|grubkas whereKeterangan($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|grubkas whereNimKey($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|grubkas wherePendingKonfirmasi($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|grubkas whereNominalBayar($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|grubkas whereSaldoLebih($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|grubkas whereStatusPembayaran($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|grubkas whereTanggalPembayaran($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|grubkas whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|grubkas whereUtangAnggota($value)
  */
@@ -210,6 +234,33 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|modelpost whereTanggalUpload($value)
  */
 	class modelpost extends \Eloquent {}
+}
+
+namespace App\Models\payment{
+/**
+ * @property int $id
+ * @property int $Iuran_Perminggu
+ * @property int $Total_Saldo
+ * @property int $Total_Masuk
+ * @property int $Total_Keluar
+ * @property int $Jumlah_belum_bayar
+ * @property int $Jumlah_Sudah_bayar
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereIuranPerminggu($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereJumlahBelumBayar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereJumlahSudahBayar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereTotalKeluar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereTotalMasuk($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereTotalSaldo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereUpdatedAt($value)
+ */
+	class GrubkasDashboard extends \Eloquent {}
 }
 
 namespace App\Models{

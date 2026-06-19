@@ -16,8 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'role'=>rolemember::class,
-            'whatsapp_auth'=>whatsappchecker::class
-
+            'whatsapp_auth'=>whatsappchecker::class,
+            'makam_auth'=>\App\Http\Middleware\MakamAuth::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

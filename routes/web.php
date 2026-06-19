@@ -133,3 +133,38 @@ Route::get('/mqtt-data', function () {
     );
 
 });
+
+// =====================
+// MAKAM ADMIN PANEL
+// =====================
+use App\Http\Controllers\Makam\MakamAuthController;
+use App\Http\Controllers\Makam\MakamNewsController;
+
+Route::prefix('admin/makam')->group(function () {
+    // Login routes (no middleware)
+    Route::get('/login', [AdminAuthController::class, 'showMakamLoginForm'])->name('makam.login');
+    Route::post('/login', [AdminAuthController::class, 'login'])->name('makam.login.submit');
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('makam.logout');
+
+    // Protected routes
+    Route::middleware('role:makam')->group(function () {
+        Route::get('/', function () {
+            return redirect()->route('makam.dashboard');
+        })->name('makam.index');
+
+        Route::get('/dashboard', function () {
+            $totalNews = \App\Models\MakamNews::count();
+            $latestNews = \App\Models\MakamNews::latest()->take(5)->get();
+            return view('makam.dashboard', compact('totalNews', 'latestNews'));
+        })->name('makam.dashboard');
+
+        Route::get('/news', [MakamNewsController::class, 'index'])->name('makam.news.index');
+        Route::get('/news/create', [MakamNewsController::class, 'create'])->name('makam.news.create');
+        Route::post('/news', [MakamNewsController::class, 'store'])->name('makam.news.store');
+        Route::get('/news/{id}/edit', [MakamNewsController::class, 'edit'])->name('makam.news.edit');
+        Route::put('/news/{id}', [MakamNewsController::class, 'update'])->name('makam.news.update');
+        Route::delete('/news/{id}', [MakamNewsController::class, 'destroy'])->name('makam.news.destroy');
+    });
+});
+
+Route::get('/beritamakam', [MakamNewsController::class, 'AmbilData']);

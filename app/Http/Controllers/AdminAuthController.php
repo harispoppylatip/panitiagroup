@@ -15,6 +15,11 @@ class AdminAuthController extends Controller
         return view('admin.login');
     }
 
+    public function showMakamLoginForm()
+    {
+        return view('makam.login');
+    }
+
     public function login(Request $request): RedirectResponse
     {
         $request->validate([
@@ -58,6 +63,7 @@ class AdminAuthController extends Controller
                 'admin' => route('admin.beranda.index'),
                 'akuntan' => route('admin.finance.index'),
                 'anggota' => route('admin.beranda.index'),
+                'makam' => route('makam.dashboard'),
                 default => route('scan.barcode'),
             };
 

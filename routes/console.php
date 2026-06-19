@@ -10,3 +10,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command('app:refreshtoken')->dailyAt('00:00');
 Schedule::command('app:updatenominalmingguan')->mondays()->at('00:00');
+Schedule::command('mqtt:listen')->everySecond();
