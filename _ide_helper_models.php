@@ -59,11 +59,48 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @property int $id
+ * @property string $title
+ * @property string $content
+ * @property string|null $image_url
+ * @property string|null $author
+ * @property \Illuminate\Support\Carbon|null $published_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews whereAuthor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews whereImageUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews wherePublishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews whereUpdatedAt($value)
  */
 	class MakamNews extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property-read \App\Models\MakamType|null $makamType
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamOrder newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamOrder newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamOrder query()
+ */
+	class MakamOrder extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MakamOrder> $orders
+ * @property-read int|null $orders_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamType query()
+ */
+	class MakamType extends \Eloquent {}
 }
 
 namespace App\Models{

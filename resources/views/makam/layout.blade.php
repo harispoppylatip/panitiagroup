@@ -318,6 +318,18 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('makam.types.*') ? 'active' : '' }}"
+                            href="{{ route('makam.types.index') }}">
+                            <i class="bi bi-box-seam"></i> Jenis Makam
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('makam.orders.*') ? 'active' : '' }}"
+                            href="{{ route('makam.orders.index') }}">
+                            <i class="bi bi-cart"></i> Pesanan
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('makam.news.*') ? 'active' : '' }}"
                             href="{{ route('makam.news.index') }}">
                             <i class="bi bi-newspaper"></i> Berita

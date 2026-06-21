@@ -6,13 +6,63 @@
             <h2 class="fw-bold mb-1">Dashboard</h2>
             <p class="text-muted mb-0">Selamat datang di Makam Admin Panel</p>
         </div>
-        <a href="{{ route('makam.news.create') }}" class="btn btn-makam">
-            <i class="bi bi-plus-lg"></i> Tambah Berita
-        </a>
+        <div class="d-flex gap-2">
+            <a href="{{ route('makam.types.create') }}" class="btn btn-makam">
+                <i class="bi bi-plus-lg"></i> Tambah Jenis Makam
+            </a>
+            <a href="{{ route('makam.news.create') }}" class="btn btn-makam-outline">
+                <i class="bi bi-plus-lg"></i> Tambah Berita
+            </a>
+        </div>
     </div>
 
     <div class="row g-4 mb-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <div class="card stat-card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="stat-icon" style="background: rgba(64, 145, 108, 0.12); color: var(--accent);">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
+                        <div>
+                            <p class="text-muted small mb-0">Jenis Makam</p>
+                            <h3 class="fw-bold mb-0" style="color: var(--text-main);">{{ $totalTypes }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="stat-icon" style="background: rgba(45, 106, 79, 0.12); color: var(--brand-500);">
+                            <i class="bi bi-cart"></i>
+                        </div>
+                        <div>
+                            <p class="text-muted small mb-0">Total Pesanan</p>
+                            <h3 class="fw-bold mb-0" style="color: var(--text-main);">{{ $totalOrders }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="stat-icon" style="background: rgba(255, 193, 7, 0.12); color: #ffc107;">
+                            <i class="bi bi-clock-history"></i>
+                        </div>
+                        <div>
+                            <p class="text-muted small mb-0">Pesanan Baru</p>
+                            <h3 class="fw-bold mb-0" style="color: var(--text-main);">{{ $pendingOrders }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
             <div class="card stat-card border-0 shadow-sm h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center gap-3">
@@ -22,38 +72,6 @@
                         <div>
                             <p class="text-muted small mb-0">Total Berita</p>
                             <h3 class="fw-bold mb-0" style="color: var(--text-main);">{{ $totalNews }}</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card stat-card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="stat-icon" style="background: rgba(15, 52, 96, 0.12); color: var(--brand-500);">
-                            <i class="bi bi-person"></i>
-                        </div>
-                        <div>
-                            <p class="text-muted small mb-0">Admin</p>
-                            <h3 class="fw-bold mb-0" style="color: var(--text-main);">1</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card stat-card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="stat-icon" style="background: rgba(233, 69, 96, 0.08); color: var(--accent);">
-                            <i class="bi bi-calendar-check"></i>
-                        </div>
-                        <div>
-                            <p class="text-muted small mb-0">Terbit Hari Ini</p>
-                            <h3 class="fw-bold mb-0" style="color: var(--text-main);">
-                                {{ \App\Models\MakamNews::whereDate('published_at', today())->count() }}
-                            </h3>
                         </div>
                     </div>
                 </div>

@@ -139,6 +139,8 @@ Route::get('/mqtt-data', function () {
 // =====================
 use App\Http\Controllers\Makam\MakamAuthController;
 use App\Http\Controllers\Makam\MakamNewsController;
+use App\Http\Controllers\Makam\MakamTypeController;
+use App\Http\Controllers\Makam\MakamOrderController;
 
 Route::prefix('admin/makam')->group(function () {
     // Login routes (no middleware)
@@ -155,7 +157,10 @@ Route::prefix('admin/makam')->group(function () {
         Route::get('/dashboard', function () {
             $totalNews = \App\Models\MakamNews::count();
             $latestNews = \App\Models\MakamNews::latest()->take(5)->get();
-            return view('makam.dashboard', compact('totalNews', 'latestNews'));
+            $totalTypes = \App\Models\MakamType::count();
+            $totalOrders = \App\Models\MakamOrder::count();
+            $pendingOrders = \App\Models\MakamOrder::where('status', 'baru')->count();
+            return view('makam.dashboard', compact('totalNews', 'latestNews', 'totalTypes', 'totalOrders', 'pendingOrders'));
         })->name('makam.dashboard');
 
         Route::get('/news', [MakamNewsController::class, 'index'])->name('makam.news.index');
@@ -164,6 +169,20 @@ Route::prefix('admin/makam')->group(function () {
         Route::get('/news/{id}/edit', [MakamNewsController::class, 'edit'])->name('makam.news.edit');
         Route::put('/news/{id}', [MakamNewsController::class, 'update'])->name('makam.news.update');
         Route::delete('/news/{id}', [MakamNewsController::class, 'destroy'])->name('makam.news.destroy');
+
+        // Manajemen Jenis Makam
+        Route::get('/types', [MakamTypeController::class, 'index'])->name('makam.types.index');
+        Route::get('/types/create', [MakamTypeController::class, 'create'])->name('makam.types.create');
+        Route::post('/types', [MakamTypeController::class, 'store'])->name('makam.types.store');
+        Route::get('/types/{id}/edit', [MakamTypeController::class, 'edit'])->name('makam.types.edit');
+        Route::put('/types/{id}', [MakamTypeController::class, 'update'])->name('makam.types.update');
+        Route::delete('/types/{id}', [MakamTypeController::class, 'destroy'])->name('makam.types.destroy');
+
+        // Manajemen Pesanan Makam
+        Route::get('/orders', [MakamOrderController::class, 'index'])->name('makam.orders.index');
+        Route::get('/orders/{id}', [MakamOrderController::class, 'show'])->name('makam.orders.show');
+        Route::put('/orders/{id}/status', [MakamOrderController::class, 'updateStatus'])->name('makam.orders.status');
+        Route::delete('/orders/{id}', [MakamOrderController::class, 'destroy'])->name('makam.orders.destroy');
     });
 });
 
