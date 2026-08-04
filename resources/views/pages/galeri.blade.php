@@ -3,17 +3,18 @@
     <section class="gallery-section">
         <div class="container">
             <div class="gallery-header text-center mb-5">
-                <p class="gallery-eyebrow mb-2">DOKUMENTASI KEGIATAN</p>
                 <h1 class="gallery-title mb-3">Galeri Pemuda Akhir Zaman</h1>
-                <p class="gallery-subtitle mb-0">
-                    Dokumentasi kegiatan kami, diperbarui langsung dari Google Drive.
-                </p>
             </div>
 
-            @if (count($files) > 0)
+            @if ($files->count() > 0)
                 @php
-                    $images = array_values(array_filter($files, fn($f) => str_starts_with($f['mime_type'], 'image/')));
-                    $videos = array_values(array_filter($files, fn($f) => str_starts_with($f['mime_type'], 'video/')));
+                    $pageFiles = $files->getCollection()->all();
+                    $images = array_values(
+                        array_filter($pageFiles, fn($f) => str_starts_with($f['mime_type'], 'image/')),
+                    );
+                    $videos = array_values(
+                        array_filter($pageFiles, fn($f) => str_starts_with($f['mime_type'], 'video/')),
+                    );
                 @endphp
 
                 <div class="row g-3 g-md-4 photo-grid" id="photoGrid">
@@ -66,6 +67,10 @@
                         </div>
                     </div>
                 @endif
+
+                <div class="gallery-pagination mt-4">
+                    {{ $files->links('pagination.gallery') }}
+                </div>
             @else
                 <div class="text-center py-5">
                     <p class="text-muted mb-0">Belum ada foto. Dokumentasi akan segera hadir.</p>
@@ -118,6 +123,76 @@
             max-width: 52ch;
             margin-left: auto;
             margin-right: auto;
+        }
+
+        .gallery-pagination {
+            display: flex;
+            justify-content: center;
+        }
+
+        .gallery-pagination .pagination {
+            gap: 0.35rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 0;
+        }
+
+        .gallery-pagination .page-link {
+            min-width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 0.75rem;
+            border-radius: 10px;
+            background: var(--surface-elevated);
+            border: 1px solid var(--border-soft);
+            color: var(--brand-700);
+            font-weight: 600;
+            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .gallery-pagination .page-link:hover {
+            background: var(--brand-500);
+            border-color: var(--brand-500);
+            color: #fff;
+        }
+
+        .gallery-pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 6px 14px var(--shadow-soft);
+        }
+
+        .gallery-pagination .page-item.disabled .page-link {
+            background: var(--surface-elevated);
+            border-color: var(--border-soft);
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .gallery-pagination .page-item:first-child .page-link,
+        .gallery-pagination .page-item:last-child .page-link {
+            border-radius: 10px;
+        }
+
+        body[data-theme='dark'] .gallery-pagination .page-link {
+            background: rgba(17, 24, 39, 0.92);
+            border-color: rgba(148, 163, 184, 0.18);
+            color: #b7c7dc;
+        }
+
+        body[data-theme='dark'] .gallery-pagination .page-link:hover {
+            background: #2f5f8e;
+            border-color: #2f5f8e;
+            color: #fff;
+        }
+
+        body[data-theme='dark'] .gallery-pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, #2f5f8e 0%, #224a72 52%, #1a3a5a 100%);
+            border-color: rgba(148, 163, 184, 0.28);
+            color: #f8fbff;
         }
 
         body[data-theme='dark'] .gallery-eyebrow {
@@ -315,9 +390,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const grid = document.getElementById('photoGrid');
-            if (!grid) return;
-
-            const items = Array.from(grid.querySelectorAll('.photo-item'));
+            const items = grid ? Array.from(grid.querySelectorAll('.photo-item')) : [];
             const videoItems = Array.from(document.querySelectorAll('.video-item'));
             if (items.length === 0 && videoItems.length === 0) return;
 
@@ -327,7 +400,17 @@
             const lightboxCounter = document.getElementById('lightboxCounter');
             let currentIndex = 0;
 
+            if (items.length > 0) {
+                items.forEach(function(item, index) {
+                    item.addEventListener('click', function() {
+                        show(index);
+                    });
+                });
+            }
+
             function show(index) {
+                if (items.length === 0) return;
+
                 currentIndex = (index + items.length) % items.length;
                 const item = items[currentIndex];
                 const img = item.querySelector('img');
@@ -341,16 +424,12 @@
             }
 
             function close() {
+                if (!lightbox) return;
+
                 lightbox.hidden = true;
                 lightboxImg.src = '';
                 document.body.style.overflow = '';
             }
-
-            items.forEach(function(item, index) {
-                item.addEventListener('click', function() {
-                    show(index);
-                });
-            });
 
             // Video items open inline player (server mengonversi ke MP4 bila perlu)
             videoItems.forEach(function(vi) {
@@ -378,54 +457,62 @@
                 });
             });
 
-            // Sembunyikan indikator loading begitu video siap diputar
             const playerEl = document.getElementById('playerVideo');
-            ['playing', 'canplay', 'loadeddata'].forEach(function(evt) {
-                playerEl.addEventListener(evt, function() {
-                    document.getElementById('videoLoading').hidden = true;
+            if (playerEl) {
+                // Sembunyikan indikator loading begitu video siap diputar
+                ['playing', 'canplay', 'loadeddata'].forEach(function(evt) {
+                    playerEl.addEventListener(evt, function() {
+                        document.getElementById('videoLoading').hidden = true;
+                    });
                 });
-            });
 
-            playerEl.addEventListener('error', function() {
-                const loading = document.getElementById('videoLoading');
-                loading.hidden = true;
-                loading.querySelector('span').textContent = 'Gagal memuat video.';
-            });
+                playerEl.addEventListener('error', function() {
+                    const loading = document.getElementById('videoLoading');
+                    loading.hidden = true;
+                    loading.querySelector('span').textContent = 'Gagal memuat video.';
+                });
 
-            // Pause/stop video saat modal ditutup
-            const videoModalEl = document.getElementById('videoModal');
-            videoModalEl.addEventListener('hidden.bs.modal', function() {
-                const player = document.getElementById('playerVideo');
-                player.pause();
-                player.currentTime = 0;
-                const source = player.querySelector('source');
-                source.src = '';
-                player.load();
+                // Pause/stop video saat modal ditutup
+                const videoModalEl = document.getElementById('videoModal');
+                videoModalEl.addEventListener('hidden.bs.modal', function() {
+                    const player = document.getElementById('playerVideo');
+                    player.pause();
+                    player.currentTime = 0;
+                    const source = player.querySelector('source');
+                    source.src = '';
+                    player.load();
 
-                const loading = document.getElementById('videoLoading');
-                loading.hidden = true;
-                loading.querySelector('span').textContent = 'Memuat video...';
-            });
+                    const loading = document.getElementById('videoLoading');
+                    loading.hidden = true;
+                    loading.querySelector('span').textContent = 'Memuat video...';
+                });
+            }
 
-            document.getElementById('lightboxClose').addEventListener('click', close);
-            document.getElementById('lightboxPrev').addEventListener('click', function() {
-                show(currentIndex - 1);
-            });
-            document.getElementById('lightboxNext').addEventListener('click', function() {
-                show(currentIndex + 1);
-            });
+            const lightboxClose = document.getElementById('lightboxClose');
+            const lightboxPrev = document.getElementById('lightboxPrev');
+            const lightboxNext = document.getElementById('lightboxNext');
 
-            lightbox.addEventListener('click', function(event) {
-                if (event.target === lightbox) close();
-            });
+            if (items.length > 0) {
+                lightboxClose.addEventListener('click', close);
+                lightboxPrev.addEventListener('click', function() {
+                    show(currentIndex - 1);
+                });
+                lightboxNext.addEventListener('click', function() {
+                    show(currentIndex + 1);
+                });
 
-            document.addEventListener('keydown', function(event) {
-                if (lightbox.hidden) return;
+                lightbox.addEventListener('click', function(event) {
+                    if (event.target === lightbox) close();
+                });
 
-                if (event.key === 'Escape') close();
-                if (event.key === 'ArrowLeft') show(currentIndex - 1);
-                if (event.key === 'ArrowRight') show(currentIndex + 1);
-            });
+                document.addEventListener('keydown', function(event) {
+                    if (lightbox.hidden) return;
+
+                    if (event.key === 'Escape') close();
+                    if (event.key === 'ArrowLeft') show(currentIndex - 1);
+                    if (event.key === 'ArrowRight') show(currentIndex + 1);
+                });
+            }
         });
     </script>
 @endsection

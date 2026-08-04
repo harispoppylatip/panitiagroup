@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Controller;
 use App\Services\GoogleDriveService;
 use App\Services\VideoConverterService;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -17,6 +18,7 @@ class GalleryController extends Controller
     public function index(GoogleDriveService $drive)
     {
         $files = [];
+        $perPage = 50;
 
         if ($drive->isConfigured()) {
             try {
@@ -33,6 +35,20 @@ class GalleryController extends Controller
                 $files = [];
             }
         }
+
+        $currentPage = LengthAwarePaginator::resolveCurrentPage() ?: 1;
+        $items = collect($files)->values();
+
+        $files = new LengthAwarePaginator(
+            $items->forPage($currentPage, $perPage)->values(),
+            $items->count(),
+            $perPage,
+            $currentPage,
+            [
+                'path' => LengthAwarePaginator::resolveCurrentPath(),
+                'pageName' => 'page',
+            ]
+        );
 
         return view('pages.galeri', compact('files'));
     }
