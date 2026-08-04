@@ -93,7 +93,7 @@ class GoogleDriveService
      * Digunakan oleh halaman publik untuk menampilkan thumbnail video tanpa
      * memengaruhi proses sinkronisasi yang hanya mengunduh gambar.
      *
-     * @return array<int, array{id: string, name: string, mime_type: string, size: int, created_at: ?string, modified_at: ?string}>
+     * @return array<int, array{id: string, name: string, mime_type: string, size: int, created_at: ?string, modified_at: ?string, thumbnail_link: ?string}>
      */
     public function listMedia(int $ttl = 600, bool $fresh = false): array
     {
@@ -176,6 +176,15 @@ class GoogleDriveService
     {
         $link = $this->getMetadata($fileId)?->getThumbnailLink();
 
+        return $this->thumbnailUrlFromLink($link, $fileId);
+    }
+
+    /**
+     * Bangun URL thumbnail dari thumbnailLink yang sudah tersedia (mis. hasil
+     * listMedia) tanpa request API tambahan. Fallback ke endpoint publik.
+     */
+    public function thumbnailUrlFromLink(?string $link, string $fileId): ?string
+    {
         if ($link) {
             // Perbesar dari ukuran default s220 ke w1600.
             $resized = preg_replace('/=s\d+$/', '=w1600', $link);
@@ -373,6 +382,7 @@ class GoogleDriveService
                     'size' => (int) $file->getSize(),
                     'created_at' => $file->getCreatedTime(),
                     'modified_at' => $file->getModifiedTime(),
+                    'thumbnail_link' => $file->getThumbnailLink(),
                 ];
             }
 

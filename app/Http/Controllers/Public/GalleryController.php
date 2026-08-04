@@ -27,8 +27,13 @@ class GalleryController extends Controller
 
                 // Sertakan URL thumbnail untuk tiap item agar view bisa
                 // menampilkan preview video tanpa mengunduh file besar.
+                // thumbnailLink sudah tersedia dari hasil listMedia, jadi
+                // tidak perlu request API metadata per file (N+1).
                 foreach ($files as &$f) {
-                    $f['thumb'] = $drive->thumbnailUrl($f['id']);
+                    $f['thumb'] = $drive->thumbnailUrlFromLink(
+                        $f['thumbnail_link'] ?? null,
+                        $f['id']
+                    );
                 }
             } catch (\Throwable $e) {
                 Log::warning('Galeri: gagal membaca Google Drive - '.$e->getMessage());
