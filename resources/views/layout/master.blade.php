@@ -205,6 +205,76 @@
             border-top: 1px solid var(--border-soft);
         }
 
+        .site-footer {
+            padding: 3rem 0 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr 1fr;
+            gap: 2.5rem;
+            padding-bottom: 2.5rem;
+        }
+
+        .footer-name {
+            font-family: 'Manrope', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--brand-900);
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-desc {
+            max-width: 30rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .footer-heading {
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--brand-500);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-soft);
+            padding: 1.25rem 0;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 767.98px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 1.75rem;
+            }
+        }
+
         .card,
         .dropdown-menu,
         .table,
@@ -225,8 +295,19 @@
         body[data-theme='dark'] .helper,
         body[data-theme='dark'] .small,
         body[data-theme='dark'] .footer-text,
-        body[data-theme='dark'] .footer-text.secondary {
+        body[data-theme='dark'] .footer-text.secondary,
+        body[data-theme='dark'] .site-footer,
+        body[data-theme='dark'] .footer-desc,
+        body[data-theme='dark'] .footer-links a {
             color: var(--text-muted) !important;
+        }
+
+        body[data-theme='dark'] .footer-name {
+            color: var(--brand-900) !important;
+        }
+
+        body[data-theme='dark'] .footer-links a:hover {
+            color: var(--brand-500) !important;
         }
 
         body[data-theme='dark'] .btn-outline-secondary {
@@ -259,6 +340,7 @@
                     <li class="nav-item"><a class="nav-link active" href="/">Beranda</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('jadwal') }}">Jadwal Kuliah</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('tugas') }}">Tugas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('galeri.index') }}">Galeri</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('grubkas.index') }}">Kas Grub</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('scan.login') }}">Scan Absen</a></li>
                     {{-- <li class="nav-item"><a class="nav-link" href="{{ route('admin.upload') }}">Upload</a></li> --}}
@@ -298,14 +380,44 @@
         @yield('konten')
     </main>
 
-    <footer id="kontak" class="text-center py-4">
+    <footer id="kontak" class="site-footer">
         <div class="container">
-            <p class="mb-1 fw-semibold" style="color: var(--brand-900);">Pemuda Akhir Zaman</p>
-            <p class="mb-0">© 2026 Pemuda Akhir Zaman | Dibuat Oleh Tim Kami</p>
-            <div class="mt-3 small footer-text">
-                <div>WhatsApp: 081321897866</div>
-                <div>Email: 2411102441024@umkt.ac.id</div>
-                <div>Instagram: @paz.team214</div>
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <p class="footer-name">Pemuda Akhir Zaman</p>
+                    <p class="footer-desc">
+                        Kelompok mahasiswa Universitas Muhammadiyah Kalimantan Timur. Bersatu dalam ide, berkarya
+                        dengan teknologi.
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <p class="footer-heading">Navigasi</p>
+                    <ul class="footer-links">
+                        <li><a href="/">Beranda</a></li>
+                        <li><a href="{{ route('jadwal') }}">Jadwal Kuliah</a></li>
+                        <li><a href="{{ route('tugas') }}">Tugas</a></li>
+                        <li><a href="{{ route('galeri.index') }}">Galeri</a></li>
+                        <li><a href="{{ route('grubkas.index') }}">Kas Grub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <p class="footer-heading">Layanan</p>
+                    <ul class="footer-links">
+                        <li><a href="{{ route('scan.login') }}">Scan Absen</a></li>
+                        <li><a href="{{ route('admin.login') }}">Login Admin</a></li>
+                    </ul>
+                    <p class="footer-heading mt-4">Sosial</p>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="https://www.instagram.com/paz.team214" target="_blank" rel="noopener">
+                                @paz.team214
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="mb-0">© 2026 Pemuda Akhir Zaman | Dibuat Oleh Tim Kami</p>
             </div>
         </div>
     </footer>

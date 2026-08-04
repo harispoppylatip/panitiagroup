@@ -46,4 +46,11 @@ return [
         'Client_Subcribe' => env('MQTT_SUBSCRIBE'),
     ],
 
+    'google_drive' => [
+        'folder_id' => env('GOOGLE_DRIVE_FOLDER_ID'),
+        'service_account_path' => env('GOOGLE_DRIVE_SERVICE_ACCOUNT_PATH', storage_path('app/google-drive/service-account.json')),
+        // Path biner ffmpeg untuk konversi video ke MP4 (kosongkan jika sudah ada di PATH).
+        'ffmpeg_path' => env('FFMPEG_BIN'),
+    ],
+
 ];

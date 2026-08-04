@@ -94,6 +94,9 @@
                                         <div class="flex-grow-1">
                                             <h6 class="mb-0 fw-medium">{{ $member->name }}</h6>
                                             <small class="text-muted">{{ $member->role }}</small>
+                                            @if ($member->nim)
+                                                <br><small class="badge bg-info mt-1">Terhubung ke anggota</small>
+                                            @endif
                                         </div>
                                         <small class="text-muted">Order: {{ $member->order }}</small>
                                     </div>

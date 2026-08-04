@@ -60,52 +60,6 @@ namespace App\Models{
 namespace App\Models{
 /**
  * @property int $id
- * @property string $title
- * @property string $content
- * @property string|null $image_url
- * @property string|null $author
- * @property \Illuminate\Support\Carbon|null $published_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews whereAuthor($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews whereImageUrl($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews wherePublishedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamNews whereUpdatedAt($value)
- */
-	class MakamNews extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * @property-read \App\Models\MakamType|null $makamType
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamOrder newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamOrder newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamOrder query()
- */
-	class MakamOrder extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MakamOrder> $orders
- * @property-read int|null $orders_count
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamType newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamType newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|MakamType query()
- */
-	class MakamType extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * @property int $id
  * @property int $Status_id
  * @property string $Status
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -125,12 +79,14 @@ namespace App\Models{
 namespace App\Models{
 /**
  * @property int $id
+ * @property string|null $nim
  * @property string $name
  * @property string $role
  * @property string|null $image_url
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Datasikadmodel|null $anggota
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamMember newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamMember newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamMember query()
@@ -138,6 +94,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamMember whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamMember whereImageUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamMember whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamMember whereNim($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamMember whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamMember whereRole($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|TeamMember whereUpdatedAt($value)
@@ -276,6 +233,8 @@ namespace App\Models{
 namespace App\Models\payment{
 /**
  * @property int $id
+ * @property string|null $key
+ * @property string|null $value
  * @property int $Iuran_Perminggu
  * @property int $Total_Saldo
  * @property int $Total_Masuk
@@ -292,10 +251,12 @@ namespace App\Models\payment{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereIuranPerminggu($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereJumlahBelumBayar($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereJumlahSudahBayar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereKey($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereTotalKeluar($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereTotalMasuk($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereTotalSaldo($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|GrubkasDashboard whereValue($value)
  */
 	class GrubkasDashboard extends \Eloquent {}
 }

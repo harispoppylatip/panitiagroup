@@ -30,9 +30,21 @@
 
                     <div class="row g-3">
                         <div class="col-md-6">
+                            <label class="form-label">Pilih dari Anggota Terdaftar</label>
+                            <select class="form-select" id="pilihAnggota" onchange="isiDariAnggota(this)">
+                                <option value="">-- Pilih anggota --</option>
+                                @foreach ($anggotaOptions as $anggota)
+                                    <option value="{{ $anggota->nama }}|{{ $anggota->Nim }}">{{ $anggota->nama }}
+                                        ({{ $anggota->Nim }})</option>
+                                @endforeach
+                            </select>
+                            <small class="text-muted">Pilih anggota yang sudah terdaftar di Management Token</small>
+                        </div>
+
+                        <div class="col-md-6">
                             <label class="form-label">Nama</label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                                value="{{ old('name') }}" required>
+                                id="inputNama" value="{{ old('name') }}" required>
                             @error('name')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -84,6 +96,15 @@
                         </div>
                     </div>
                 </form>
+
+                <script>
+                    function isiDariAnggota(select) {
+                        const val = select.value;
+                        if (!val) return;
+                        const [nama] = val.split('|');
+                        document.getElementById('inputNama').value = nama;
+                    }
+                </script>
             </div>
         </div>
 
@@ -112,7 +133,12 @@
                                         <img src="{{ $member->image_url }}" alt="{{ $member->name }}" class="rounded"
                                             style="width: 50px; height: 50px; object-fit: cover;">
                                     </td>
-                                    <td class="fw-medium">{{ $member->name }}</td>
+                                    <td class="fw-medium">
+                                        {{ $member->name }}
+                                        @if ($member->nim)
+                                            <br><small class="badge bg-info mt-1">Terhubung</small>
+                                        @endif
+                                    </td>
                                     <td>{{ $member->role }}</td>
                                     <td>
                                         <span class="badge bg-secondary">{{ $member->order }}</span>
@@ -140,7 +166,8 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">Edit {{ $member->name }}</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                <button type="button" class="btn-close"
+                                                    data-bs-dismiss="modal"></button>
                                             </div>
                                             <form action="{{ route('admin.beranda.update-team', $member->id) }}"
                                                 method="POST" enctype="multipart/form-data">

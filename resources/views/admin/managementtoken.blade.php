@@ -169,6 +169,16 @@
             color: #991b1b;
         }
 
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        body[data-theme='dark'] .badge-warning {
+            background: rgba(234, 179, 8, 0.14);
+            color: #fde68a;
+        }
+
         .token-preview {
             font-family: 'Courier New', monospace;
             font-size: 0.8rem;
@@ -465,16 +475,35 @@
                                 <th style="width: 5%;">ID</th>
                                 <th style="width: 12%;">Nama</th>
                                 <th style="width: 10%;">NIM</th>
-                                <th style="width: 20%;">Access Token</th>
-                                <th style="width: 20%;">Refresh Token</th>
+                                <th style="width: 15%;">Access Token</th>
+                                <th style="width: 15%;">Refresh Token</th>
                                 <th style="width: 8%;">Status</th>
-                                <th style="width: 12%;">Dibuat</th>
-                                <th style="width: 12%;">Diupdate</th>
-                                <th style="width: 11%;">Aksi</th>
+                                <th style="width: 10%;">Pembayaran</th>
+                                <th style="width: 10%;">Dibuat</th>
+                                <th style="width: 10%;">Diupdate</th>
+                                <th style="width: 10%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($data as $item)
+                                @php
+                                    $pay = $statusPembayaran[$item->Nim] ?? null;
+                                    $payStatus = $pay ? (int) $pay->Status_Pembayaran : 0;
+                                    $payLabel = match ($payStatus) {
+                                        1 => 'Belum Bayar',
+                                        2 => 'Menunggu',
+                                        3 => 'Lunas',
+                                        4 => 'Ditolak',
+                                        default => 'Tidak ada',
+                                    };
+                                    $payBadge = match ($payStatus) {
+                                        1 => 'badge-off',
+                                        2 => 'badge-warning',
+                                        3 => 'badge-on',
+                                        4 => 'badge-off',
+                                        default => 'badge-off',
+                                    };
+                                @endphp
                                 <tr>
                                     <td><strong>#{{ $item->id }}</strong></td>
                                     <td>{{ $item->nama }}</td>
@@ -494,6 +523,11 @@
                                     <td>
                                         <span class="badge {{ $item->status_onoff === 'on' ? 'badge-on' : 'badge-off' }}">
                                             {{ $item->status_onoff === 'on' ? '🟢 ON' : '🔴 OFF' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge {{ $payBadge }}" style="font-size: 0.75rem;">
+                                            {{ $payLabel }}
                                         </span>
                                     </td>
                                     <td>

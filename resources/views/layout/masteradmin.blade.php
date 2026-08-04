@@ -230,6 +230,7 @@
                 $sharedMenus = [
                     ['label' => 'Beranda', 'route' => 'admin.beranda.index', 'active' => 'admin.beranda.*'],
                     ['label' => 'Tugas', 'route' => 'admin.tugas.index', 'active' => 'admin.tugas.*'],
+                    ['label' => 'Galeri', 'route' => 'admin.galeri.index', 'active' => 'admin.galeri.*'],
                 ];
                 $adminOnlyMenuVisible = $currentRole === 'admin';
             @endphp
