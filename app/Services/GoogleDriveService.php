@@ -139,17 +139,29 @@ class GoogleDriveService
     public function downloadThumbnail(string $fileId, string $destinationPath): bool
     {
         try {
+            if (! $this->ensureDestinationDirectory($destinationPath)) {
+                return false;
+            }
+
             $url = $this->thumbnailUrl($fileId);
 
             if (! $url) {
                 return false;
             }
 
-            $response = $this->drive()->getClient()->getHttpClient()->get($url, [
+            $httpClient = $this->drive()->getClient()->getHttpClient();
+
+            if (! is_object($httpClient) || ! method_exists($httpClient, 'request')) {
+                return false;
+            }
+
+            $response = $httpClient->request('GET', $url, [
                 'sink' => $destinationPath,
             ]);
 
-            return $response->getStatusCode() === 200;
+            return is_object($response)
+                && method_exists($response, 'getStatusCode')
+                && $response->getStatusCode() === 200;
         } catch (\Throwable $e) {
             Log::warning("Gagal mengunduh thumbnail Google Drive [{$fileId}]: {$e->getMessage()}");
 
@@ -218,7 +230,16 @@ class GoogleDriveService
     public function downloadTo(string $fileId, string $destinationPath): bool
     {
         try {
+            if (! $this->ensureDestinationDirectory($destinationPath)) {
+                return false;
+            }
+
             $response = $this->drive()->files->get($fileId, ['alt' => 'media']);
+
+            if (! is_object($response) || ! method_exists($response, 'getBody')) {
+                return false;
+            }
+
             $stream = $response->getBody()->detach();
             $handle = fopen($destinationPath, 'wb');
 
@@ -237,6 +258,26 @@ class GoogleDriveService
         }
 
         return false;
+    }
+
+    /**
+     * Pastikan folder tujuan ada sebelum menulis file unduhan.
+     */
+    private function ensureDestinationDirectory(string $destinationPath): bool
+    {
+        $directory = dirname($destinationPath);
+
+        if (is_dir($directory)) {
+            return true;
+        }
+
+        if (@mkdir($directory, 0775, true)) {
+            return true;
+        }
+
+        Log::warning("Gagal membuat folder tujuan galeri: {$directory}");
+
+        return is_dir($directory);
     }
 
     /**

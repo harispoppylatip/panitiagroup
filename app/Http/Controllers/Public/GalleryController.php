@@ -62,6 +62,12 @@ class GalleryController extends Controller
             $localPath = "galeri/{$fileId}.{$ext}";
 
             if (! $drive->downloadImage($fileId, $mime, $disk->path($localPath))) {
+                $thumbUrl = $drive->thumbnailUrl($fileId);
+
+                if ($thumbUrl) {
+                    return redirect()->away($thumbUrl);
+                }
+
                 abort(404);
             }
 
