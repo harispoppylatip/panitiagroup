@@ -7,6 +7,7 @@
         $activityLogs = $activityLogs ?? [];
         $memberChoices = $memberChoices ?? [];
         $memberBalances = $memberBalances ?? [];
+        $memberSaldo = $memberSaldo ?? [];
         $isAdmin = auth()->user()?->role === 'admin';
         $historyCount = $historyCount ?? count($historyPayments);
         $pendingCount = $pendingCount ?? count($pendingPayments);
@@ -211,10 +212,22 @@
         }
 
         .form-control,
+        .form-select,
         .input-group-text {
-            background: var(--surface-elevated);
+            background-color: var(--surface-elevated);
             border-color: var(--border-soft);
             color: var(--text-main);
+        }
+
+        .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23434655' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+        }
+
+        body[data-theme='dark'] .form-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23b4c5ff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
         }
 
         .form-control:focus,
@@ -290,6 +303,10 @@
             color: #2f855a;
         }
 
+        body[data-theme='dark'] .row-icon.in {
+            color: #4ade80;
+        }
+
         .row-icon.out {
             background: rgba(148, 163, 184, 0.16);
             color: var(--text-muted);
@@ -300,9 +317,17 @@
             color: var(--brand-500);
         }
 
+        body[data-theme='dark'] .row-icon.set {
+            color: #93c5fd;
+        }
+
         .row-icon.cal {
             background: rgba(245, 158, 11, 0.16);
             color: #a16207;
+        }
+
+        body[data-theme='dark'] .row-icon.cal {
+            color: #fbbf24;
         }
 
         .row-main {
@@ -333,9 +358,17 @@
             font-weight: 800;
         }
 
+        body[data-theme='dark'] .amount-positive {
+            color: #4ade80;
+        }
+
         .amount-negative {
             color: #b45309;
             font-weight: 800;
+        }
+
+        body[data-theme='dark'] .amount-negative {
+            color: #fbbf24;
         }
 
         .chip-row {
@@ -361,6 +394,11 @@
             border-color: rgba(46, 91, 135, 0.26);
             background: rgba(46, 91, 135, 0.08);
             color: var(--brand-500);
+        }
+
+        body[data-theme='dark'] .filter-chip.active,
+        body[data-theme='dark'] .filter-chip:hover {
+            color: #93c5fd;
         }
 
         .payment-note {
@@ -471,9 +509,17 @@
             font-weight: 800;
         }
 
+        body[data-theme='dark'] .balance-positive {
+            color: #4ade80;
+        }
+
         .balance-negative {
             color: #b45309;
             font-weight: 800;
+        }
+
+        body[data-theme='dark'] .balance-negative {
+            color: #fbbf24;
         }
 
         .reset-warning-box {
@@ -487,6 +533,10 @@
             font-weight: 800;
             color: #dc2626;
             margin-bottom: 0.35rem;
+        }
+
+        body[data-theme='dark'] .reset-warning-title {
+            color: #f87171;
         }
 
         .reset-danger-input {
@@ -525,8 +575,16 @@
             color: #2f855a;
         }
 
+        body[data-theme='dark'] .toast-item.success i {
+            color: #4ade80;
+        }
+
         .toast-item.danger i {
             color: #b45309;
+        }
+
+        body[data-theme='dark'] .toast-item.danger i {
+            color: #fbbf24;
         }
 
         .tab-panel {
@@ -620,6 +678,8 @@
                     <span class="badge text-bg-danger ms-1" id="pendingBadge">{{ $pendingCount }}</span></button>
                 <button class="dashboard-tab" type="button" data-tab="history"><i
                         class="bi bi-clock-history me-1"></i>Riwayat bayar</button>
+                <button class="dashboard-tab" type="button" data-tab="saldo"><i class="bi bi-wallet me-1"></i>Saldo &
+                    Utang</button>
                 <button class="dashboard-tab" type="button" data-tab="log"><i class="bi bi-list-check me-1"></i>Log
                     aktivitas</button>
                 @if ($isAdmin)
@@ -819,11 +879,60 @@
                                         {{ number_format($member['utang'], 0, ',', '.') }}</div>
                                     <div class="balance-positive">Saldo lebih Rp
                                         {{ number_format($member['saldo_lebih'], 0, ',', '.') }}</div>
+                                    <div class="row-meta mt-1">Sisa tagihan Rp
+                                        {{ number_format($member['sisa_utang'], 0, ',', '.') }}</div>
                                 </div>
                             </div>
                         @empty
                             <div class="p-4 text-center text-muted">Belum ada anggota dengan utang atau saldo lebih.</div>
                         @endforelse
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-saldo" class="tab-panel">
+                <div class="finance-card mb-4">
+                    <div class="finance-card-head">
+                        <div class="finance-card-title">Saldo lebih & utang anggota</div>
+                        <span class="small fw-semibold text-muted">{{ count($memberSaldo) }} anggota</span>
+                    </div>
+                    <div class="p-2 p-md-3">
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-muted small fw-bold">Anggota</th>
+                                        <th class="text-end text-muted small fw-bold">Utang</th>
+                                        <th class="text-end text-muted small fw-bold">Saldo lebih</th>
+                                        <th class="text-end text-muted small fw-bold">Sisa tagihan</th>
+                                        <th class="text-muted small fw-bold">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($memberSaldo as $member)
+                                        <tr>
+                                            <td>
+                                                <div class="row-title mb-0">{{ $member['name'] }}</div>
+                                                <div class="row-meta">NIM {{ $member['nim'] }}</div>
+                                            </td>
+                                            <td class="text-end balance-negative">Rp
+                                                {{ number_format($member['utang'], 0, ',', '.') }}</td>
+                                            <td class="text-end balance-positive">Rp
+                                                {{ number_format($member['saldo_lebih'], 0, ',', '.') }}</td>
+                                            <td class="text-end fw-bold">
+                                                {{ $member['sisa_utang'] > 0 ? 'Rp ' . number_format($member['sisa_utang'], 0, ',', '.') : 'Lunas' }}
+                                            </td>
+                                            <td class="small">{{ $member['status_label'] }}</td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="p-4 text-center text-muted">Belum ada data utang
+                                                atau saldo lebih.</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

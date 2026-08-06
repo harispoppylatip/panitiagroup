@@ -1,31 +1,7 @@
 @extends('layout.masteradmin')
 @section('konten')
     <style>
-        :root {
-            --brand-900: #12263f;
-            --brand-700: #1f3b5c;
-            --brand-500: #2e5b87;
-            --accent: #c38f3c;
-            --surface: #f4f7fb;
-            --surface-elevated: rgba(255, 255, 255, 0.92);
-            --text-main: #1f2a37;
-            --text-muted: #5f6f84;
-            --border-soft: rgba(18, 38, 63, 0.1);
-        }
-
-        body[data-theme='dark'] {
-            --brand-900: #e5eef9;
-            --brand-700: #b7c7dc;
-            --brand-500: #87a9cc;
-            --accent: #d6ad62;
-            --surface: #0f1724;
-            --surface-elevated: rgba(17, 24, 39, 0.92);
-            --text-main: #e5eef9;
-            --text-muted: #a7b4c5;
-            --border-soft: rgba(148, 163, 184, 0.18);
-        }
-
-        .token-container {
+        .tim-container {
             max-width: 1400px;
             margin: 0 auto;
         }
@@ -83,6 +59,10 @@
             font-weight: 600;
             border-radius: 0.5rem;
             padding: 0.65rem 1.2rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .btn-refresh:hover {
@@ -152,6 +132,19 @@
             color: var(--text-main);
         }
 
+        .member-photo {
+            width: 46px;
+            height: 46px;
+            border-radius: 0.5rem;
+            object-fit: cover;
+            background: var(--surface-container-low);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--brand-700);
+        }
+
         .badge {
             padding: 0.5rem 0.75rem;
             border-radius: 6px;
@@ -185,17 +178,11 @@
             background: var(--surface);
             padding: 0.5rem;
             border-radius: 4px;
-            max-width: 200px;
+            max-width: 180px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             color: var(--text-muted);
-        }
-
-        .timestamp {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            font-family: 'Courier New', monospace;
         }
 
         .action-cell {
@@ -225,116 +212,24 @@
 
         .btn-action-edit:hover {
             background: #1d4ed8;
+            color: #fff;
         }
 
         .btn-action-delete {
             background: #dc2626;
             color: #fff;
             padding: 0.5rem;
-            border-radius: 4px;
         }
 
         .btn-action-delete:hover {
             background: #b91c1c;
-        }
-
-        body[data-theme='dark'] .header-title h1,
-        body[data-theme='dark'] .header-title p,
-        body[data-theme='dark'] .no-data h5,
-        body[data-theme='dark'] .no-data p,
-        body[data-theme='dark'] .timestamp,
-        body[data-theme='dark'] .refresh-item-status {
-            color: var(--text-muted);
-        }
-
-        body[data-theme='dark'] .table-wrapper {
-            background: var(--surface-elevated);
-            border-color: var(--border-soft);
-            box-shadow: 0 4px 12px var(--shadow-soft);
-        }
-
-        body[data-theme='dark'] .table thead th {
-            background: var(--surface-container-high);
-            color: var(--brand-900);
-        }
-
-        body[data-theme='dark'] .table tbody td {
-            color: #e5eef9;
-            background: rgba(17, 24, 39, 0.9);
-        }
-
-        body[data-theme='dark'] .table tbody tr:hover {
-            background-color: rgba(46, 91, 135, 0.14);
-        }
-
-        body[data-theme='dark'] .token-preview,
-        body[data-theme='dark'] .table tbody td code {
-            background: rgba(15, 23, 36, 0.95);
-            color: #d7e5f7;
-            border: 1px solid rgba(148, 163, 184, 0.18);
-        }
-
-        body[data-theme='dark'] .badge-on {
-            background: rgba(34, 197, 94, 0.14);
-            color: #86efac;
-        }
-
-        body[data-theme='dark'] .badge-off {
-            background: rgba(239, 68, 68, 0.14);
-            color: #fca5a5;
-        }
-
-        body[data-theme='dark'] .alert-refresh {
-            background: rgba(37, 99, 235, 0.14);
-            border-color: rgba(96, 165, 250, 0.28);
-            color: #dbeafe;
-        }
-
-        body[data-theme='dark'] .alert-refresh.success {
-            background: rgba(34, 197, 94, 0.14);
-            border-color: rgba(74, 222, 128, 0.28);
-            color: #dcfce7;
-        }
-
-        body[data-theme='dark'] .refresh-item {
-            background: var(--surface-elevated);
-            border-color: var(--border-soft);
-        }
-
-        body[data-theme='dark'] .btn-action-edit {
-            background: #2563eb;
-        }
-
-        body[data-theme='dark'] .btn-action-delete {
-            background: #dc2626;
-        }
-
-        body[data-theme='dark'] .btn-brand,
-        body[data-theme='dark'] .btn-refresh {
             color: #fff;
-        }
-
-        body[data-theme='dark'] .btn-brand:hover {
-            box-shadow: 0 8px 16px rgba(46, 91, 135, 0.28);
-        }
-
-        body[data-theme='dark'] .btn-refresh:hover {
-            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.24);
-        }
-
-        body[data-theme='dark'] .no-data a {
-            color: #87a9cc;
         }
 
         .no-data {
             text-align: center;
             padding: 3rem;
             color: var(--text-muted);
-        }
-
-        .no-data-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
         }
 
         .refresh-results {
@@ -371,6 +266,72 @@
             color: var(--text-muted);
         }
 
+        body[data-theme='dark'] .header-title h1,
+        body[data-theme='dark'] .header-title p,
+        body[data-theme='dark'] .no-data h5,
+        body[data-theme='dark'] .no-data p,
+        body[data-theme='dark'] .refresh-item-status {
+            color: var(--text-muted);
+        }
+
+        body[data-theme='dark'] .table-wrapper {
+            background: var(--surface-elevated);
+            border-color: var(--border-soft);
+            box-shadow: 0 4px 12px var(--shadow-soft);
+        }
+
+        body[data-theme='dark'] .table thead th {
+            background: var(--surface-container-high);
+            color: var(--brand-900);
+        }
+
+        body[data-theme='dark'] .table tbody td {
+            color: #e5eef9;
+            background: rgba(17, 24, 39, 0.9);
+        }
+
+        body[data-theme='dark'] .table tbody tr:hover {
+            background-color: rgba(46, 91, 135, 0.14);
+        }
+
+        body[data-theme='dark'] .token-preview {
+            background: rgba(15, 23, 36, 0.95);
+            color: #d7e5f7;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+        }
+
+        body[data-theme='dark'] .badge-on {
+            background: rgba(34, 197, 94, 0.14);
+            color: #86efac;
+        }
+
+        body[data-theme='dark'] .badge-off {
+            background: rgba(239, 68, 68, 0.14);
+            color: #fca5a5;
+        }
+
+        body[data-theme='dark'] .alert-refresh {
+            background: rgba(37, 99, 235, 0.14);
+            border-color: rgba(96, 165, 250, 0.28);
+            color: #dbeafe;
+        }
+
+        body[data-theme='dark'] .alert-refresh.success {
+            background: rgba(34, 197, 94, 0.14);
+            border-color: rgba(74, 222, 128, 0.28);
+            color: #dcfce7;
+        }
+
+        body[data-theme='dark'] .refresh-item {
+            background: var(--surface-elevated);
+            border-color: var(--border-soft);
+        }
+
+        body[data-theme='dark'] .btn-brand,
+        body[data-theme='dark'] .btn-refresh {
+            color: #fff;
+        }
+
         @media (max-width: 768px) {
             .header-section {
                 flex-direction: column;
@@ -398,33 +359,25 @@
             .token-preview {
                 max-width: 100px;
             }
-
-            .action-cell {
-                gap: 0.25rem;
-            }
-
-            .btn-action {
-                padding: 0.4rem 0.5rem;
-                font-size: 0.75rem;
-            }
         }
     </style>
 
-    <div class="token-container">
+    <div class="tim-container">
         <!-- Header -->
         <div class="header-section">
             <div class="header-title">
-                <h1>Management Token</h1>
-                <p>Kelola semua token akses dan refresh untuk integrasi presensi</p>
+                <h1>Management Tim</h1>
+                <p>Kelola semua anggota: data diri, token absen, tampilan beranda, dan kas — satu halaman</p>
             </div>
             <div class="action-buttons">
-                <a href="{{ route('admin.inserttoken.form') }}" class="btn-brand">
-                    <i class="bi bi-plus-circle"></i> Tambah Token
-                </a>
-                <form action="{{ route('admin.token.refresh-all') }}" method="POST" style="display: contents;">
+                <button type="button" class="btn-brand" data-bs-toggle="modal" data-bs-target="#memberModal"
+                    data-mode="add">
+                    <i class="bi bi-plus-circle"></i> Tambah Anggota
+                </button>
+                <form action="{{ route('admin.tim.refresh-all') }}" method="POST" style="display: contents;">
                     @csrf
                     <button type="submit" class="btn-refresh"
-                        onclick="return confirm('Refresh semua token? Proses ini akan memperbarui access token dan refresh token untuk semua user.')">
+                        onclick="return confirm('Refresh semua token? Proses ini akan memperbarui access token dan refresh token untuk semua anggota.')">
                         <i class="bi bi-arrow-clockwise"></i> Refresh Semua
                     </button>
                 </form>
@@ -440,6 +393,18 @@
                     </div>
                     <button type="button" class="alert-close" data-bs-dismiss="alert">×</button>
                 </div>
+            </div>
+        @endif
+
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Validasi Gagal!</strong>
+                <ul class="mb-0 mt-2">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
 
@@ -474,21 +439,21 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 5%;">ID</th>
+                                <th style="width: 7%;">Foto</th>
                                 <th style="width: 12%;">Nama</th>
-                                <th style="width: 10%;">NIM</th>
-                                <th style="width: 15%;">Access Token</th>
-                                <th style="width: 15%;">Refresh Token</th>
-                                <th style="width: 8%;">Status</th>
-                                <th style="width: 10%;">Pembayaran</th>
-                                <th style="width: 10%;">Dibuat</th>
-                                <th style="width: 10%;">Diupdate</th>
+                                <th style="width: 8%;">NIM</th>
+                                <th style="width: 12%;">Posisi</th>
+                                <th style="width: 7%;">Status</th>
+                                <th style="width: 9%;">Kas</th>
+                                <th style="width: 8%;">Order</th>
+                                <th style="width: 18%;">Token</th>
                                 <th style="width: 10%;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($data as $item)
                                 @php
+                                    $display = $displayByNim[$item->Nim] ?? null;
                                     $pay = $statusPembayaran[$item->Nim] ?? null;
                                     $payStatus = $pay ? (int) $pay->Status_Pembayaran : 0;
                                     $payLabel = match ($payStatus) {
@@ -507,21 +472,26 @@
                                     };
                                 @endphp
                                 <tr>
-                                    <td><strong>#{{ $item->id }}</strong></td>
-                                    <td>{{ $item->nama }}</td>
+                                    <td>
+                                        @if ($display && $display->image_url)
+                                            <img src="{{ $display->image_url }}" alt="{{ $item->nama }}"
+                                                class="member-photo">
+                                        @else
+                                            <span class="member-photo">{{ strtoupper(substr($item->nama, 0, 1)) }}</span>
+                                        @endif
+                                    </td>
+                                    <td class="fw-medium">
+                                        {{ $item->nama }}
+                                        @if ($display)
+                                            <br><small class="text-muted">Tampil di beranda</small>
+                                        @else
+                                            <br><small class="text-warning">Belum tampil di beranda</small>
+                                        @endif
+                                    </td>
                                     <td><code
                                             style="background: var(--surface); padding: 0.25rem 0.5rem; border-radius: 4px;">{{ $item->Nim }}</code>
                                     </td>
-                                    <td>
-                                        <div class="token-preview" title="{{ $item->access_token }}">
-                                            {{ $item->access_token }}
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="token-preview" title="{{ $item->refresh_token }}">
-                                            {{ $item->refresh_token }}
-                                        </div>
-                                    </td>
+                                    <td>{{ $display?->role ?? '-' }}</td>
                                     <td>
                                         <span class="badge {{ $item->status_onoff === 'on' ? 'badge-on' : 'badge-off' }}">
                                             {{ $item->status_onoff === 'on' ? 'ON' : 'OFF' }}
@@ -532,26 +502,30 @@
                                             {{ $payLabel }}
                                         </span>
                                     </td>
+                                    <td>{{ $display?->order ?? '-' }}</td>
                                     <td>
-                                        <div class="timestamp">
-                                            {{ $item->created_at ? $item->created_at->format('d/m/Y H:i') : '-' }}</div>
-                                    </td>
-                                    <td>
-                                        <div class="timestamp">
-                                            {{ $item->updated_at ? $item->updated_at->format('d/m/Y H:i') : '-' }}</div>
+                                        <div class="token-preview" title="{{ $item->access_token }}">
+                                            {{ $item->access_token }}
+                                        </div>
                                     </td>
                                     <td>
                                         <div class="action-cell">
-                                            <a href="{{ route('admin.token.edit', $item->id) }}"
-                                                class="btn-action btn-action-edit">
+                                            <button type="button" class="btn-action btn-action-edit" data-bs-toggle="modal"
+                                                data-bs-target="#memberModal" data-mode="edit"
+                                                data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"
+                                                data-nim="{{ $item->Nim }}" data-role="{{ $display?->role ?? '' }}"
+                                                data-order="{{ $display?->order ?? 0 }}"
+                                                data-access="{{ $item->access_token }}"
+                                                data-refresh="{{ $item->refresh_token }}"
+                                                data-status="{{ $item->status_onoff }}">
                                                 <i class="bi bi-pencil"></i> Edit
-                                            </a>
-                                            <form action="{{ route('admin.token.destroy', $item->id) }}" method="POST"
+                                            </button>
+                                            <form action="{{ route('admin.tim.destroy', $item->id) }}" method="POST"
                                                 style="display: contents;">
                                                 @csrf
                                                 @method('delete')
                                                 <button type="submit" class="btn-action btn-action-delete"
-                                                    onclick="return confirm('Hapus token ini? Data tidak bisa dikembalikan.')">
+                                                    onclick="return confirm('Hapus anggota ini? Token, kartu beranda, dan data kas terkait ikut terhapus.')">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
@@ -564,23 +538,138 @@
                 </div>
             @else
                 <div class="no-data">
-                    <h5>Belum Ada Token</h5>
-                    <p>Tidak ada data token yang ditambahkan. <a href="{{ route('admin.inserttoken.form') }}"
-                            style="color: var(--brand-500);">Tambah token baru</a></p>
+                    <h5>Belum Ada Anggota</h5>
+                    <p>Tambahkan anggota pertama untuk mulai mengelola tim.</p>
                 </div>
             @endif
         </div>
     </div>
 
+    <!-- Modal Tambah / Edit Anggota -->
+    <div class="modal fade" id="memberModal" tabindex="-1" aria-labelledby="memberModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="memberForm" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="_method" id="memberMethod" value="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="memberModalLabel">Tambah Anggota</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nama</label>
+                                <input type="text" class="form-control" name="nama" id="fieldNama" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">NIM</label>
+                                <input type="text" class="form-control" name="Nim" id="fieldNim" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Posisi/Role</label>
+                                <input type="text" class="form-control" name="role" id="fieldRole"
+                                    placeholder="contoh: Frontend Developer" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Urutan (Order)</label>
+                                <input type="number" class="form-control" name="order" id="fieldOrder"
+                                    min="0" required>
+                                <small class="text-muted">Urutan tampilan di beranda (0 muncul paling awal)</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Upload Foto</label>
+                                <input type="file" class="form-control" name="photo_image" accept="image/*">
+                                <small class="text-muted">Max 5MB (JPG, PNG, GIF, WebP)</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Atau URL Foto</label>
+                                <input type="url" class="form-control" name="photo_image_url" id="fieldPhotoUrl"
+                                    placeholder="https://example.com/image.jpg">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Access Token</label>
+                                <textarea name="access_token" id="fieldAccess" class="form-control" rows="2"
+                                    placeholder="Masukkan access token" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Refresh Token</label>
+                                <textarea name="refresh_token" id="fieldRefresh" class="form-control" rows="2"
+                                    placeholder="Masukkan refresh token" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="status_onoff" value="on"
+                                        id="fieldStatus">
+                                    <label class="form-check-label" for="fieldStatus">
+                                        Aktifkan untuk scanning absen
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-brand">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Auto-hide alerts after 6 seconds
         document.addEventListener('DOMContentLoaded', function() {
+            // Auto-hide alerts after 6 seconds
             const alerts = document.querySelectorAll('.alert-dismissible');
             alerts.forEach(alert => {
                 setTimeout(() => {
                     const bsAlert = new bootstrap.Alert(alert);
                     bsAlert.close();
                 }, 6000);
+            });
+
+            // Isi modal berdasarkan tombol (tambah / edit)
+            const memberModal = document.getElementById('memberModal');
+            const memberForm = document.getElementById('memberForm');
+            const memberMethod = document.getElementById('memberMethod');
+            const memberLabel = document.getElementById('memberModalLabel');
+            const fieldNama = document.getElementById('fieldNama');
+            const fieldNim = document.getElementById('fieldNim');
+            const fieldRole = document.getElementById('fieldRole');
+            const fieldOrder = document.getElementById('fieldOrder');
+            const fieldPhotoUrl = document.getElementById('fieldPhotoUrl');
+            const fieldAccess = document.getElementById('fieldAccess');
+            const fieldRefresh = document.getElementById('fieldRefresh');
+            const fieldStatus = document.getElementById('fieldStatus');
+
+            memberModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const mode = button.dataset.mode;
+
+                // Reset form
+                memberForm.reset();
+                memberForm.querySelector('[name="photo_image"]').value = '';
+
+                if (mode === 'edit') {
+                    memberLabel.textContent = 'Edit Anggota';
+                    memberMethod.value = 'PUT';
+                    memberForm.action = "{{ route('admin.tim.update', ':id') }}".replace(':id', button
+                        .dataset
+                        .id);
+                    fieldNama.value = button.dataset.nama;
+                    fieldNim.value = button.dataset.nim;
+                    fieldRole.value = button.dataset.role;
+                    fieldOrder.value = button.dataset.order;
+                    fieldPhotoUrl.value = '';
+                    fieldAccess.value = button.dataset.access;
+                    fieldRefresh.value = button.dataset.refresh;
+                    fieldStatus.checked = button.dataset.status === 'on';
+                } else {
+                    memberLabel.textContent = 'Tambah Anggota';
+                    memberMethod.value = 'POST';
+                    memberForm.action = "{{ route('admin.tim.store') }}";
+                    fieldOrder.value = 0;
+                }
             });
         });
     </script>

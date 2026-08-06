@@ -378,7 +378,9 @@
                             <div class="row g-2 g-md-3">
                                 @foreach ($datauser as $item)
                                     @php
-                                        $tagihan = max(0, (int) $item->Utang_Anggota);
+                                        // Tagihan net: utang dikurangi saldo lebih (saldo lebih dipakai bayar utang)
+                                        $tagihan = max(0, (int) $item->Utang_Anggota - (int) $item->Saldo_Lebih);
+                                        $saldoLebih = max(0, (int) $item->Saldo_Lebih);
                                         $statusId = (int) $item->Status_Pembayaran;
                                         $statusLabel = match ($statusId) {
                                             1 => 'Belum Bayar',
@@ -406,6 +408,10 @@
                                                         name='nama'>{{ $item->datasikad->nama }}</span>
                                                     <span class="member-tag">Tagihan: Rp
                                                         {{ number_format($tagihan, 0, ',', '.') }}</span>
+                                                    @if ($saldoLebih > 0)
+                                                        <span class="member-tag">Saldo lebih: Rp
+                                                            {{ number_format($saldoLebih, 0, ',', '.') }}</span>
+                                                    @endif
                                                     <span
                                                         class="member-status {{ $statusClass }}">{{ $statusLabel }}</span>
                                                 </span>

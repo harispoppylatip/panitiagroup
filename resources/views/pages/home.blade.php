@@ -55,7 +55,13 @@
                     <div class="col-12 col-md-6 col-lg-4">
                         <article class="team-card">
                             <div class="team-photo-wrap">
-                                <img src="{{ $member->image_url }}" alt="{{ $member->name }}" class="team-photo">
+                                @if ($member->image_url)
+                                    <img src="{{ $member->image_url }}" alt="{{ $member->name }}" class="team-photo">
+                                @else
+                                    <div class="team-photo team-photo-placeholder">
+                                        {{ strtoupper(substr($member->name, 0, 1)) }}
+                                    </div>
+                                @endif
                             </div>
                             <div class="team-card-body">
                                 <p class="team-role mb-1">{{ $member->role }}</p>
@@ -241,6 +247,17 @@
             object-fit: cover;
             display: block;
             transition: transform 0.55s ease;
+        }
+
+        .team-photo-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--surface-container-low);
+            color: var(--brand-700);
+            font-size: 2.6rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
         }
 
         .team-card:hover .team-photo {

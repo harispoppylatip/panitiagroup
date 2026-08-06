@@ -375,16 +375,15 @@
             <div class="card-body p-3 p-md-4 payment-inner">
                 <input type="hidden" name="nama" value="{{ $data->datasikad->nama }}">
                 <input type="hidden" name="nim" value="{{ $data->datasikad->Nim }}">
-                <input type="hidden" name="uang" id="paymentAmountInput"
-                    value="{{ max(0, (int) $data->Utang_Anggota) }}">
+                <input type="hidden" name="uang" id="paymentAmountInput" value="{{ max(0, (int) $sisaUtang) }}">
 
                 <div class="choice-grid mb-3" id="paymentChoices">
                     <button type="button" class="choice-card is-button is-active" data-choice="20"
-                        data-amount="{{ max(0, (int) $data->Utang_Anggota) }}" data-label="Iuran + Lunasi"
-                        data-display="Rp {{ number_format(max(0, (int) $data->Utang_Anggota), 0, ',', '.') }}"
+                        data-amount="{{ max(0, (int) $sisaUtang) }}" data-label="Iuran + Lunasi"
+                        data-display="Rp {{ number_format(max(0, (int) $sisaUtang), 0, ',', '.') }}"
                         @disabled(!($canPay ?? true))>
                         <div class="choice-label">Lunasi</div>
-                        <div class="choice-value">Rp {{ number_format(max(0, (int) $data->Utang_Anggota), 0, ',', '.') }}
+                        <div class="choice-value">Rp {{ number_format(max(0, (int) $sisaUtang), 0, ',', '.') }}
                         </div>
                     </button>
                     <button type="button" class="choice-card is-button" data-choice="custom" data-label="Jumlah lain"
@@ -435,10 +434,22 @@
                             class="value {{ ($data->Status_Pembayaran ?? 1) === 3 ? 'is-success' : (($data->Status_Pembayaran ?? 1) === 2 ? 'is-warning' : '') }}">
                             {{ $paymentStatusLabel ?? 'Belum Bayar' }}</div>
                     </div>
-                    <div class="detail-row mb-0">
+                    <div class="detail-row">
                         <div class="label">Total utang</div>
                         <div class="value is-warning">{{ number_format(max(0, (int) $data->Utang_Anggota), 0, ',', '.') }}
                         </div>
+                    </div>
+                    @if ((int) $data->Saldo_Lebih > 0)
+                        <div class="detail-row">
+                            <div class="label">Saldo lebih</div>
+                            <div class="value is-success">
+                                -{{ number_format(max(0, (int) $data->Saldo_Lebih), 0, ',', '.') }}
+                            </div>
+                        </div>
+                    @endif
+                    <div class="detail-row mb-0">
+                        <div class="label">Sisa tagihan</div>
+                        <div class="value is-warning">{{ number_format(max(0, (int) $sisaUtang), 0, ',', '.') }}</div>
                     </div>
 
                     <hr class="detail-divider">
@@ -446,12 +457,12 @@
                     <div class="detail-row mb-0">
                         <div class="label fw-bold text-main">Bayar Sekarang</div>
                         <div class="value is-primary" id="currentPayAmount">Rp
-                            {{ number_format(max(0, (int) $data->Utang_Anggota), 0, ',', '.') }}</div>
+                            {{ number_format(max(0, (int) $sisaUtang), 0, ',', '.') }}</div>
                     </div>
                 </div>
 
                 <button type="submit" class="pay-button mb-2" id="payNowButton" @disabled(!($canPay ?? true))>
-                    {{ $canPay ?? true ? 'Bayar ' . number_format(max(0, (int) $data->Utang_Anggota), 0, ',', '.') : 'Tidak ada tagihan' }}</button>
+                    {{ $canPay ?? true ? 'Bayar ' . number_format(max(0, (int) $sisaUtang), 0, ',', '.') : 'Tidak ada tagihan' }}</button>
             </div>
         </form>
     </div>

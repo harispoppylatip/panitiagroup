@@ -160,12 +160,20 @@
             font-weight: 700;
         }
 
-        .navbar-toggler {
-            border: 1px solid var(--border-soft);
+        .navbar-actions {
+            gap: 0.5rem;
         }
 
-        .navbar-toggler:focus {
-            box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.15) !important;
+        @media (max-width: 575.98px) {
+
+            /* Toggle tema ringkas (ikon saja) di layar sempit */
+            .theme-toggle {
+                padding: 0.45rem 0.6rem;
+            }
+
+            #themeToggleText {
+                display: none;
+            }
         }
 
         @media (min-width: 992px) {
@@ -179,24 +187,10 @@
         }
 
         @media (max-width: 991.98px) {
+
+            /* Menu navbar disembunyikan di mobile — navigasi memakai tab bar bawah */
             .navbar .navbar-collapse {
-                background-color: var(--nav-menu-bg) !important;
-                border-top: 1px solid var(--border-soft);
-                padding: 0.5rem 0;
-                visibility: visible !important;
-            }
-
-            .navbar .navbar-collapse.collapsing,
-            .navbar .navbar-collapse.show {
-                visibility: visible !important;
-            }
-
-            .navbar .navbar-nav {
-                width: 100%;
-            }
-
-            .navbar .nav-link {
-                padding: 0.75rem 1rem;
+                display: none !important;
             }
         }
 
@@ -764,20 +758,6 @@
             color: var(--text-main);
             border-color: var(--border-soft);
         }
-
-        body[data-theme='dark'] .navbar-toggler {
-            border-color: var(--border-soft);
-        }
-
-        .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='%23434655' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>");
-        }
-
-        /* Ensure hamburger icon is visible in dark mode */
-        body[data-theme='dark'] .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='%23eaf1ff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>");
-            filter: none;
-        }
     </style>
 </head>
 
@@ -785,10 +765,6 @@
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Pemuda Akhir Zaman</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link {{ request()->is('/') ? 'active' : '' }}"
@@ -803,24 +779,21 @@
                             href="{{ route('grubkas.index') }}">Kas Grub</a></li>
                     <li class="nav-item"><a class="nav-link {{ request()->routeIs('scan.login') ? 'active' : '' }}"
                             href="{{ route('scan.login') }}">Scan Absen</a></li>
-                    <li class="nav-item ms-lg-2">
-                        <button type="button" class="theme-toggle" id="themeToggle">
-                            <i class="bi bi-moon-stars"></i>
-                            <span id="themeToggleText">Dark</span>
-                        </button>
-                    </li>
-                    @auth
-                        <li class="nav-item ms-lg-2">
-                            <form action="{{ route('admin.logout') }}" method="POST" class="d-inline">
-                                @csrf
-                                <button type="submit" class="btn btn-brand btn-sm">Logout</button>
-                            </form>
-                        </li>
-                    @else
-                        <li class="nav-item"><a class="btn btn-brand btn-sm ms-lg-2" href="{{ route('admin.login') }}">Log
-                                In</a></li>
-                    @endauth
                 </ul>
+            </div>
+            <div class="navbar-actions d-flex align-items-center">
+                <button type="button" class="theme-toggle" id="themeToggle">
+                    <i class="bi bi-moon-stars"></i>
+                    <span id="themeToggleText">Dark</span>
+                </button>
+                @auth
+                    <form action="{{ route('admin.logout') }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-brand btn-sm">Logout</button>
+                    </form>
+                @else
+                    <a class="btn btn-brand btn-sm" href="{{ route('admin.login') }}">Log In</a>
+                @endauth
             </div>
         </div>
     </nav>
@@ -843,8 +816,7 @@
             <span>Scan</span>
         </a>
         <div class="bottom-nav-group bottom-nav-group-right">
-            <a class="bottom-nav-item {{ request()->routeIs('tugas') ? 'active' : '' }}"
-                href="{{ route('tugas') }}">
+            <a class="bottom-nav-item {{ request()->routeIs('tugas') ? 'active' : '' }}" href="{{ route('tugas') }}">
                 <span class="bottom-nav-icon"><i class="bi bi-journal-text"></i></span>
                 <span>Tugas</span>
             </a>
@@ -916,8 +888,6 @@
             const body = document.body;
             const themeToggle = document.getElementById('themeToggle');
             const themeToggleText = document.getElementById('themeToggleText');
-            const toggler = document.querySelector('.navbar-toggler');
-            const menu = document.getElementById('navbarNav');
 
             function applyTheme(theme) {
                 body.setAttribute('data-theme', theme);
@@ -942,13 +912,6 @@
                 themeToggle.addEventListener('click', function() {
                     const nextTheme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
                     applyTheme(nextTheme);
-                });
-            }
-
-            if (!window.bootstrap && toggler && menu) {
-                toggler.addEventListener('click', function() {
-                    const isOpen = menu.classList.toggle('show');
-                    toggler.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
                 });
             }
         });

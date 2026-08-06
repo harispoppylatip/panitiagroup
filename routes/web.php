@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\BerandaController;
+use App\Http\Controllers\Admin\TimController;
 use App\Http\Controllers\Admin\TokenController;
 use App\Http\Controllers\Admin\TugasController;
 use App\Http\Controllers\Admin\FinanceController;
@@ -50,14 +51,10 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         Route::put('/tugas/{id}/edit/now', [TugasController::class, 'update'])->name('admin.tugas.editsend');
         Route::delete('/tugas/delete/{id}', [TugasController::class, 'destroy'])->name('admin.tugas.delete');
 
-        // Management Beranda
+        // Management Beranda (hanya foto hero)
         Route::get('/beranda', [BerandaController::class, 'index'])->name('admin.beranda.index');
         Route::get('/beranda/hero/edit', [BerandaController::class, 'editHero'])->name('admin.beranda.edit-hero');
         Route::put('/beranda/hero/update', [BerandaController::class, 'updateHero'])->name('admin.beranda.update-hero');
-        Route::get('/beranda/team/edit', [BerandaController::class, 'editTeam'])->name('admin.beranda.edit-team');
-        Route::post('/beranda/team/store', [BerandaController::class, 'storeTeam'])->name('admin.beranda.store-team');
-        Route::put('/beranda/team/{teamMember}/update', [BerandaController::class, 'updateTeam'])->name('admin.beranda.update-team');
-        Route::delete('/beranda/team/{teamMember}', [BerandaController::class, 'destroyTeam'])->name('admin.beranda.destroy-team');
 
         // Galeri (Google Drive)
         Route::get('/galeri', [AdminGalleryController::class, 'index'])->name('admin.galeri.index');
@@ -65,6 +62,13 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     });
 
     Route::middleware('role:admin,akuntan')->group(function () {
+        // Management Tim (satu halaman: data anggota + token absen + tampilan beranda + kas)
+        Route::get('/tim', [TimController::class, 'index'])->name('admin.tim.index');
+        Route::post('/tim', [TimController::class, 'store'])->name('admin.tim.store');
+        Route::put('/tim/{id}', [TimController::class, 'update'])->name('admin.tim.update');
+        Route::delete('/tim/{id}', [TimController::class, 'destroy'])->name('admin.tim.destroy');
+        Route::post('/tim/refresh-all', [TimController::class, 'refreshAllTokens'])->name('admin.tim.refresh-all');
+
         // Finance
         Route::get('/finance', [FinanceController::class, 'index'])->name('admin.finance.index');
         Route::post('/finance/settings', [FinanceController::class, 'updateSettings'])->name('admin.finance.settings.update');
@@ -76,14 +80,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
             Route::post('/finance/reset', [FinanceController::class, 'resetAll'])->name('admin.finance.reset');
         });
 
-        // Token Control
-        Route::get('/inserttoken', [AdminController::class, 'inserttoken'])->name('admin.inserttoken.form');
-        Route::get('/membertoken', [TokenController::class, 'index'])->name('admin.membertoken');
-        Route::post('/simpan/token', [TokenController::class, 'membertokenproses'])->name('admin.savetoken');
-        Route::get('/token/{id}/edit', [TokenController::class, 'edit'])->name('admin.token.edit');
-        Route::put('/token/{id}', [TokenController::class, 'update'])->name('admin.token.update');
-        Route::delete('/token/del/{id}', [TokenController::class, 'destroy'])->name('admin.token.destroy');
-        Route::post('/token/refresh-all', [TokenController::class, 'refreshAllTokens'])->name('admin.token.refresh-all');
+        // Setting akun scan
         Route::get('/scan-login-setting', [AdminController::class, 'scanLoginSetting'])->name('admin.scan.login.setting');
         Route::post('/scan-login-setting', [AdminController::class, 'updateScanLoginSetting'])->name('admin.scan.login.setting.update');
 

@@ -237,6 +237,7 @@
         .dropdown-menu,
         .list-group-item,
         .form-control,
+        .form-select,
         .modal-content {
             background-color: var(--surface-elevated);
             color: var(--text-main);
@@ -250,6 +251,7 @@
 
         .table {
             --bs-table-bg: transparent;
+            --bs-table-color: var(--text-main);
             color: var(--text-main);
             border-color: var(--border-soft);
         }
@@ -280,6 +282,52 @@
         body[data-theme='dark'] .footer-text,
         body[data-theme='dark'] .footer-text.secondary {
             color: var(--text-muted) !important;
+        }
+
+        body[data-theme='dark'] input[type='date'],
+        body[data-theme='dark'] select.form-select {
+            color-scheme: dark;
+        }
+
+        body[data-theme='dark'] .text-success {
+            color: #4ade80 !important;
+        }
+
+        body[data-theme='dark'] .text-danger {
+            color: #f87171 !important;
+        }
+
+        body[data-theme='dark'] .text-warning {
+            color: #fbbf24 !important;
+        }
+
+        body[data-theme='dark'] .alert-success {
+            background-color: rgba(34, 197, 94, 0.12);
+            border-color: rgba(34, 197, 94, 0.25);
+            color: #86efac;
+        }
+
+        body[data-theme='dark'] .alert-danger {
+            background-color: rgba(239, 68, 68, 0.12);
+            border-color: rgba(239, 68, 68, 0.25);
+            color: #fca5a5;
+        }
+
+        body[data-theme='dark'] .alert-warning {
+            background-color: rgba(245, 158, 11, 0.12);
+            border-color: rgba(245, 158, 11, 0.25);
+            color: #fcd34d;
+        }
+
+        body[data-theme='dark'] .btn-outline-danger {
+            color: #f87171;
+            border-color: rgba(248, 113, 113, 0.5);
+        }
+
+        body[data-theme='dark'] .btn-outline-danger:hover {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border-color: rgba(248, 113, 113, 0.6);
         }
     </style>
 </head>
@@ -333,11 +381,14 @@
                         </li>
                     @endif
 
-                    @if ($adminOnlyMenuVisible)
+                    @if (in_array($currentRole, ['admin', 'akuntan'], true))
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.membertoken') ? 'active' : '' }}"
-                                href="{{ route('admin.membertoken') }}">Management Token</a>
+                            <a class="nav-link {{ request()->routeIs('admin.tim.*') ? 'active' : '' }}"
+                                href="{{ route('admin.tim.index') }}">Management Tim</a>
                         </li>
+                    @endif
+
+                    @if ($adminOnlyMenuVisible)
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('admin.scan.login.setting') ? 'active' : '' }}"
                                 href="{{ route('admin.scan.login.setting') }}">Setting Login Scan</a>

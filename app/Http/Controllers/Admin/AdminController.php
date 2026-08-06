@@ -13,16 +13,6 @@ use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
-    public function inserttoken(): View
-    {
-        return view('admin.inserttoken');
-    }
-
-    public function membertoken()
-    {
-        return view('admin.membertoken');
-    }
-
     public function scanLoginSetting(): View
     {
         abort_unless(Auth::user()?->role === 'admin', 403);

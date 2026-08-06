@@ -32,15 +32,32 @@
 
                             <div class="row g-3">
                                 <div class="col-md-4 text-center">
-                                    <div class="qr-box mx-auto"
-                                        style="width:220px;height:220px;border:1px dashed #d1d5db;display:flex;align-items:center;justify-content:center;border-radius:8px;">
-                                        @if (!empty($qrimage))
-                                            <img src="{{ $qrimage }}" alt="qiris">
-                                        @else
+                                    @if (!empty($qrisError))
+                                        <div class="alert alert-danger py-2 small mb-3">{{ $qrisError }}</div>
+                                        <div class="qr-box mx-auto"
+                                            style="width:220px;height:220px;border:1px dashed #d1d5db;display:flex;align-items:center;justify-content:center;border-radius:8px;">
                                             <span class="text-muted small px-3">QR belum tersedia.</span>
+                                        </div>
+                                    @elseif (!empty($qrimage))
+                                        <div class="qr-box mx-auto"
+                                            style="width:220px;height:220px;background:#fff;border:1px solid #d1d5db;display:flex;align-items:center;justify-content:center;border-radius:8px;padding:10px;">
+                                            <img src="{{ $qrimage }}" alt="QRIS"
+                                                style="width:100%;height:100%;object-fit:contain;">
+                                        </div>
+                                        <div class="fw-semibold mt-2">Rp
+                                            {{ number_format((int) $amount ?? 0, 0, ',', '.') }}</div>
+                                        <small class="text-muted d-block">Scan QRIS untuk membayar</small>
+                                        @if (!empty($expired))
+                                            <small class="text-muted d-block">Berlaku sampai
+                                                {{ \Carbon\Carbon::parse($expired)->format('d M Y H:i') }}</small>
                                         @endif
-                                    </div>
-                                    <small class="text-muted d-block mt-2">Expired: {{ $expired ?? '-' }}</small>
+                                    @else
+                                        <div class="qr-box mx-auto"
+                                            style="width:220px;height:220px;border:1px dashed #d1d5db;display:flex;align-items:center;justify-content:center;border-radius:8px;">
+                                            <span class="text-muted small px-3">QR belum tersedia.</span>
+                                        </div>
+                                        <small class="text-muted d-block mt-2">Expired: {{ $expired ?? '-' }}</small>
+                                    @endif
                                 </div>
 
                                 <div class="col-md-8">
@@ -52,6 +69,7 @@
                                         <input type="hidden" name="name" value="{{ $name ?? '' }}" />
                                         <input type="hidden" name="amount" value="{{ $amount ?? '' }}" />
                                         <input type="hidden" name="link_code" value="{{ $link_code ?? '' }}" />
+                                        <input type="hidden" name="order_id" value="{{ $order_id ?? '' }}" />
 
                                         <div class="mb-3">
                                             <label class="form-label fw-semibold">Unggah Bukti Pembayaran</label>
