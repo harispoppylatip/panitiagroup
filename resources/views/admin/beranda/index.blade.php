@@ -45,28 +45,6 @@
                                 @endif
                             </div>
 
-                            <div class="row g-2">
-                                <div class="col-6">
-                                    <p class="text-muted small mb-2">Foto Samping 1</p>
-                                    @if ($heroImages->get('side1'))
-                                        <img src="{{ $heroImages->get('side1')->image_url }}"
-                                            alt="{{ $heroImages->get('side1')->alt_text }}" class="img-fluid rounded"
-                                            style="max-height: 150px; width: 100%; object-fit: cover;">
-                                    @else
-                                        <div class="alert alert-warning mb-0">Belum ada</div>
-                                    @endif
-                                </div>
-                                <div class="col-6">
-                                    <p class="text-muted small mb-2">Foto Samping 2</p>
-                                    @if ($heroImages->get('side2'))
-                                        <img src="{{ $heroImages->get('side2')->image_url }}"
-                                            alt="{{ $heroImages->get('side2')->alt_text }}" class="img-fluid rounded"
-                                            style="max-height: 150px; width: 100%; object-fit: cover;">
-                                    @else
-                                        <div class="alert alert-warning mb-0">Belum ada</div>
-                                    @endif
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

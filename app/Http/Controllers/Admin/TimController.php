@@ -38,8 +38,49 @@ class TimController extends Controller
         return $oldImageUrl;
     }
 
+    /**
+     * Sinkronkan kartu tampilan beranda (team_members) dengan datasikad.
+     * Sumber kebenaran = datasikad (Management Tim): setiap anggota tanpa kartu
+     * otomatis dibuatkan kartu, dan kartu yang NIM-nya sudah tidak ada di datasikad dihapus.
+     */
+    private function sinkronkanKartu(): void
+    {
+        $anggota = Datasikadmodel::orderBy('nama')->get();
+        $nimValid = $anggota->pluck('Nim')->map(fn ($n) => (string) $n)->all();
+
+        $kartuByNim = TeamMember::all();
+        $nimTerkartu = $kartuByNim->pluck('nim')->map(fn ($n) => (string) $n)->filter()->all();
+        $nextOrder = (int) TeamMember::max('order') + 1;
+
+        // Buat kartu untuk anggota yang belum punya kartu
+        foreach ($anggota as $item) {
+            if (!in_array((string) $item->Nim, $nimTerkartu, true)) {
+                TeamMember::create([
+                    'nim' => $item->Nim,
+                    'name' => $item->nama,
+                    'role' => 'Anggota',
+                    'image_url' => null,
+                    'order' => $nextOrder++,
+                ]);
+            }
+        }
+
+        // Hapus kartu yang NIM-nya kosong atau sudah tidak ada di datasikad
+        foreach ($kartuByNim as $kartu) {
+            $nimKartu = $kartu->nim ? (string) $kartu->nim : '';
+            if ($nimKartu === '' || !in_array($nimKartu, $nimValid, true)) {
+                if ($kartu->image_url && !filter_var($kartu->image_url, FILTER_VALIDATE_URL)) {
+                    Storage::disk('public')->delete(str_replace('storage/', '', $kartu->image_url));
+                }
+                $kartu->delete();
+            }
+        }
+    }
+
     public function index(): View
     {
+        $this->sinkronkanKartu();
+
         $data = Datasikadmodel::orderBy('nama')->get();
         $displayByNim = TeamMember::all()->keyBy('nim');
 

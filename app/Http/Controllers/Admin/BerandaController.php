@@ -12,7 +12,6 @@ class BerandaController extends Controller
     private function processImage($request, $fieldName, $oldImageUrl = null)
     {
         $imageField = $fieldName . '_image';
-        $urlField = $fieldName . '_image_url';
 
         if ($request->hasFile($imageField)) {
             if ($oldImageUrl && !filter_var($oldImageUrl, FILTER_VALIDATE_URL)) {
@@ -23,13 +22,6 @@ class BerandaController extends Controller
             $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $path = $file->storeAs('beranda', $filename, 'public');
             return '/storage/' . $path;
-        }
-
-        if ($request->filled($urlField)) {
-            if ($oldImageUrl && !filter_var($oldImageUrl, FILTER_VALIDATE_URL)) {
-                Storage::disk('public')->delete(str_replace('storage/', '', $oldImageUrl));
-            }
-            return $request->input($urlField);
         }
 
         return $oldImageUrl;
@@ -52,21 +44,18 @@ class BerandaController extends Controller
     {
         $request->validate([
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'main_image_url' => 'nullable|url',
             'main_alt_text' => 'nullable|string',
-            'side1_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'side1_image_url' => 'nullable|url',
-            'side1_alt_text' => 'nullable|string',
-            'side2_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'side2_image_url' => 'nullable|url',
-            'side2_alt_text' => 'nullable|string',
+        ], [
+            'main_image.image' => 'Foto utama harus berupa gambar.',
+            'main_image.mimes' => 'Foto utama harus berformat JPG, PNG, GIF, atau WebP.',
+            'main_image.max' => 'Foto utama maksimal 5MB.',
         ]);
 
         $mainOld = HeroImage::where('position', 'main')->first();
         $mainImageUrl = $this->processImage($request, 'main', $mainOld?->image_url);
 
         if (!$mainImageUrl) {
-            return back()->withErrors(['main' => 'Upload foto atau masukkan URL']);
+            return back()->withErrors(['main' => 'Pilih foto untuk diunggah']);
         }
 
         HeroImage::updateOrCreate(
@@ -77,37 +66,27 @@ class BerandaController extends Controller
             ]
         );
 
-        $side1Old = HeroImage::where('position', 'side1')->first();
-        $side1ImageUrl = $this->processImage($request, 'side1', $side1Old?->image_url);
-
-        if (!$side1ImageUrl) {
-            return back()->withErrors(['side1' => 'Upload foto atau masukkan URL']);
-        }
-
-        HeroImage::updateOrCreate(
-            ['position' => 'side1'],
-            [
-                'image_url' => $side1ImageUrl,
-                'alt_text' => $request->input('side1_alt_text'),
-            ]
-        );
-
-        $side2Old = HeroImage::where('position', 'side2')->first();
-        $side2ImageUrl = $this->processImage($request, 'side2', $side2Old?->image_url);
-
-        if (!$side2ImageUrl) {
-            return back()->withErrors(['side2' => 'Upload foto atau masukkan URL']);
-        }
-
-        HeroImage::updateOrCreate(
-            ['position' => 'side2'],
-            [
-                'image_url' => $side2ImageUrl,
-                'alt_text' => $request->input('side2_alt_text'),
-            ]
-        );
+        $this->hapusFotoSamping();
 
         return redirect()->route('admin.beranda.edit-hero')
             ->with('success', 'Foto beranda berhasil diperbarui');
+    }
+
+    /**
+     * Sinkronkan: hero hanya pakai 1 foto (main).
+     * Hapus record & file foto samping yang tidak terpakai.
+     */
+    private function hapusFotoSamping()
+    {
+        foreach (['side1', 'side2'] as $position) {
+            $row = HeroImage::where('position', $position)->first();
+            if ($row) {
+                $url = $row->image_url;
+                if ($url && !filter_var($url, FILTER_VALIDATE_URL)) {
+                    Storage::disk('public')->delete(str_replace('storage/', '', $url));
+                }
+                $row->delete();
+            }
+        }
     }
 }

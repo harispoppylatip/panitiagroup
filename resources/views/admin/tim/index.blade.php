@@ -367,7 +367,7 @@
         <div class="header-section">
             <div class="header-title">
                 <h1>Management Tim</h1>
-                <p>Kelola semua anggota: data diri, token absen, tampilan beranda, dan kas — satu halaman</p>
+                <p>Kelola semua anggota: data diri, token absen, tampilan beranda, dan kas dalam satu halaman</p>
             </div>
             <div class="action-buttons">
                 <button type="button" class="btn-brand" data-bs-toggle="modal" data-bs-target="#memberModal"

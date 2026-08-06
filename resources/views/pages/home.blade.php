@@ -9,7 +9,7 @@
 
         <div class="container hero-container">
             <div class="row align-items-center g-4 g-lg-5">
-                <div class="col-lg-6">
+                <div class="col-lg-8">
                     <div class="hero-copy">
                         <p class="hero-tag mb-3">BERANDA RESMI</p>
                         <h1 class="hero-title mb-3">Pemuda Akhir Zaman</h1>
@@ -23,19 +23,6 @@
                             <a href="{{ route('scan.login') }}" class="btn btn-brand px-4 py-2">Masuk Scan Absen</a>
                             <a href="{{ route('galeri.index') }}" class="hero-link">Jelajahi Galeri</a>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-6">
-                    <div class="hero-mosaic">
-                        <figure class="mosaic-item">
-                            <img src="{{ $heroImages->get('side1')?->image_url ?? 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80' }}"
-                                alt="{{ $heroImages->get('side1')?->alt_text ?? 'Aktivitas tim 1' }}">
-                        </figure>
-                        <figure class="mosaic-item">
-                            <img src="{{ $heroImages->get('side2')?->image_url ?? 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80' }}"
-                                alt="{{ $heroImages->get('side2')?->alt_text ?? 'Aktivitas tim 2' }}">
-                        </figure>
                     </div>
                 </div>
             </div>
@@ -140,7 +127,8 @@
             color: rgba(255, 255, 255, 0.86);
             font-size: 1.05rem;
             line-height: 1.7;
-            max-width: 54ch;
+            max-width: 42ch;
+            text-align: justify;
         }
 
         .hero-link {
@@ -153,46 +141,6 @@
 
         .hero-link:hover {
             color: #ffffff;
-        }
-
-        /* ===== HERO MOSAIC (gambar responsif) ===== */
-        .hero-mosaic {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1rem;
-        }
-
-        .mosaic-item {
-            margin: 0;
-            position: relative;
-            aspect-ratio: 4/3;
-            border-radius: 1rem;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
-            animation: fadeUp 0.6s ease both;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .mosaic-item:nth-child(2) {
-            animation-delay: 0.15s;
-        }
-
-        .mosaic-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.6s ease;
-        }
-
-        .mosaic-item:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.42);
-        }
-
-        .mosaic-item:hover img {
-            transform: scale(1.06);
         }
 
         /* ===== TEAM ===== */
@@ -325,11 +273,6 @@
             .hero-title {
                 max-width: none;
             }
-
-            .hero-mosaic {
-                max-width: 480px;
-                margin-inline: auto;
-            }
         }
 
         @media (max-width: 767.98px) {
@@ -343,10 +286,6 @@
             .hero-container {
                 padding: 3rem 1.25rem;
             }
-
-            .hero-mosaic {
-                gap: 0.75rem;
-            }
         }
 
         @media (max-width: 576px) {
@@ -356,15 +295,6 @@
 
             .hero-lead {
                 font-size: 0.95rem;
-            }
-
-            .hero-mosaic {
-                grid-template-columns: 1fr;
-                max-width: none;
-            }
-
-            .mosaic-item {
-                aspect-ratio: 16/9;
             }
 
             .team-card-body {
