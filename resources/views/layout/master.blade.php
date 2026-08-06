@@ -496,9 +496,45 @@
         }
 
         @media (max-width: 767.98px) {
+            .site-footer {
+                padding: 1.5rem 0 1.25rem;
+            }
+
             .footer-grid {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
+                gap: 1.25rem;
+                padding-bottom: 1.25rem;
+            }
+
+            /* Navigasi sudah tersedia di tab bar bawah, kolom ini redundant di mobile */
+            .footer-col-nav {
+                display: none;
+            }
+
+            /* Kolom Layanan & Sosial: link berjajar ringkas */
+            .footer-col-services .footer-links {
+                display: flex;
+                flex-wrap: wrap;
+                column-gap: 1.5rem;
+                row-gap: 0.6rem;
+            }
+
+            .footer-col-services .footer-heading {
+                font-size: 0.72rem;
+                margin-bottom: 0.6rem;
+            }
+
+            .footer-col-services .footer-heading.mt-4 {
+                margin-top: 1.1rem;
+            }
+
+            .footer-desc {
+                font-size: 0.85rem;
+                line-height: 1.55;
+            }
+
+            .footer-bottom {
+                padding-top: 0.9rem;
             }
         }
 
@@ -848,7 +884,7 @@
                         dengan teknologi.
                     </p>
                 </div>
-                <div class="footer-col">
+                <div class="footer-col footer-col-nav">
                     <p class="footer-heading">Navigasi</p>
                     <ul class="footer-links">
                         <li><a href="/">Beranda</a></li>
@@ -858,7 +894,7 @@
                         <li><a href="{{ route('grubkas.index') }}">Kas Grub</a></li>
                     </ul>
                 </div>
-                <div class="footer-col">
+                <div class="footer-col footer-col-services">
                     <p class="footer-heading">Layanan</p>
                     <ul class="footer-links">
                         <li><a href="{{ route('scan.login') }}">Scan Absen</a></li>

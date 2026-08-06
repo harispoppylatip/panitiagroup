@@ -298,8 +298,8 @@
         }
 
         body[data-theme='dark'] .summary-card {
-            background: var(--brand-700);
-            border-color: rgba(37, 99, 235, 0.5);
+            background: #1d4ed8;
+            border-color: rgba(37, 99, 235, 0.6);
         }
 
         body[data-theme='dark'] .send-banner {
