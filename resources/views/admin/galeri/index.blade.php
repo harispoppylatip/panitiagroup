@@ -132,23 +132,23 @@
 
                         <ol class="setup-steps">
                             <li>
-                                <strong>Buat project di Google Cloud</strong> — buka
+                                <strong>Buat project di Google Cloud</strong>: buka
                                 <a href="https://console.cloud.google.com" target="_blank"
                                     rel="noopener">console.cloud.google.com</a>,
                                 login dengan akun Google yang dipakai untuk Drive, lalu buat project baru (gratis).
                             </li>
                             <li>
-                                <strong>Aktifkan Google Drive API</strong> — di menu
+                                <strong>Aktifkan Google Drive API</strong>: di menu
                                 <em>APIs &amp; Services → Library</em>, cari <em>Google Drive API</em>, klik lalu
                                 <em>Enable</em>.
                             </li>
                             <li>
-                                <strong>Buat Service Account</strong> — buka <em>APIs &amp; Services → Credentials →
+                                <strong>Buat Service Account</strong>: buka <em>APIs &amp; Services → Credentials →
                                     Create Credentials → Service Account</em>. Isi nama bebas, lalu klik
                                 <em>Create and Continue</em> (role boleh dibiarkan None), <em>Done</em>.
                             </li>
                             <li>
-                                <strong>Unduh kunci JSON</strong> — pada daftar service account, klik ikon pensil
+                                <strong>Unduh kunci JSON</strong>: pada daftar service account, klik ikon pensil
                                 (Edit) → tab <em>Keys → Add Key → Create new key → JSON</em> → file terunduh.
                             </li>
                             <li>
@@ -162,7 +162,7 @@
                                 (berakhiran <code>@...iam.gserviceaccount.com</code>) dengan akses <em>Viewer</em>.
                             </li>
                             <li>
-                                <strong>Isi folder ID di .env</strong> — buka folder galeri di browser, ambil ID pada
+                                <strong>Isi folder ID di .env</strong>: buka folder galeri di browser, ambil ID pada
                                 URL (bagian <code>folders/XXXX</code>), lalu set:
                                 <code>GOOGLE_DRIVE_FOLDER_ID=XXXX</code>
                             </li>
@@ -176,7 +176,7 @@
                         <ul class="mb-0">
                             <li>File kredensial:
                                 <code>{{ $credentialsPath }}</code>
-                                — {{ is_file($credentialsPath) ? 'ada' : 'belum ada' }}
+                                : {{ is_file($credentialsPath) ? 'ada' : 'belum ada' }}
                             </li>
                             <li>Folder ID: {{ $folderId ?: 'belum diisi' }}</li>
                         </ul>
@@ -198,12 +198,12 @@
         }
 
         .galeri-hero {
-            background: radial-gradient(circle at top left, rgba(46, 91, 135, 0.20), transparent 36%), radial-gradient(circle at bottom right, rgba(195, 143, 60, 0.18), transparent 34%), linear-gradient(135deg, rgba(31, 59, 92, 0.96), rgba(18, 38, 63, 0.98));
+            background: #0d1c2e;
             border: 1px solid rgba(255, 255, 255, 0.10);
             color: #ffffff;
-            border-radius: 18px;
+            border-radius: 1rem;
             padding: 1.6rem;
-            box-shadow: 0 18px 40px rgba(18, 38, 63, 0.18);
+            box-shadow: 0 4px 12px var(--shadow-soft);
         }
 
         .hero-kicker {

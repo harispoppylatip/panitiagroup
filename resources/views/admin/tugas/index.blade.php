@@ -27,9 +27,9 @@
             }
 
             body[data-theme='dark'] .table thead th {
-                background: linear-gradient(135deg, #2c5b87, #1f3b5c) !important;
-                color: #fff !important;
-                border-bottom: 2px solid rgba(148, 163, 184, 0.2) !important;
+                background: #2b3a52 !important;
+                color: #eaf1ff !important;
+                border-bottom: 1px solid var(--border-soft) !important;
                 font-weight: 600;
             }
 

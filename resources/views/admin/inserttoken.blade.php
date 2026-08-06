@@ -13,7 +13,7 @@
 
                             @if ($errors->any())
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <strong><i class="bi bi-exclamation-circle"></i> Validasi Gagal!</strong>
+                                    <strong>Validasi Gagal!</strong>
                                     <ul class="mb-0 mt-2">
                                         @foreach ($errors->all() as $error)
                                             <li>{{ $error }}</li>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pemuda Akhir Zaman - Beranda</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-dim": "#ccdbf3",
+                      "on-primary": "#ffffff",
+                      "inverse-on-surface": "#eaf1ff",
+                      "outline-variant": "#c3c6d7",
+                      "on-surface": "#0d1c2e",
+                      "inverse-primary": "#b4c5ff",
+                      "error": "#ba1a1a",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-container": "#2563eb",
+                      "on-tertiary-fixed-variant": "#7d2d00",
+                      "tertiary-fixed": "#ffdbcd",
+                      "outline": "#737686",
+                      "on-secondary": "#ffffff",
+                      "on-background": "#0d1c2e",
+                      "surface-variant": "#d5e3fc",
+                      "on-secondary-fixed-variant": "#444749",
+                      "secondary-container": "#e0e3e5",
+                      "surface-container-highest": "#d5e3fc",
+                      "primary-fixed": "#dbe1ff",
+                      "surface-container-high": "#dce9ff",
+                      "on-primary-fixed-variant": "#003ea8",
+                      "on-secondary-container": "#626567",
+                      "surface-tint": "#0053db",
+                      "surface-bright": "#f8f9ff",
+                      "secondary-fixed-dim": "#c4c7c9",
+                      "primary": "#004ac6",
+                      "tertiary": "#943700",
+                      "on-primary-fixed": "#00174b",
+                      "on-surface-variant": "#434655",
+                      "on-error": "#ffffff",
+                      "surface-container-low": "#eff4ff",
+                      "primary-fixed-dim": "#b4c5ff",
+                      "on-tertiary-fixed": "#360f00",
+                      "on-error-container": "#93000a",
+                      "surface": "#f8f9ff",
+                      "inverse-surface": "#233144",
+                      "secondary-fixed": "#e0e3e5",
+                      "background": "#f8f9ff",
+                      "on-primary-container": "#eeefff",
+                      "on-tertiary-container": "#ffede6",
+                      "on-secondary-fixed": "#191c1e",
+                      "tertiary-fixed-dim": "#ffb596",
+                      "secondary": "#5c5f61",
+                      "surface-container": "#e6eeff",
+                      "tertiary-container": "#bc4800",
+                      "error-container": "#ffdad6",
+                      "on-tertiary": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "xs": "4px",
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "xl": "32px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "sm": "8px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-xl": ["Inter"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-md": ["14px", {"lineHeight": "16px", "fontWeight": "600"}],
+                      "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface min-h-screen pt-16 pb-safe">
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-inverse-surface fixed top-0 w-full border-b border-outline-variant dark:border-outline shadow-sm z-50">
+<div class="hidden md:flex justify-between items-center h-16 px-margin-desktop max-w-7xl mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">
+                Pemuda Akhir Zaman
+            </div>
+<div class="flex items-center space-x-lg font-body-md text-body-md">
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Beranda</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low transition-all duration-200 ease-in-out px-sm py-1 rounded" href="#">Anggota</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low transition-all duration-200 ease-in-out px-sm py-1 rounded" href="#">Jadwal</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low transition-all duration-200 ease-in-out px-sm py-1 rounded" href="#">Tugas</a>
+</div>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-full font-label-md text-label-md hover:bg-primary-container transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
+                Daftar
+            </button>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative w-full min-h-[500px] md:min-h-[70vh] flex items-center justify-center border-b border-outline-variant/30">
+<div class="absolute inset-0 z-0">
+<img alt="Mahasiswa Berkolaborasi" class="w-full h-full object-cover" data-alt="A group of diverse, enthusiastic university students in a bright, modern campus setting, engaged in a collaborative discussion. They are holding notebooks and looking optimistic. High-key lighting, clean aesthetic, vibrant but natural colors, soft focus background, professional photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoYJaqOrz-AOeCHO0--HfcSDR4FyP6v3nkkqqH8-8knxjq_-OSUDGZtLwDZewsal4cicAJOzBu_CT4KVE7MaSG93kq29drLh6v6tSedbuaGXTF5lS12HM7LRzoFaYPrTexDg-xmmvbDW2wRNaTAqVKar0pKjjB-TpLqDrOGeosJ8X9_W_892rUcQmqzhZc0gPQTXE9EaoPP68wben6YLNa8W7hRoAelEAqXgKlHYIb1_uWV4bvMgGJ"/>
+<div class="absolute inset-0 bg-black/60"></div>
+</div>
+<div class="relative z-10 flex flex-col items-center text-center space-y-md px-margin-desktop max-w-4xl mx-auto py-xl">
+<h1 class="font-headline-xl text-headline-xl text-white">
+                    Selamat Datang di Pemuda Akhir Zaman
+                </h1>
+<p class="font-body-lg text-body-lg text-white/90 max-w-2xl">
+                    Komunitas yang membangun generasi unggul melalui kolaborasi, disiplin, dan persaudaraan. Bersama kita wujudkan visi yang lebih besar.
+                </p>
+<div class="pt-sm">
+<button class="bg-primary text-on-primary px-lg py-3 rounded-full font-label-md text-label-md hover:bg-primary-container transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 inline-flex items-center gap-2 shadow-lg">
+                        Mulai Sekarang
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<main class="max-w-7xl mx-auto px-margin-desktop pb-margin-desktop pt-xl">
+<!-- Statistics Dashboard -->
+<section class="py-xl">
+<h2 class="font-headline-lg text-headline-lg mb-lg">Ikhtisar Aktivitas</h2>
+<div class="grid grid-cols-1 gap-lg">
+<!-- Stat Card 1 -->
+<!-- Stat Card 2 -->
+<!-- Stat Card 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-lg shadow-sm hover:shadow-md transition-shadow">
+<div class="flex items-center gap-sm mb-md">
+<div class="w-10 h-10 rounded-full bg-surface-tint/20 flex items-center justify-center text-surface-tint">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant">Saldo Kas</h3>
+</div>
+<div class="font-headline-xl text-[36px] font-bold text-on-surface mb-xs">
+                        Rp 2.450k
+                    </div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                        Update terakhir: Hari ini
+                    </p>
+</div>
+</div>
+</section>
+<!-- Core Squad Section -->
+<section class="py-xl">
+<div class="flex justify-between items-end mb-lg">
+<h2 class="font-headline-lg text-headline-lg">Core Squad</h2>
+<a class="font-label-md text-label-md text-primary hover:underline flex items-center gap-1" href="#">
+                    Lihat Semua
+                    <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-md">
+<!-- Member 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col items-center text-center hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="w-24 h-24 rounded-full overflow-hidden mb-sm border-2 border-surface-dim group-hover:border-primary transition-colors">
+<img alt="Budi Santoso" class="w-full h-full object-cover" data-alt="A professional headshot of a young, confident Southeast Asian male wearing a casual collared shirt, smiling warmly at the camera. Clean white background, soft studio lighting, sharp focus, modern corporate portrait style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9wKCov7ybP843FfAzRyYcpiIQuHe4zBBLMTWBjWRlGCCE5UI86LblhusAZh4hRSG5xBpPstT-WbHCpRHK3_hZTcea8k4qP-lDxx-QIaKxT8f_uFuEco_VG2wGT0pgIvpkGQAuskoYC8ro2qY0pdVXRceYyyxgirys2P2W9LFLUQb8U5dXOfacIrx4sxQX1LoIwSpcjiRwilNE8NJkKgVY7zi_11W3RmQoQ0enu7C7YEfA327UgGa9"/>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface mb-xs">Budi Santoso</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant bg-surface-variant px-2 py-1 rounded-full">Ketua</span>
+</div>
+<!-- Member 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col items-center text-center hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="w-24 h-24 rounded-full overflow-hidden mb-sm border-2 border-surface-dim group-hover:border-primary transition-colors">
+<img alt="Siti Rahma" class="w-full h-full object-cover" data-alt="A professional headshot of a young, smart Southeast Asian female wearing modern glasses and a neat blouse, looking directly at the camera with a gentle smile. Clean light-grey background, soft bright lighting, sharp focus, modern minimalist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu8tO5794plUgeV2VloQuwJb4dmYt2tmigyNTYDYDROvgQbC_tSTHTWuUpB1djqs1AwOJyJCFKTqMf91NvE1Qm3_BFowvtCl7Cxb8iXTtShKaD7p8SMTH1TqlzL4oIVihXSVv85TUhpYR--jg_0qB-mIni4bhKGyUthGADi0Kd-HnSZEKgloU_7OrQI0jt2uxcJen0zZ9JdpidKA-XDk7750uSKmOtsY3Pl5FXR5-S00Ecji2vy2km"/>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface mb-xs">Siti Rahma</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant bg-surface-variant px-2 py-1 rounded-full">Sekretaris</span>
+</div>
+<!-- Member 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col items-center text-center hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="w-24 h-24 rounded-full overflow-hidden mb-sm border-2 border-surface-dim group-hover:border-primary transition-colors">
+<img alt="Ahmad Fauzi" class="w-full h-full object-cover" data-alt="A professional headshot of a young Southeast Asian male with a neat haircut, wearing a dark casual jacket over a t-shirt, smiling slightly. Clean white background, crisp even lighting, modern approachable portrait style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJSsf5IwAU0OEltLde1-ErzsNxWpuKw9wJ8gVZElTw_ZKVoXfVrpnmHbRQe1AH3zYiQpxbkhbVCdYiLA63CtxaIm7Fvh7VebIE-R5PfsoYi5GK2bCuTZ1WRJN76kV2Ey8stZGGoEqRjQZ3S1a7-1M4aF_Yf67D6C3JyEf-aYJTlEN-5YZpah9Le4XvgbYV8wNc3hfp1bY6Th_vdv3N9yTWPzQQuAzExxjZjnYVQ_jEKeZxRS4Yi7gN"/>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface mb-xs">Ahmad Fauzi</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant bg-surface-variant px-2 py-1 rounded-full">Bendahara</span>
+</div>
+<!-- Member 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md flex flex-col items-center text-center hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="w-24 h-24 rounded-full overflow-hidden mb-sm border-2 border-surface-dim group-hover:border-primary transition-colors">
+<img alt="Dina Fitriani" class="w-full h-full object-cover" data-alt="A professional headshot of a young Southeast Asian female wearing a stylish modern hijab and a professional blazer, expressing confidence and warmth. Bright clean background, soft shadowless lighting, contemporary portrait aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUQygXARy0z8NAtCj1JPaEyB-ehpb3iTWppv8VeXRadjbOo2QQFwZL11JS0RJbIjqT9EjmefSJr2kN2bsq_tUT2UEa9jwlpWgcP-9DknQ1yQ6LU-o344rtljJcbSQ6PMHRDWdQOvMqejuW-43nYrj0xDk8f2ET63nQ5kWSS8U9auMfebHPmEOdzuw1XVWqMouaZRASgL7gEHz58RK57g12K6rVujgDT65qmj_i3fuim-E0gl3lJafe"/>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface mb-xs">Dina Fitriani</h3>
+<span class="font-body-sm text-body-sm text-on-surface-variant bg-surface-variant px-2 py-1 rounded-full">Humas</span>
+</div>
+</div>
+</section><section class="py-xl">
+<h2 class="font-headline-lg text-headline-lg mb-lg">Project yang Sudah Kita Buat</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<!-- Project 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="h-48 bg-surface-variant">
+<img alt="Project 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBij_DoZWhVFWTerJKdhcndnKUPLPW5nOJ-WPJcz5cY44Dv-z-f16hrPyhm0uzOjO-Gd_T49lS3aluP6ufcJHr_Piw0kw6A1m4_QtBulGXSSxC1Hc_WncBrnINy5sSJ0ow7DdYSnvF1JNmiVAbXe-YhpyUWnDHFX9Bh05jYcR-OG3sNfSq-xQjpE4tBVhOzae1mwHQKfTmMjh_OZSde3L75xFIbpz79QZ_3N5AfA1UutPnyqigm5_8O"/>
+</div>
+<div class="p-lg">
+<h3 class="font-headline-md text-headline-md mb-xs">Aplikasi Manajemen Tugas</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Sistem kolaborasi tim untuk meningkatkan produktivitas anggota komunitas dalam mengerjakan tugas akademik.</p>
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline">
+Lihat Detail
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Project 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="h-48 bg-surface-variant">
+<img alt="Project 2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv3SkAoPmWQF1naB8GV9go6kCvUki1ZqhsW0DVgZ69zusapEGSYKIBBrBVqa4HFLHJd8g-eXiuN4d5x5qg14lk8Eb9g0LzQF-fmjZ1VJMYJcCH_ghfryRhMyRZI4t0qXbmCRbR6BcP_nUmnhkFNrjdLqy8ceG1jgNmvOpQfU5ccaa67E1olE8YL7peUGuj9t-dYeCw4iAJ9rm3D59kVMvlc-dv7r9bOEdzX4v0bo9tVlM1LNw79JTF"/>
+</div>
+<div class="p-lg">
+<h3 class="font-headline-md text-headline-md mb-xs">Portal Belajar Bersama</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Platform berbagi materi dan diskusi antar mahasiswa untuk mendukung keberhasilan studi bersama.</p>
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline">
+Lihat Detail
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Project 3 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="h-48 bg-surface-variant">
+<img alt="Project 3" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvAX_TjBpytQALuKbkSul9GN6GBaqBTqOS_oE1iWQDbMFuyzgQoj_ANUDsFyR_lTPcLVWr0ai0VfvI7o8ekBYYtaBOocmO5kKAEQE2PqPaq0RSqFmXJe0tD9LTSpEDeF9Sw735Uuyk22QK4x5IdcL3q89JgRqdFX20lERcSu0e7C5TGU2ljWxRhaAlv7lrOWY1O1RvxBcNWbOoscRPKm7Ii8OHKhkLgdhQQW-93pEXM_S85JsmBD9s"/>
+</div>
+<div class="p-lg">
+<h3 class="font-headline-md text-headline-md mb-xs">Inisiatif Sosial Kampus</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-md">Program pengabdian masyarakat yang diinisiasi oleh anggota komunitas untuk lingkungan sekitar.</p>
+<button class="text-primary font-label-md text-label-md flex items-center gap-1 hover:underline">
+Lihat Detail
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface dark:bg-inverse-surface md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-margin-mobile py-2 pb-safe border-t border-outline-variant dark:border-outline shadow-lg z-50">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:bg-surface-variant scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-sm text-label-sm mt-1 text-on-primary-container">Beranda</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 active:bg-surface-variant scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-sm text-label-sm mt-1">Anggota</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 active:bg-surface-variant scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-sm text-label-sm mt-1">Jadwal</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 active:bg-surface-variant scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-sm text-label-sm mt-1">Tugas</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-inverse-surface w-full py-lg border-t border-outline-variant mt-xl">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop gap-md max-w-7xl mx-auto">
+<div class="font-label-md text-label-md font-bold text-on-surface">
+                © 2024 Pemuda Akhir Zaman. Komunitas Akademik.
+            </div>
+<div class="flex items-center gap-md font-body-sm text-body-sm text-on-surface-variant">
+<a class="hover:text-primary hover:underline transition-colors" href="#">Kontak</a>
+<a class="hover:text-primary hover:underline transition-colors" href="#">Kebijakan Privasi</a>
+<a class="hover:text-primary hover:underline transition-colors" href="#">Bantuan</a>
+</div>
+</div>
+</footer>
+</body></html>

@@ -2,73 +2,64 @@
 @section('konten')
     <style>
         .scan-page .scan-topbar {
-            background: rgba(255, 255, 255, 0.92);
-            border: 1px solid rgba(18, 38, 63, 0.1);
-            border-radius: 14px;
-            backdrop-filter: blur(8px);
+            background: var(--surface-container-lowest);
+            border: 1px solid var(--border-soft);
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px var(--shadow-soft);
         }
 
         .scan-page .scan-title {
-            font-weight: 800;
-            color: #12263f;
+            font-weight: 700;
+            color: var(--brand-900);
         }
 
         .scan-page .card {
-            border: 1px solid rgba(18, 38, 63, 0.1);
-            border-radius: 16px;
-            box-shadow: 0 14px 30px rgba(18, 38, 63, 0.09);
-        }
-
-        .scan-page .btn-brand {
-            background: linear-gradient(135deg, #2e5b87, #1f3b5c);
-            border: none;
-            color: #fff;
-        }
-
-        .scan-page .btn-brand:hover {
-            background: linear-gradient(135deg, #1f3b5c, #12263f);
-            color: #fff;
-        }
-
-        .scan-page .btn-outline-danger,
-        .scan-page .btn-outline-secondary,
-        .scan-page .btn-outline-success {
-            border-width: 1px;
+            border: 1px solid var(--border-soft);
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px var(--shadow-soft);
+            background: var(--surface-elevated);
         }
 
         .scan-page .nav-tabs {
-            border-bottom-color: rgba(18, 38, 63, 0.12);
+            border-bottom-color: var(--border-soft);
         }
 
         .scan-page .nav-tabs .nav-link {
-            color: #5f6f84;
+            color: var(--text-muted);
             border: 1px solid transparent;
+            border-radius: 0.5rem 0.5rem 0 0;
         }
 
         .scan-page .nav-tabs .nav-link.active {
-            background: #fff;
-            color: #12263f;
-            border-color: rgba(18, 38, 63, 0.12) rgba(18, 38, 63, 0.12) #fff;
+            background: var(--surface-elevated);
+            color: var(--brand-700);
+            border-color: var(--border-soft) var(--border-soft) var(--surface-elevated);
         }
 
         .scan-page .list-group-item {
-            background: rgba(255, 255, 255, 0.92);
-            color: #1f2a37;
-            border-color: rgba(18, 38, 63, 0.08);
+            background: var(--surface-elevated);
+            color: var(--text-main);
+            border-color: var(--border-soft);
         }
 
         .scan-page #respJson pre {
-            background: #f4f7fb;
-            color: #1f2a37;
-            border: 1px solid rgba(18, 38, 63, 0.08);
+            background: var(--surface-container-low);
+            color: var(--text-main);
+            border: 1px solid var(--border-soft);
+        }
+
+        .scan-page .card-title,
+        .scan-page .form-label,
+        .scan-page h6 {
+            color: var(--text-main);
         }
 
         body[data-theme='dark'] .scan-page .scan-topbar,
         body[data-theme='dark'] .scan-page .card,
         body[data-theme='dark'] .scan-page .list-group-item {
-            background: rgba(17, 24, 39, 0.9);
-            border-color: rgba(148, 163, 184, 0.16);
-            color: #e5eef9;
+            background: var(--surface-elevated);
+            border-color: var(--border-soft);
+            color: var(--text-main);
         }
 
         body[data-theme='dark'] .scan-page .scan-title,
@@ -76,68 +67,57 @@
         body[data-theme='dark'] .scan-page .form-label,
         body[data-theme='dark'] .scan-page h6,
         body[data-theme='dark'] .scan-page .list-group-item strong {
-            color: #edf4ff;
+            color: var(--brand-900);
         }
 
         body[data-theme='dark'] .scan-page .form-control,
         body[data-theme='dark'] .scan-page .form-select {
-            background: rgba(15, 23, 36, 0.88);
-            color: #edf4ff;
-            border-color: rgba(148, 163, 184, 0.22);
+            background: var(--surface-elevated);
+            color: var(--text-main);
+            border-color: var(--border-soft);
         }
 
         body[data-theme='dark'] .scan-page .form-control::placeholder {
-            color: rgba(167, 180, 197, 0.72);
+            color: var(--text-muted);
         }
 
         body[data-theme='dark'] .scan-page .nav-tabs {
-            border-bottom-color: rgba(148, 163, 184, 0.18);
+            border-bottom-color: var(--border-soft);
         }
 
         body[data-theme='dark'] .scan-page .nav-tabs .nav-link {
-            color: #a7b4c5;
+            color: var(--text-muted);
             background: transparent;
         }
 
         body[data-theme='dark'] .scan-page .nav-tabs .nav-link.active {
-            background: rgba(17, 24, 39, 0.96);
-            color: #edf4ff;
-            border-color: rgba(148, 163, 184, 0.18) rgba(148, 163, 184, 0.18) rgba(17, 24, 39, 0.96);
+            background: var(--surface-elevated);
+            color: var(--brand-700);
+            border-color: var(--border-soft) var(--border-soft) var(--surface-elevated);
         }
 
         body[data-theme='dark'] .scan-page #respJson pre {
-            background: rgba(15, 23, 36, 0.92);
-            color: #e5eef9;
-            border-color: rgba(148, 163, 184, 0.16);
-        }
-
-        body[data-theme='dark'] .scan-page .btn-brand {
-            background: linear-gradient(135deg, #3b75ae 0%, #2d618f 52%, #21486d 100%);
-            border: 1px solid rgba(148, 163, 184, 0.34);
-            color: #f8fbff;
-        }
-
-        body[data-theme='dark'] .scan-page .btn-brand:hover {
-            background: linear-gradient(135deg, #4a86bc 0%, #38709e 52%, #2a567d 100%);
-            color: #ffffff;
+            background: var(--surface-container-low);
+            color: var(--text-main);
+            border-color: var(--border-soft);
         }
 
         body[data-theme='dark'] .scan-page .btn-danger {
-            background: #a43a4b;
-            border-color: #c04a5d;
+            background: #dc2626;
+            border-color: #dc2626;
             color: #fff;
         }
 
         body[data-theme='dark'] .scan-page .btn-outline-danger,
         body[data-theme='dark'] .scan-page .btn-outline-secondary,
         body[data-theme='dark'] .scan-page .btn-outline-success {
-            background: rgba(15, 23, 36, 0.65);
-            color: #e5eef9;
-            border-color: rgba(148, 163, 184, 0.24);
+            background: transparent;
+            color: var(--text-main);
+            border-color: var(--border-soft);
         }
 
         body[data-theme='dark'] .scan-page .badge.bg-info {
-            background-color: #2e5b87 !important;
+            background-color: var(--brand-500) !important;
         }
 
         body[data-theme='dark'] .scan-page .badge.bg-secondary {
@@ -145,15 +125,15 @@
         }
 
         body[data-theme='dark'] .scan-page .badge.bg-light {
-            background-color: rgba(148, 163, 184, 0.2) !important;
-            color: #edf4ff !important;
+            background-color: var(--surface-container-low) !important;
+            color: var(--text-main) !important;
         }
 
         body[data-theme='dark'] .scan-page .text-muted,
         body[data-theme='dark'] .scan-page small,
         body[data-theme='dark'] .scan-page .tab-content,
         body[data-theme='dark'] .scan-page #status {
-            color: #a7b4c5 !important;
+            color: var(--text-muted) !important;
         }
     </style>
 
@@ -173,14 +153,14 @@
                 <div class="col-lg-8">
                     <div class="card shadow">
                         <div class="card-body">
-                            <h5 class="card-title mb-3">📷 Scan Absensi</h5>
+                            <h5 class="card-title mb-3">Scan Absensi</h5>
 
                             <label class="form-label">Pilih Kamera</label>
                             <select id="cameraSelect" class="form-select mb-3"></select>
 
                             <div class="d-grid gap-2 d-md-flex mb-3">
                                 <button id="startBtn" class="btn btn-brand">Nyalakan</button>
-                                <button id="stopBtn" class="btn btn-danger" disabled>⏹️ Stop</button>
+                                <button id="stopBtn" class="btn btn-danger" disabled>Stop</button>
                             </div>
 
                             <video id="video" class="w-100 rounded mb-3"
@@ -214,12 +194,12 @@
                 <div class="col-lg-4">
                     <div class="card shadow">
                         <div class="card-body">
-                            <h5 class="card-title mb-3">👥 User</h5>
+                            <h5 class="card-title mb-3">User</h5>
 
                             <div class="btn-group w-100 mb-3" role="group">
-                                <button id="reloadBtn" class="btn btn-sm btn-outline-secondary">🔄 Muat Ulang</button>
-                                <button id="selectAllBtn" class="btn btn-sm btn-outline-success">✅ On</button>
-                                <button id="unselectAllBtn" class="btn btn-sm btn-outline-danger">🚫 Off</button>
+                                <button id="reloadBtn" class="btn btn-sm btn-outline-secondary">Muat Ulang</button>
+                                <button id="selectAllBtn" class="btn btn-sm btn-outline-success">On</button>
+                                <button id="unselectAllBtn" class="btn btn-sm btn-outline-danger">Off</button>
                             </div>
 
                             <div id="userList" class="list-group" style="max-height: 500px; overflow-y: auto;">
@@ -375,7 +355,7 @@
                 } else if (data && typeof data === 'object') {
                     items = [data];
                 } else {
-                    respSummary.innerHTML = `<div class="alert alert-info mb-0">ℹ️ ${String(data)}</div>`;
+                    respSummary.innerHTML = `<div class="alert alert-info mb-0">${String(data)}</div>`;
                     return;
                 }
 
@@ -395,7 +375,7 @@
                     err = Number(data.summary.failed || 0);
                 }
                 let html =
-                    '<div class="row g-2 mb-3"><div class="col-6"><div class="alert alert-success mb-0">✓ Berhasil: <strong id="okCount">0</strong></div></div><div class="col-6"><div class="alert alert-danger mb-0">✗ Gagal: <strong id="errCount">0</strong></div></div></div>';
+                    '<div class="row g-2 mb-3"><div class="col-6"><div class="alert alert-success mb-0">Berhasil: <strong id="okCount">0</strong></div></div><div class="col-6"><div class="alert alert-danger mb-0">Gagal: <strong id="errCount">0</strong></div></div></div>';
 
                 // 📊 RENDER: Buat list untuk setiap item/user yang diproses
                 items.forEach((raw) => {
@@ -416,14 +396,14 @@
 
                     // Buat row untuk menampilkan hasil per user
                     html +=
-                        `<div class="list-group-item"><div class="d-flex gap-2"><span>${success ? '✅' : '❌'}</span><div style="flex:1"><strong>${nama}</strong><br><small class="text-muted">${status}</small></div><span class="badge ${success ? 'bg-success' : 'bg-danger'}">${success ? 'BERHASIL' : 'GAGAL'}</span></div></div>`;
+                        `<div class="list-group-item"><div class="d-flex gap-2"><div style="flex:1"><strong>${nama}</strong><br><small class="text-muted">${status}</small></div><span class="badge ${success ? 'bg-success' : 'bg-danger'}">${success ? 'BERHASIL' : 'GAGAL'}</span></div></div>`;
                 });
 
                 // Update UI dengan hasil akhir
                 respSummary.innerHTML = html;
                 if (!items.length) {
                     const emptyMessage = summaryMessage || topLevelMessage || 'Tidak ada detail respons dari server.';
-                    respSummary.innerHTML = `<div class="alert alert-info mb-3">ℹ️ ${emptyMessage}</div>` + respSummary
+                    respSummary.innerHTML = `<div class="alert alert-info mb-3">${emptyMessage}</div>` + respSummary
                         .innerHTML;
                 }
                 if (document.getElementById('okCount')) {
@@ -622,7 +602,7 @@
           <div>
             <strong>${u.nama||'(tanpa nama)'}</strong>
             <br>
-                            <small class="text-muted">NIM ${u.Nim||'-'} • id=${u.id}</small>
+                            <small class="text-muted">NIM ${u.Nim||'-'} | id=${u.id}</small>
           </div>
           <div class="form-check form-switch">
             <input class="form-check-input user-toggle" type="checkbox" data-uid="${u.id}" ${checked?'checked':''}>
@@ -691,7 +671,7 @@
 
             async function initApp() {
                 renderN8NResponse([{
-                    nama: '—',
+                    nama: 'Tidak diketahui',
                     status: 'Belum ada respons'
                 }]);
                 setActiveTab('summary');

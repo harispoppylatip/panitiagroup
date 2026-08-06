@@ -57,51 +57,51 @@
         }
 
         .btn-brand {
-            background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
-            border: none;
+            background: var(--brand-500);
+            border: 1px solid var(--brand-500);
             color: #fff;
-            font-weight: 700;
-            border-radius: 8px;
+            font-weight: 600;
+            border-radius: 0.5rem;
             padding: 0.65rem 1.2rem;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.3s ease;
+            transition: background-color 0.2s ease;
         }
 
         .btn-brand:hover {
-            background: linear-gradient(135deg, var(--brand-700), var(--brand-900));
+            background: #1d4ed8;
+            border-color: #1d4ed8;
             color: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(46, 91, 135, 0.2);
         }
 
         .btn-refresh {
-            background: linear-gradient(135deg, #10b981, #059669);
-            border: none;
+            background: #10b981;
+            border: 1px solid #10b981;
             color: #fff;
-            font-weight: 700;
-            border-radius: 8px;
+            font-weight: 600;
+            border-radius: 0.5rem;
             padding: 0.65rem 1.2rem;
         }
 
         .btn-refresh:hover {
-            background: linear-gradient(135deg, #059669, #047857);
+            background: #059669;
+            border-color: #059669;
             color: #fff;
         }
 
         .alert-refresh {
-            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            background: #dbeafe;
             border: 1px solid #93c5fd;
             color: #1e40af;
-            border-radius: 12px;
+            border-radius: 0.75rem;
             padding: 1.5rem;
             margin-bottom: 2rem;
         }
 
         .alert-refresh.success {
-            background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+            background: #dcfce7;
             border: 1px solid #86efac;
             color: #166534;
         }
@@ -117,9 +117,9 @@
         .table-wrapper {
             background: var(--surface-elevated);
             border: 1px solid var(--border-soft);
-            border-radius: 16px;
+            border-radius: 1rem;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(18, 38, 63, 0.09);
+            box-shadow: 0 4px 12px var(--shadow-soft);
         }
 
         .table {
@@ -127,8 +127,8 @@
         }
 
         .table thead th {
-            background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
-            color: #fff;
+            background: var(--surface-container-low);
+            color: var(--text-main);
             font-weight: 700;
             padding: 1.2rem;
             border: none;
@@ -219,24 +219,23 @@
         }
 
         .btn-action-edit {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            background: #2563eb;
             color: #fff;
         }
 
         .btn-action-edit:hover {
-            background: linear-gradient(135deg, #1d4ed8, #1e40af);
-            transform: translateY(-1px);
+            background: #1d4ed8;
         }
 
         .btn-action-delete {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: #dc2626;
             color: #fff;
             padding: 0.5rem;
             border-radius: 4px;
         }
 
         .btn-action-delete:hover {
-            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            background: #b91c1c;
         }
 
         body[data-theme='dark'] .header-title h1,
@@ -249,14 +248,14 @@
         }
 
         body[data-theme='dark'] .table-wrapper {
-            background: rgba(17, 24, 39, 0.9);
-            border-color: rgba(148, 163, 184, 0.16);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+            background: var(--surface-elevated);
+            border-color: var(--border-soft);
+            box-shadow: 0 4px 12px var(--shadow-soft);
         }
 
         body[data-theme='dark'] .table thead th {
-            background: linear-gradient(135deg, #2c5b87, #1f3b5c);
-            color: #f8fbff;
+            background: var(--surface-container-high);
+            color: var(--brand-900);
         }
 
         body[data-theme='dark'] .table tbody td {
@@ -286,32 +285,28 @@
         }
 
         body[data-theme='dark'] .alert-refresh {
-            background: linear-gradient(135deg, rgba(29, 78, 216, 0.18), rgba(37, 99, 235, 0.12));
+            background: rgba(37, 99, 235, 0.14);
             border-color: rgba(96, 165, 250, 0.28);
             color: #dbeafe;
         }
 
         body[data-theme='dark'] .alert-refresh.success {
-            background: linear-gradient(135deg, rgba(22, 101, 52, 0.22), rgba(34, 197, 94, 0.12));
+            background: rgba(34, 197, 94, 0.14);
             border-color: rgba(74, 222, 128, 0.28);
             color: #dcfce7;
         }
 
         body[data-theme='dark'] .refresh-item {
-            background: rgba(15, 23, 36, 0.76);
-            border-left-color: #22c55e;
-        }
-
-        body[data-theme='dark'] .refresh-item.failed {
-            border-left-color: #ef4444;
+            background: var(--surface-elevated);
+            border-color: var(--border-soft);
         }
 
         body[data-theme='dark'] .btn-action-edit {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            background: #2563eb;
         }
 
         body[data-theme='dark'] .btn-action-delete {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: #dc2626;
         }
 
         body[data-theme='dark'] .btn-brand,
@@ -351,12 +346,19 @@
 
         .refresh-item {
             padding: 1rem;
-            border-radius: 8px;
-            border-left: 4px solid #10b981;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-soft);
+            background: var(--surface-container-lowest);
         }
 
         .refresh-item.failed {
-            border-left-color: #ef4444;
+            background: rgba(220, 38, 38, 0.06);
+            border-color: rgba(220, 38, 38, 0.18);
+        }
+
+        body[data-theme='dark'] .refresh-item.failed {
+            background: rgba(220, 38, 38, 0.12);
+            border-color: rgba(220, 38, 38, 0.28);
         }
 
         .refresh-item-name {
@@ -412,7 +414,7 @@
         <!-- Header -->
         <div class="header-section">
             <div class="header-title">
-                <h1><i class="bi bi-key"></i> Management Token</h1>
+                <h1>Management Token</h1>
                 <p>Kelola semua token akses dan refresh untuk integrasi presensi</p>
             </div>
             <div class="action-buttons">
@@ -446,10 +448,10 @@
             <div class="alert-refresh alert-dismissible fade show" role="alert">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <div>
-                        <strong><i class="bi bi-arrow-repeat"></i> Hasil Refresh Token</strong>
+                        <strong>Hasil Refresh Token</strong>
                         <div style="font-size: 0.9rem; margin-top: 0.25rem;">
-                            ✅ Berhasil: <strong>{{ session('success_count') }}</strong> •
-                            ❌ Gagal: <strong>{{ session('failed_count') }}</strong>
+                            Berhasil: <strong>{{ session('success_count') }}</strong>
+                            Gagal: <strong>{{ session('failed_count') }}</strong>
                         </div>
                     </div>
                     <button type="button" class="alert-close" data-bs-dismiss="alert">×</button>
@@ -457,7 +459,7 @@
                 <div class="refresh-results">
                     @foreach (session('hasil_refresh') as $hasil)
                         <div class="refresh-item {{ $hasil['status'] === 'gagal' ? 'failed' : '' }}">
-                            <div class="refresh-item-name">{{ $hasil['icon'] }} {{ $hasil['nama'] }}</div>
+                            <div class="refresh-item-name">{{ $hasil['nama'] }}</div>
                             <div class="refresh-item-status">{{ ucfirst($hasil['status']) }}</div>
                         </div>
                     @endforeach
@@ -522,7 +524,7 @@
                                     </td>
                                     <td>
                                         <span class="badge {{ $item->status_onoff === 'on' ? 'badge-on' : 'badge-off' }}">
-                                            {{ $item->status_onoff === 'on' ? '🟢 ON' : '🔴 OFF' }}
+                                            {{ $item->status_onoff === 'on' ? 'ON' : 'OFF' }}
                                         </span>
                                     </td>
                                     <td>
@@ -562,7 +564,6 @@
                 </div>
             @else
                 <div class="no-data">
-                    <div class="no-data-icon">📭</div>
                     <h5>Belum Ada Token</h5>
                     <p>Tidak ada data token yang ditambahkan. <a href="{{ route('admin.inserttoken.form') }}"
                             style="color: var(--brand-500);">Tambah token baru</a></p>

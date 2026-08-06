@@ -49,12 +49,12 @@
         }
 
         .finance-hero {
-            background: radial-gradient(circle at top left, rgba(46, 91, 135, 0.20), transparent 36%), radial-gradient(circle at bottom right, rgba(195, 143, 60, 0.18), transparent 34%), linear-gradient(135deg, rgba(31, 59, 92, 0.96), rgba(18, 38, 63, 0.98));
+            background: #0d1c2e;
             border: 1px solid rgba(255, 255, 255, 0.10);
             color: #ffffff;
-            border-radius: 18px;
+            border-radius: 1rem;
             overflow: hidden;
-            box-shadow: 0 18px 40px rgba(18, 38, 63, 0.18);
+            box-shadow: 0 4px 12px var(--shadow-soft);
         }
 
         .hero-kicker {
@@ -124,16 +124,16 @@
         .dashboard-tab:hover,
         .dashboard-tab.active {
             color: var(--brand-500);
-            border-color: rgba(46, 91, 135, 0.26);
-            background: linear-gradient(135deg, rgba(46, 91, 135, 0.08), rgba(195, 143, 60, 0.08));
+            border-color: var(--brand-500);
+            background: var(--surface-container-low);
             transform: translateY(-1px);
         }
 
         .finance-card {
             background: var(--surface-elevated);
             border: 1px solid var(--border-soft);
-            border-radius: 18px;
-            box-shadow: 0 14px 32px var(--shadow-soft);
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px var(--shadow-soft);
             overflow: hidden;
         }
 
@@ -155,7 +155,15 @@
             color: var(--text-main);
         }
 
-        .finance-card-title .icon-badge,
+        .finance-card-title {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-size: 0.98rem;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
         .row-icon {
             width: 42px;
             height: 42px;
@@ -166,49 +174,11 @@
             flex: 0 0 42px;
         }
 
-        .icon-badge {
-            background: rgba(46, 91, 135, 0.10);
-            color: var(--brand-500);
-        }
-
-        .badge-soft {
-            border-radius: 999px;
-            padding: 0.35rem 0.7rem;
-            font-size: 0.76rem;
-            font-weight: 800;
-        }
-
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 1rem;
             margin-bottom: 1rem;
-        }
-
-        .summary-badge {
-            width: 42px;
-            height: 42px;
-            border-radius: 14px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            flex: 0 0 42px;
-        }
-
-        .summary-badge.primary {
-            background: rgba(46, 91, 135, 0.12);
-            color: var(--brand-500);
-        }
-
-        .summary-badge.success {
-            background: rgba(34, 197, 94, 0.12);
-            color: #2f855a;
-        }
-
-        .summary-badge.warning {
-            background: rgba(245, 158, 11, 0.12);
-            color: #a16207;
         }
 
         .metric-label {
@@ -264,9 +234,9 @@
         }
 
         .glass-note {
-            background: linear-gradient(135deg, rgba(46, 91, 135, 0.10), rgba(195, 143, 60, 0.10));
-            border: 1px solid rgba(46, 91, 135, 0.16);
-            border-radius: 16px;
+            background: var(--surface-container-low);
+            border: 1px solid var(--border-soft);
+            border-radius: 1rem;
             padding: 1rem 1.05rem;
         }
 
@@ -277,14 +247,15 @@
         }
 
         .btn-brand-solid {
-            background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
-            border: 0;
+            background: var(--brand-500);
+            border: 1px solid var(--brand-500);
             color: #ffffff;
         }
 
         .btn-brand-solid:hover {
             color: #ffffff;
-            background: linear-gradient(135deg, var(--brand-700), var(--brand-900));
+            background: #1d4ed8;
+            border-color: #1d4ed8;
         }
 
         .btn-outline-soft {
@@ -312,13 +283,6 @@
         .history-row:last-child,
         .log-row:last-child {
             border-bottom: 0;
-        }
-
-        .row-icon.avatar {
-            background: rgba(46, 91, 135, 0.10);
-            color: var(--brand-500);
-            font-size: 0.72rem;
-            font-weight: 800;
         }
 
         .row-icon.in {
@@ -514,8 +478,8 @@
 
         .reset-warning-box {
             border: 1px solid rgba(220, 38, 38, 0.18);
-            background: linear-gradient(135deg, rgba(220, 38, 38, 0.10), rgba(245, 158, 11, 0.10));
-            border-radius: 18px;
+            background: rgba(220, 38, 38, 0.06);
+            border-radius: 1rem;
             padding: 1rem;
         }
 
@@ -639,7 +603,6 @@
                 @foreach ($stats as $stat)
                     <div class="finance-card p-3 p-lg-4">
                         <div class="d-flex gap-3 align-items-start">
-                            <span class="summary-badge {{ $stat['tone'] }}"><i class="bi {{ $stat['icon'] }}"></i></span>
                             <div>
                                 <div class="metric-label mb-1">{{ $stat['label'] }}</div>
                                 <div class="metric-value">{{ $stat['value'] }}</div>
@@ -670,9 +633,8 @@
                     <div class="col-lg-6">
                         <div class="finance-card h-100">
                             <div class="finance-card-head">
-                                <div class="finance-card-title"><span class="icon-badge"><i
-                                            class="bi bi-coin"></i></span>Set iuran mingguan</div>
-                                <span class="badge text-bg-info badge-soft">Aktif: Rp
+                                <div class="finance-card-title">Set iuran mingguan</div>
+                                <span class="small fw-semibold text-muted">Aktif: Rp
                                     {{ number_format($weeklyFee, 0, ',', '.') }}</span>
                             </div>
                             <form class="p-4" method="POST" action="{{ route('admin.finance.settings.update') }}">
@@ -707,9 +669,8 @@
                     <div class="col-lg-6">
                         <div class="finance-card h-100">
                             <div class="finance-card-head">
-                                <div class="finance-card-title"><span class="icon-badge"><i
-                                            class="bi bi-cash-coin"></i></span>Input cash manual</div>
-                                <span class="badge text-bg-success badge-soft">Langsung lunas</span>
+                                <div class="finance-card-title">Input cash manual</div>
+                                <span class="small fw-semibold text-muted">Langsung lunas</span>
                             </div>
                             <form class="p-4" method="POST" action="{{ route('admin.finance.manual-cash.store') }}">
                                 @csrf
@@ -718,7 +679,7 @@
                                     <select class="form-select" name="nim" required>
                                         <option value="">Pilih nama anggota</option>
                                         @foreach ($memberChoices as $member)
-                                            <option value="{{ $member->Nim }}">{{ $member->nama }} ·
+                                            <option value="{{ $member->Nim }}">{{ $member->nama }} |
                                                 {{ $member->Nim }}</option>
                                         @endforeach
                                     </select>
@@ -753,9 +714,8 @@
                     <div class="col-lg-6">
                         <div class="finance-card h-100">
                             <div class="finance-card-head">
-                                <div class="finance-card-title"><span class="icon-badge"><i
-                                            class="bi bi-journal-plus"></i></span>Input utang manual</div>
-                                <span class="badge text-bg-warning badge-soft">Tambah tagihan</span>
+                                <div class="finance-card-title">Input utang manual</div>
+                                <span class="small fw-semibold text-muted">Tambah tagihan</span>
                             </div>
                             <form class="p-4" method="POST" action="{{ route('admin.finance.manual-debt.store') }}">
                                 @csrf
@@ -764,7 +724,7 @@
                                     <select class="form-select" name="nim" required>
                                         <option value="">Pilih nama anggota</option>
                                         @foreach ($memberChoices as $member)
-                                            <option value="{{ $member->Nim }}">{{ $member->nama }} ·
+                                            <option value="{{ $member->Nim }}">{{ $member->nama }} |
                                                 {{ $member->Nim }}</option>
                                         @endforeach
                                     </select>
@@ -799,9 +759,8 @@
 
                 <div class="finance-card mb-4">
                     <div class="finance-card-head">
-                        <div class="finance-card-title"><span class="icon-badge"><i
-                                    class="bi bi-sliders2"></i></span>Kalibrasi saldo</div>
-                        <span class="badge text-bg-warning badge-soft">Hati-hati</span>
+                        <div class="finance-card-title">Kalibrasi saldo</div>
+                        <span class="small fw-semibold text-muted">Hati-hati</span>
                     </div>
                     <div class="p-4">
                         <div class="glass-note mb-4">Gunakan fitur ini untuk menyesuaikan saldo jika ada selisih antara
@@ -844,15 +803,13 @@
 
                 <div class="finance-card mb-4">
                     <div class="finance-card-head">
-                        <div class="finance-card-title"><span class="icon-badge"><i
-                                    class="bi bi-people"></i></span>Posisi anggota</div>
-                        <span class="badge text-bg-secondary badge-soft">Utang dan saldo lebih</span>
+                        <div class="finance-card-title">Posisi anggota</div>
+                        <span class="small fw-semibold text-muted">Utang dan saldo lebih</span>
                     </div>
 
                     <div class="balance-summary-list">
                         @forelse ($memberBalances as $member)
                             <div class="member-row">
-                                <span class="row-icon avatar">{{ strtoupper(substr($member['name'], 0, 2)) }}</span>
                                 <div class="row-main">
                                     <div class="row-title">{{ $member['name'] }}</div>
                                     <div class="row-meta">NIM {{ $member['nim'] }}</div>
@@ -874,9 +831,8 @@
             <div id="tab-konfirmasi" class="tab-panel">
                 <div class="finance-card">
                     <div class="finance-card-head">
-                        <div class="finance-card-title"><span class="icon-badge"><i
-                                    class="bi bi-bell"></i></span>Pembayaran menunggu konfirmasi</div>
-                        <span class="badge text-bg-warning badge-soft" id="pendingCountLabel">{{ $pendingCount }}
+                        <div class="finance-card-title">Pembayaran menunggu konfirmasi</div>
+                        <span class="small fw-semibold text-muted" id="pendingCountLabel">{{ $pendingCount }}
                             pending</span>
                     </div>
 
@@ -889,12 +845,11 @@
 
                     @forelse ($pendingPayments as $payment)
                         <div class="member-row" data-pending-row>
-                            <span class="row-icon avatar">{{ $payment['initial'] }}</span>
                             <div class="row-main">
                                 <div class="d-flex flex-wrap justify-content-between gap-2 align-items-start">
                                     <div>
                                         <div class="row-title">{{ $payment['name'] }}</div>
-                                        <div class="row-meta">NIM {{ $payment['nim'] }} · {{ $payment['week'] }} ·
+                                        <div class="row-meta">NIM {{ $payment['nim'] }} | {{ $payment['week'] }} |
                                             {{ $payment['time'] }}</div>
                                     </div>
                                     <div class="amount-positive">{{ $payment['amount'] }}</div>
@@ -942,9 +897,8 @@
             <div id="tab-history" class="tab-panel">
                 <div class="finance-card">
                     <div class="finance-card-head">
-                        <div class="finance-card-title"><span class="icon-badge"><i
-                                    class="bi bi-clock-history"></i></span>Log pembayaran dikonfirmasi</div>
-                        <span class="badge text-bg-success badge-soft" id="historyCountLabel">{{ $historyCount }}
+                        <div class="finance-card-title">Log pembayaran dikonfirmasi</div>
+                        <span class="small fw-semibold text-muted" id="historyCountLabel">{{ $historyCount }}
                             transaksi</span>
                     </div>
 
@@ -958,10 +912,9 @@
                     <div>
                         @forelse ($historyPayments as $payment)
                             <div class="history-row">
-                                <span class="row-icon avatar">{{ $payment['initial'] }}</span>
                                 <div class="row-main">
                                     <div class="row-title">{{ $payment['name'] }}</div>
-                                    <div class="row-meta">NIM {{ $payment['nim'] }} · {{ $payment['week'] }} ·
+                                    <div class="row-meta">NIM {{ $payment['nim'] }} | {{ $payment['week'] }} |
                                         {{ $payment['time'] }}</div>
                                     @if (!empty($payment['proof_url']))
                                         <button type="button" class="btn btn-link p-0 text-decoration-none"
@@ -972,7 +925,7 @@
                                 </div>
                                 <div class="row-right">
                                     <div class="amount-positive">{{ $payment['amount'] }}</div>
-                                    <span class="badge text-bg-success mt-1">Dikonfirmasi</span>
+                                    <span class="small fw-semibold text-success mt-1">Dikonfirmasi</span>
                                 </div>
                             </div>
                         @empty
@@ -985,9 +938,8 @@
             <div id="tab-log" class="tab-panel">
                 <div class="finance-card">
                     <div class="finance-card-head">
-                        <div class="finance-card-title"><span class="icon-badge"><i
-                                    class="bi bi-list-check"></i></span>Log semua aktivitas</div>
-                        <span class="badge text-bg-secondary badge-soft" id="logCountLabel">{{ count($activityLogs) }}
+                        <div class="finance-card-title">Log semua aktivitas</div>
+                        <span class="small fw-semibold text-muted" id="logCountLabel">{{ count($activityLogs) }}
                             entri</span>
                     </div>
 
@@ -1035,9 +987,8 @@
                 <div id="tab-reset" class="tab-panel">
                     <div class="finance-card">
                         <div class="finance-card-head">
-                            <div class="finance-card-title"><span class="icon-badge"><i
-                                        class="bi bi-trash3"></i></span>Reset total grubkas</div>
-                            <span class="badge text-bg-danger badge-soft">Admin only</span>
+                            <div class="finance-card-title">Reset total grubkas</div>
+                            <span class="small fw-semibold text-muted">Admin only</span>
                         </div>
 
                         <div class="p-4">

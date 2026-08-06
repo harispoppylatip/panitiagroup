@@ -104,22 +104,22 @@
 
         .gallery-eyebrow {
             font-size: 0.78rem;
-            font-weight: 700;
+            font-weight: 600;
             letter-spacing: 0.14em;
-            color: #5f6f84;
+            color: var(--text-muted);
             text-transform: uppercase;
         }
 
         .gallery-title {
             font-size: clamp(1.9rem, 3vw, 2.7rem);
-            font-weight: 800;
+            font-weight: 700;
             letter-spacing: -0.02em;
-            color: #10253f;
+            color: var(--brand-900);
         }
 
         .gallery-subtitle {
             font-size: 1.05rem;
-            color: #43566f;
+            color: var(--text-muted);
             max-width: 52ch;
             margin-left: auto;
             margin-right: auto;
@@ -144,7 +144,7 @@
             align-items: center;
             justify-content: center;
             padding: 0 0.75rem;
-            border-radius: 10px;
+            border-radius: 0.5rem;
             background: var(--surface-elevated);
             border: 1px solid var(--border-soft);
             color: var(--brand-700);
@@ -153,16 +153,15 @@
         }
 
         .gallery-pagination .page-link:hover {
-            background: var(--brand-500);
-            border-color: var(--brand-500);
-            color: #fff;
+            background: var(--surface-container-low);
+            border-color: var(--border-soft);
+            color: var(--brand-500);
         }
 
         .gallery-pagination .page-item.active .page-link {
-            background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
-            border-color: transparent;
+            background: var(--brand-500);
+            border-color: var(--brand-500);
             color: #fff;
-            box-shadow: 0 6px 14px var(--shadow-soft);
         }
 
         .gallery-pagination .page-item.disabled .page-link {
@@ -174,37 +173,37 @@
 
         .gallery-pagination .page-item:first-child .page-link,
         .gallery-pagination .page-item:last-child .page-link {
-            border-radius: 10px;
+            border-radius: 0.5rem;
         }
 
         body[data-theme='dark'] .gallery-pagination .page-link {
-            background: rgba(17, 24, 39, 0.92);
-            border-color: rgba(148, 163, 184, 0.18);
-            color: #b7c7dc;
+            background: var(--surface-elevated);
+            border-color: var(--border-soft);
+            color: var(--brand-700);
         }
 
         body[data-theme='dark'] .gallery-pagination .page-link:hover {
-            background: #2f5f8e;
-            border-color: #2f5f8e;
-            color: #fff;
+            background: var(--surface-container-low);
+            border-color: var(--border-soft);
+            color: var(--brand-500);
         }
 
         body[data-theme='dark'] .gallery-pagination .page-item.active .page-link {
-            background: linear-gradient(135deg, #2f5f8e 0%, #224a72 52%, #1a3a5a 100%);
-            border-color: rgba(148, 163, 184, 0.28);
-            color: #f8fbff;
+            background: var(--brand-500);
+            border-color: var(--brand-500);
+            color: #fff;
         }
 
         body[data-theme='dark'] .gallery-eyebrow {
-            color: #a7b4c5;
+            color: var(--text-muted);
         }
 
         body[data-theme='dark'] .gallery-title {
-            color: #e5eef9;
+            color: var(--brand-900);
         }
 
         body[data-theme='dark'] .gallery-subtitle {
-            color: #a7b4c5;
+            color: var(--text-muted);
         }
 
         .photo-item {

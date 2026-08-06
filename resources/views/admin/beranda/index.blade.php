@@ -23,7 +23,7 @@
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="card-title fw-bold mb-0">
-                                <i class="bi bi-image"></i> Foto Hero
+                                Foto Hero
                             </h5>
                             <a href="{{ route('admin.beranda.edit-hero') }}" class="btn btn-sm btn-brand">
                                 <i class="bi bi-pencil"></i> Edit
@@ -78,7 +78,7 @@
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="card-title fw-bold mb-0">
-                                <i class="bi bi-people"></i> Anggota Tim ({{ $teamMembers->count() }})
+                                Anggota Tim ({{ $teamMembers->count() }})
                             </h5>
                             <a href="{{ route('admin.beranda.edit-team') }}" class="btn btn-sm btn-brand">
                                 <i class="bi bi-pencil"></i> Kelola

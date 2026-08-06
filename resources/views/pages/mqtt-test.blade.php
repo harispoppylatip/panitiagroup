@@ -9,59 +9,29 @@
             padding: 1.5rem 0 2.5rem;
         }
 
-        .mqtt-orb {
-            position: absolute;
-            border-radius: 999px;
-            filter: blur(6px);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .mqtt-orb.one {
-            width: 320px;
-            height: 320px;
-            top: -80px;
-            right: -90px;
-            background: radial-gradient(circle at center, rgba(46, 91, 135, 0.18), rgba(46, 91, 135, 0));
-        }
-
-        .mqtt-orb.two {
-            width: 240px;
-            height: 240px;
-            bottom: 10px;
-            left: -80px;
-            background: radial-gradient(circle at center, rgba(195, 143, 60, 0.16), rgba(195, 143, 60, 0));
-        }
-
         .mqtt-shell {
             position: relative;
             z-index: 1;
         }
 
         .mqtt-hero {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(244, 247, 251, 0.92));
+            background: var(--surface-elevated);
             border: 1px solid var(--border-soft);
-            border-radius: 28px;
-            box-shadow: 0 26px 50px rgba(18, 38, 63, 0.12);
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px var(--shadow-soft);
             padding: 1.5rem;
         }
 
         .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.45rem 0.85rem;
-            border-radius: 999px;
-            background: rgba(18, 38, 63, 0.08);
-            color: var(--brand-700);
+            color: var(--text-muted);
             font-size: 0.74rem;
-            font-weight: 800;
+            font-weight: 700;
             letter-spacing: 0.12em;
             text-transform: uppercase;
         }
 
         body[data-theme='dark'] .mqtt-page {
-            background: linear-gradient(180deg, rgba(15, 23, 36, 0.16), rgba(15, 23, 36, 0));
+            background: var(--surface);
         }
 
         body[data-theme='dark'] .mqtt-hero,
@@ -76,7 +46,7 @@
         }
 
         body[data-theme='dark'] .mqtt-hero {
-            background: linear-gradient(135deg, rgba(17, 24, 39, 0.96), rgba(15, 23, 36, 0.92));
+            background: var(--surface-elevated);
         }
 
         body[data-theme='dark'] .eyebrow {
@@ -158,18 +128,6 @@
             font-size: 0.82rem;
             color: var(--text-muted);
             margin-top: 0.35rem;
-        }
-
-        .icon-pill {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(46, 91, 135, 0.1);
-            color: var(--brand-700);
-            flex: 0 0 44px;
         }
 
         .section-head {
@@ -333,15 +291,12 @@
 
 @section('konten')
     <section class="mqtt-page">
-        <div class="mqtt-orb one"></div>
-        <div class="mqtt-orb two"></div>
 
         <div class="container mqtt-shell">
             <div class="mqtt-hero mb-4">
                 <div class="row g-4 align-items-center">
                     <div class="col-lg-8">
                         <div class="eyebrow mb-3">
-                            <i class="bi bi-broadcast-pin"></i>
                             JK-BMS MQTT Monitor
                         </div>
                         <h1 class="mqtt-title">Panel pemantauan data daya motor</h1>
@@ -363,9 +318,6 @@
                     <div class="col-lg-4">
                         <div class="panel-card p-3">
                             <div class="d-flex align-items-center gap-3 mb-3">
-                                <div class="icon-pill">
-                                    <i class="bi bi-cpu-fill"></i>
-                                </div>
                                 <div>
                                     <div class="section-title mb-0">Ringkasan Data</div>
                                     {{-- <div class="section-subtitle">Update realtime dari cache Laravel</div> --}}
@@ -396,7 +348,6 @@
                                 <div class="stat-value is-highlight" id="statDelta">-</div>
                                 <div class="stat-note" id="statDeltaNote">Cell difference paling penting</div>
                             </div>
-                            <div class="icon-pill"><i class="bi bi-arrows-angle-expand"></i></div>
                         </div>
                     </div>
                 </div>
@@ -411,7 +362,6 @@
                                 <div class="stat-value" id="statVoltage">-</div>
                                 <div class="stat-note" id="statVoltageNote">Belum ada data</div>
                             </div>
-                            <div class="icon-pill"><i class="bi bi-lightning-charge-fill"></i></div>
                         </div>
                     </div>
                 </div>
@@ -423,7 +373,6 @@
                                 <div class="stat-value" id="statCurrent">-</div>
                                 <div class="stat-note" id="statCurrentNote">Belum ada data</div>
                             </div>
-                            <div class="icon-pill"><i class="bi bi-activity"></i></div>
                         </div>
                     </div>
                 </div>
@@ -435,7 +384,6 @@
                                 <div class="stat-value" id="statSoc">-</div>
                                 <div class="stat-note" id="statSocNote">Belum ada data</div>
                             </div>
-                            <div class="icon-pill"><i class="bi bi-battery-half"></i></div>
                         </div>
                     </div>
                 </div>
@@ -447,7 +395,6 @@
                                 <div class="stat-value" id="statPower">-</div>
                                 <div class="stat-note" id="statPowerNote">Belum ada data</div>
                             </div>
-                            <div class="icon-pill"><i class="bi bi-plug-fill"></i></div>
                         </div>
                     </div>
                 </div>
@@ -461,8 +408,7 @@
                                 <div class="section-title">Detail Telemetry</div>
                                 <div class="section-subtitle">Semua field utama dari payload MQTT terakhir</div>
                             </div>
-                            <span class="badge rounded-pill text-bg-primary-subtle text-primary-emphasis px-3 py-2"
-                                id="detailBadge">Menunggu update</span>
+                            <span class="small fw-semibold text-muted" id="detailBadge">Menunggu update</span>
                         </div>
 
                         <div class="field-grid" id="detailGrid">

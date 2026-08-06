@@ -1,77 +1,62 @@
 @extends('layout.master')
 @section('konten')
     <section class="home-hero">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
+        <div class="hero-bg">
+            <img src="{{ $heroImages->get('main')?->image_url ?? 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1300&q=80' }}"
+                alt="{{ $heroImages->get('main')?->alt_text ?? 'Foto utama tim' }}" class="hero-bg-img">
+            <div class="hero-scrim"></div>
+        </div>
 
-        <div class="container">
-            <div class="hero-panel mb-5">
-                <div class="row align-items-center g-4 g-xl-5">
-                    <div class="col-xl-6">
-                        <div class="hero-copy">
-                            <p class="hero-tag mb-3">BERANDA RESMI</p>
-                            <h1 class="hero-title mb-3">Pemuda Akhir Zaman</h1>
-                            <p class="hero-lead mb-4">
-                                Kami merupakan kelompok mahasiswa Universitas Muhammadiyah Kalimantan Timur dari jurusan IT
-                                Internasional yang dipersatukan oleh minat yang sama dalam dunia teknologi. Website ini kami
-                                hadirkan sebagai solusi untuk mempermudah pengelolaan tim, komunikasi, serta produktivitas
-                                kerja bersama.
-                            </p>
-                            <div class="d-flex flex-wrap gap-2 mb-4">
-                                <a href="{{ route('scan.login') }}" class="btn btn-brand px-4 py-2">Masuk Scan Absen</a>
-                            </div>
-
-                            {{-- <div class="hero-metrics">
-                                <div class="metric-item">
-                                    <span class="metric-value">24+</span>
-                                    <span class="metric-label">Program Kerja Aktif</span>
-                                </div>
-                                <div class="metric-item">
-                                    <span class="metric-value">12</span>
-                                    <span class="metric-label">Divisi Kolaboratif</span>
-                                </div>
-                                <div class="metric-item">
-                                    <span class="metric-value">95%</span>
-                                    <span class="metric-label">Target Tercapai</span>
-                                </div>
-                            </div> --}}
-                        </div>
-                    </div>
-
-                    <div class="col-xl-6">
-                        <div class="hero-gallery">
-                            <div class="hero-main-photo">
-                                <img src="{{ $heroImages->get('main')?->image_url ?? 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1300&q=80' }}"
-                                    alt="{{ $heroImages->get('main')?->alt_text ?? 'Foto utama tim' }}" class="img-cover">
-                                <div class="hero-main-overlay">
-                                    <p class="overlay-mini mb-1">P.A.Z</p>
-                                    <h3 class="overlay-title mb-1">Bersatu dalam Ide, Berkarya dengan Teknologi</h3>
-                                    <p class="overlay-text mb-0">Universitas Muhammadiyah Kalimantan Timur</p>
-                                </div>
-                            </div>
-
-                            <div class="hero-side-grid">
-                                <div class="side-photo-card">
-                                    <img src="{{ $heroImages->get('side1')?->image_url ?? 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80' }}"
-                                        alt="{{ $heroImages->get('side1')?->alt_text ?? 'Aktivitas tim 1' }}"
-                                        class="img-cover">
-                                </div>
-                                <div class="side-photo-card">
-                                    <img src="{{ $heroImages->get('side2')?->image_url ?? 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80' }}"
-                                        alt="{{ $heroImages->get('side2')?->alt_text ?? 'Aktivitas tim 2' }}"
-                                        class="img-cover">
-                                </div>
-                            </div>
+        <div class="container hero-container">
+            <div class="row align-items-center g-4 g-lg-5">
+                <div class="col-lg-6">
+                    <div class="hero-copy">
+                        <p class="hero-tag mb-3">BERANDA RESMI</p>
+                        <h1 class="hero-title mb-3">Pemuda Akhir Zaman</h1>
+                        <p class="hero-lead mb-4">
+                            Kami merupakan kelompok mahasiswa Universitas Muhammadiyah Kalimantan Timur dari jurusan IT
+                            Internasional yang dipersatukan oleh minat yang sama dalam dunia teknologi. Website ini kami
+                            hadirkan sebagai solusi untuk mempermudah pengelolaan tim, komunikasi, serta produktivitas
+                            kerja bersama.
+                        </p>
+                        <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
+                            <a href="{{ route('scan.login') }}" class="btn btn-brand px-4 py-2">Masuk Scan Absen</a>
+                            <a href="{{ route('galeri.index') }}" class="hero-link">Jelajahi Galeri</a>
                         </div>
                     </div>
                 </div>
+
+                <div class="col-lg-6">
+                    <div class="hero-mosaic">
+                        <figure class="mosaic-item">
+                            <img src="{{ $heroImages->get('side1')?->image_url ?? 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80' }}"
+                                alt="{{ $heroImages->get('side1')?->alt_text ?? 'Aktivitas tim 1' }}">
+                        </figure>
+                        <figure class="mosaic-item">
+                            <img src="{{ $heroImages->get('side2')?->image_url ?? 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80' }}"
+                                alt="{{ $heroImages->get('side2')?->alt_text ?? 'Aktivitas tim 2' }}">
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-section">
+        <div class="container">
+            <div class="team-head mb-4">
+                <p class="team-head-tag mb-1">TIM KAMI</p>
+                <h2 class="team-head-title mb-1">Anggota Tim</h2>
+                <p class="team-head-sub mb-0">Orang-orang di balik Pemuda Akhir Zaman.</p>
             </div>
 
             <div class="row g-4 team-grid">
                 @forelse ($teamMembers as $member)
                     <div class="col-12 col-md-6 col-lg-4">
                         <article class="team-card">
-                            <img src="{{ $member->image_url }}" alt="{{ $member->name }}" class="team-photo">
+                            <div class="team-photo-wrap">
+                                <img src="{{ $member->image_url }}" alt="{{ $member->name }}" class="team-photo">
+                            </div>
                             <div class="team-card-body">
                                 <p class="team-role mb-1">{{ $member->role }}</p>
                                 <h3 class="team-name mb-0">{{ $member->name }}</h3>
@@ -88,182 +73,166 @@
     </section>
 
     <style>
+        /* ===== HERO full-bleed cinematic ===== */
         .home-hero {
             position: relative;
+            margin-top: -3rem;
+            margin-bottom: 3.5rem;
+            min-height: clamp(520px, 82vh, 760px);
+            display: flex;
+            align-items: center;
             overflow: hidden;
-            padding: 1rem 0 1.5rem;
         }
 
-        .orb {
+        .hero-bg {
             position: absolute;
-            border-radius: 999px;
-            filter: blur(4px);
-            pointer-events: none;
+            inset: 0;
             z-index: 0;
         }
 
-        .orb-1 {
-            width: 320px;
-            height: 320px;
-            top: 30px;
-            right: -80px;
-            background: radial-gradient(circle at center, rgba(195, 143, 60, 0.28), rgba(195, 143, 60, 0));
-        }
-
-        .orb-2 {
-            width: 260px;
-            height: 260px;
-            bottom: 20px;
-            left: -70px;
-            background: radial-gradient(circle at center, rgba(46, 91, 135, 0.22), rgba(46, 91, 135, 0));
-        }
-
-        .home-hero .container {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-panel {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(247, 250, 255, 0.86));
-            border: 1px solid rgba(18, 38, 63, 0.08);
-            border-radius: 24px;
-            padding: 1.4rem;
-            box-shadow: 0 24px 48px rgba(19, 39, 62, 0.1);
-            animation: fadeUp 0.7s ease both;
-        }
-
-        .hero-tag {
-            display: inline-block;
-            padding: 0.4rem 0.9rem;
-            border-radius: 999px;
-            background: rgba(18, 38, 63, 0.09);
-            color: #1f3b5c;
-            font-weight: 700;
-            letter-spacing: 0.11em;
-            font-size: 0.75rem;
-        }
-
-        .hero-title {
-            font-size: clamp(1.95rem, 2.8vw, 3.1rem);
-            line-height: 1.12;
-            letter-spacing: -0.02em;
-            color: #10253f;
-            max-width: 16ch;
-        }
-
-        .hero-lead {
-            color: #43566f;
-            font-size: 1.06rem;
-            max-width: 52ch;
-        }
-
-        .hero-metrics {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 0.75rem;
-            max-width: 640px;
-        }
-
-        .metric-item {
-            background: rgba(255, 255, 255, 0.76);
-            border: 1px solid rgba(18, 38, 63, 0.08);
-            border-radius: 14px;
-            padding: 0.75rem 0.85rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.15rem;
-        }
-
-        .metric-value {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: #173457;
-            line-height: 1;
-        }
-
-        .metric-label {
-            font-size: 0.82rem;
-            color: #5b6c80;
-            font-weight: 600;
-        }
-
-        .hero-gallery {
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .hero-main-photo,
-        .side-photo-card {
-            position: relative;
-            border-radius: 18px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.48);
-            box-shadow: 0 18px 34px rgba(13, 28, 44, 0.2);
-        }
-
-        .hero-main-photo {
-            height: 340px;
-        }
-
-        .hero-main-overlay {
-            position: absolute;
-            inset: auto 0 0;
-            padding: 1.1rem 1.2rem;
-            background: linear-gradient(to top, rgba(12, 24, 37, 0.82), rgba(12, 24, 37, 0.18));
-            color: #f9fbff;
-        }
-
-        .overlay-mini {
-            font-size: 0.72rem;
-            letter-spacing: 0.1em;
-            font-weight: 700;
-            opacity: 0.9;
-        }
-
-        .overlay-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
-
-        .overlay-text {
-            font-size: 0.9rem;
-            opacity: 0.92;
-        }
-
-        .hero-side-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.75rem;
-        }
-
-        .side-photo-card {
-            height: 150px;
-        }
-
-        .img-cover {
+        .hero-bg-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
+            animation: kenburns 26s ease-in-out infinite alternate;
+        }
+
+        .hero-scrim {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(100deg, rgba(9, 16, 28, 0.92) 0%, rgba(9, 16, 28, 0.66) 45%, rgba(9, 16, 28, 0.30) 100%);
+        }
+
+        .hero-container {
+            position: relative;
+            z-index: 1;
+            padding: 4.5rem 0;
+        }
+
+        .hero-copy {
+            animation: fadeUp 0.6s ease both;
+        }
+
+        .hero-tag {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.78);
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 4.2vw, 3.4rem);
+            line-height: 1.08;
+            letter-spacing: -0.025em;
+            color: #ffffff;
+            max-width: 14ch;
+        }
+
+        .hero-lead {
+            color: rgba(255, 255, 255, 0.86);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            max-width: 54ch;
+        }
+
+        .hero-link {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .hero-link:hover {
+            color: #ffffff;
+        }
+
+        /* ===== HERO MOSAIC (gambar responsif) ===== */
+        .hero-mosaic {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .mosaic-item {
+            margin: 0;
+            position: relative;
+            aspect-ratio: 4/3;
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+            animation: fadeUp 0.6s ease both;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .mosaic-item:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .mosaic-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s ease;
+        }
+
+        .mosaic-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.42);
+        }
+
+        .mosaic-item:hover img {
+            transform: scale(1.06);
+        }
+
+        /* ===== TEAM ===== */
+        .team-section {
+            padding: 1rem 0 2.5rem;
+        }
+
+        .team-head-tag {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .team-head-title {
+            font-size: clamp(1.5rem, 2.4vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--brand-900);
+        }
+
+        .team-head-sub {
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
 
         .team-card {
             display: flex;
             flex-direction: column;
             height: 100%;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 248, 254, 0.95));
-            border-radius: 18px;
+            background: var(--surface-container-lowest);
+            border: 1px solid var(--border-soft);
+            border-radius: 1rem;
             overflow: hidden;
-            box-shadow: 0 14px 28px rgba(19, 39, 62, 0.09);
-            border: 1px solid rgba(18, 38, 63, 0.09);
-            transform: translateY(0);
+            box-shadow: 0 4px 12px var(--shadow-soft);
             transition: transform 0.25s ease, box-shadow 0.25s ease;
-            animation: cardReveal 0.7s ease both;
         }
 
         .team-card:hover {
-            transform: translateY(-7px);
-            box-shadow: 0 20px 38px rgba(19, 39, 62, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px var(--shadow-soft);
+        }
+
+        .team-photo-wrap {
+            overflow: hidden;
         }
 
         .team-photo {
@@ -271,75 +240,29 @@
             aspect-ratio: 4/3;
             object-fit: cover;
             display: block;
+            transition: transform 0.55s ease;
         }
 
-        @media (max-width: 576px) {
-            .team-photo {
-                aspect-ratio: auto;
-                height: auto;
-                object-fit: contain;
-            }
+        .team-card:hover .team-photo {
+            transform: scale(1.05);
         }
 
         .team-card-body {
             padding: 1rem 1.1rem 1.2rem;
         }
 
-        @media (max-width: 576px) {
-            .team-card-body {
-                padding: 0.75rem 0.85rem 0.9rem;
-            }
-        }
-
         .team-name {
             font-size: 1.06rem;
             font-weight: 700;
-            color: #1f3b5c;
+            color: var(--brand-900);
         }
 
         .team-role {
-            color: #5a6c82;
+            color: var(--text-muted);
             font-weight: 600;
             letter-spacing: 0.02em;
             font-size: 0.84rem;
             text-transform: uppercase;
-        }
-
-        @media (max-width: 576px) {
-            .team-name {
-                font-size: 0.95rem;
-            }
-
-            .team-role {
-                font-size: 0.75rem;
-            }
-        }
-
-        .team-grid .col-lg-4:nth-child(1) .team-card,
-        .team-grid .col-lg-4:nth-child(4) .team-card {
-            animation-delay: 0.05s;
-        }
-
-        .team-grid .col-lg-4:nth-child(2) .team-card,
-        .team-grid .col-lg-4:nth-child(5) .team-card {
-            animation-delay: 0.15s;
-        }
-
-        .team-grid .col-lg-4:nth-child(3) .team-card,
-        .team-grid .col-lg-4:nth-child(6) .team-card {
-            animation-delay: 0.25s;
-        }
-
-        @keyframes cardReveal {
-            from {
-                opacity: 0;
-                transform: translateY(18px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         @keyframes fadeUp {
@@ -354,80 +277,89 @@
             }
         }
 
-        body[data-theme='dark'] .hero-panel {
-            background: linear-gradient(135deg, rgba(15, 23, 36, 0.9), rgba(18, 30, 45, 0.88));
-            border-color: rgba(148, 163, 184, 0.18);
+        @keyframes kenburns {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.08);
+            }
         }
 
-        body[data-theme='dark'] .hero-tag {
-            background: rgba(255, 255, 255, 0.08);
-            color: #d7e5f7;
+        body[data-theme='dark'] .hero-scrim {
+            background: linear-gradient(100deg, rgba(7, 11, 18, 0.95) 0%, rgba(7, 11, 18, 0.75) 45%, rgba(7, 11, 18, 0.45) 100%);
         }
 
-        body[data-theme='dark'] .hero-title {
-            color: #ebf2fc;
-        }
-
-        body[data-theme='dark'] .hero-lead,
-        body[data-theme='dark'] .metric-label,
-        body[data-theme='dark'] .team-role {
-            color: #a8b7ca;
-        }
-
-        body[data-theme='dark'] .metric-item,
         body[data-theme='dark'] .team-card {
-            background: rgba(17, 24, 39, 0.72);
-            border-color: rgba(148, 163, 184, 0.18);
+            background: var(--surface-container-lowest);
+            border-color: var(--border-soft);
         }
 
-        body[data-theme='dark'] .metric-value,
         body[data-theme='dark'] .team-name {
-            color: #e4edf9;
+            color: var(--brand-900);
         }
 
-        body[data-theme='dark'] .btn-outline-secondary {
-            color: #d9e6f8;
-            border-color: rgba(148, 163, 184, 0.32);
+        body[data-theme='dark'] .team-role {
+            color: var(--text-muted);
         }
 
-        body[data-theme='dark'] .btn-outline-secondary:hover {
-            color: #0f1724;
-            background-color: #d9e6f8;
-            border-color: #d9e6f8;
-        }
-
-        @media (max-width: 1199.98px) {
+        @media (max-width: 991.98px) {
             .hero-title {
                 max-width: none;
             }
 
-            .hero-main-photo {
-                height: 320px;
+            .hero-mosaic {
+                max-width: 480px;
+                margin-inline: auto;
             }
         }
 
         @media (max-width: 767.98px) {
-            .hero-panel {
-                border-radius: 20px;
-                padding: 1rem;
+            .home-hero {
+                margin: 0 0.75rem 2rem;
+                min-height: 0;
+                border-radius: 1.25rem;
+                border: 1px solid rgba(255, 255, 255, 0.14);
             }
 
-            .hero-metrics {
-                grid-template-columns: 1fr;
+            .hero-container {
+                padding: 3rem 1.25rem;
             }
 
-            .hero-main-photo {
-                height: 270px;
-            }
-
-            .side-photo-card {
-                height: 120px;
+            .hero-mosaic {
+                gap: 0.75rem;
             }
         }
 
         @media (max-width: 576px) {
-            .team-photo {
-                height: 220px;
+            .hero-title {
+                font-size: 1.75rem;
+            }
+
+            .hero-lead {
+                font-size: 0.95rem;
+            }
+
+            .hero-mosaic {
+                grid-template-columns: 1fr;
+                max-width: none;
+            }
+
+            .mosaic-item {
+                aspect-ratio: 16/9;
+            }
+
+            .team-card-body {
+                padding: 0.75rem 0.85rem 0.9rem;
+            }
+
+            .team-name {
+                font-size: 0.95rem;
+            }
+
+            .team-role {
+                font-size: 0.75rem;
             }
         }
     </style>

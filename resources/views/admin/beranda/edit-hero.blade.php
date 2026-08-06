@@ -31,7 +31,7 @@
                     <!-- Main Image -->
                     <div class="mb-4">
                         <h6 class="fw-bold mb-3">
-                            <i class="bi bi-image"></i> Foto Utama (Main)
+                            Foto Utama (Main)
                         </h6>
                         <div class="row g-3">
                             <div class="col-md-6">
@@ -128,8 +128,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                     <small class="form-text text-muted d-block mt-2">Alt Text</small>
-                    <input type="text"
-                        class="form-control form-control-sm @error('side2_alt_text') is-invalid @enderror"
+                    <input type="text" class="form-control form-control-sm @error('side2_alt_text') is-invalid @enderror"
                         name="side2_alt_text" value="{{ old('side2_alt_text', $heroImages->get('side2')?->alt_text) }}"
                         placeholder="Deskripsi foto">
                     @if ($heroImages->get('side2'))

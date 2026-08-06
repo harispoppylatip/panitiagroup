@@ -9,61 +9,61 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Source+Sans+3:wght@400;500;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --brand-900: #12263f;
-            --brand-700: #1f3b5c;
-            --brand-500: #2e5b87;
-            --accent: #c38f3c;
-            --surface: #f4f7fb;
-            --surface-elevated: rgba(255, 255, 255, 0.92);
-            --text-main: #1f2a37;
-            --text-muted: #5f6f84;
-            --border-soft: rgba(18, 38, 63, 0.1);
-            --toggle-bg: rgba(18, 38, 63, 0.08);
+            --brand-900: #0d1c2e;
+            --brand-700: #004ac6;
+            --brand-500: #2563eb;
+            --accent: #943700;
+            --surface: #f8f9ff;
+            --surface-elevated: #ffffff;
+            --surface-container-low: #eff4ff;
+            --text-main: #0d1c2e;
+            --text-muted: #434655;
+            --border-soft: #e2e8f0;
+            --shadow-soft: rgba(0, 0, 0, 0.05);
+            --toggle-bg: rgba(13, 28, 46, 0.06);
             --toggle-color: var(--brand-900);
         }
 
         body[data-theme='dark'] {
-            --brand-900: #e5eef9;
-            --brand-700: #b7c7dc;
-            --brand-500: #87a9cc;
-            --accent: #d6ad62;
+            --brand-900: #eaf1ff;
+            --brand-700: #b4c5ff;
+            --brand-500: #2563eb;
+            --accent: #ffb596;
             --surface: #0f1724;
-            --surface-elevated: rgba(17, 24, 39, 0.92);
-            --text-main: #e5eef9;
-            --text-muted: #a7b4c5;
+            --surface-elevated: #233144;
+            --surface-container-low: #1b2537;
+            --text-main: #eaf1ff;
+            --text-muted: #b4c5ff;
             --border-soft: rgba(148, 163, 184, 0.18);
+            --shadow-soft: rgba(0, 0, 0, 0.35);
             --toggle-bg: rgba(255, 255, 255, 0.08);
-            --toggle-color: #e5eef9;
+            --toggle-color: #eaf1ff;
         }
 
         body {
             min-height: 100vh;
             margin: 0;
-            font-family: 'Source Sans 3', sans-serif;
+            font-family: 'Inter', sans-serif;
             color: var(--text-main);
-            background:
-                radial-gradient(circle at top right, rgba(46, 91, 135, 0.14), transparent 46%),
-                radial-gradient(circle at bottom left, rgba(195, 143, 60, 0.12), transparent 42%),
-                var(--surface);
+            background: var(--surface);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1rem;
+            -webkit-font-smoothing: antialiased;
         }
 
         .scan-login-card {
             width: 100%;
             max-width: 460px;
             border: 1px solid var(--border-soft);
-            border-radius: 18px;
+            border-radius: 1rem;
             background: var(--surface-elevated);
-            box-shadow: 0 18px 45px rgba(18, 38, 63, 0.15);
+            box-shadow: 0 4px 12px var(--shadow-soft);
         }
 
         .theme-toggle {
@@ -75,29 +75,18 @@
             border: 1px solid var(--border-soft);
             border-radius: 999px;
             padding: 0.45rem 0.85rem;
-            font-weight: 700;
+            font-weight: 600;
+            font-size: 0.85rem;
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
             z-index: 10;
         }
 
-        .icon-box {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto;
-            border-radius: 16px;
-            background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-        }
 
         .title {
-            font-family: 'Manrope', sans-serif;
-            font-weight: 800;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
             color: var(--brand-900);
         }
 
@@ -107,12 +96,12 @@
 
         .form-label {
             color: var(--brand-700);
-            font-weight: 700;
+            font-weight: 600;
             font-size: 0.86rem;
         }
 
         .form-control {
-            border-radius: 12px;
+            border-radius: 0.5rem;
             border: 1px solid var(--border-soft);
             padding: 0.7rem 0.85rem;
             background: var(--surface-elevated);
@@ -121,20 +110,21 @@
 
         .form-control:focus {
             border-color: var(--brand-500);
-            box-shadow: 0 0 0 0.2rem rgba(46, 91, 135, 0.16);
+            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
         }
 
         .btn-brand {
-            background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
-            border: none;
+            background: var(--brand-500);
+            border: 1px solid var(--brand-500);
             color: #fff;
-            font-weight: 700;
+            font-weight: 600;
             border-radius: 999px;
             padding: 0.65rem 1rem;
         }
 
         .btn-brand:hover {
-            background: linear-gradient(135deg, var(--brand-700), var(--brand-900));
+            background: #1d4ed8;
+            border-color: #1d4ed8;
             color: #fff;
         }
 
@@ -142,7 +132,7 @@
             border-radius: 999px;
             border: 1px solid var(--border-soft);
             color: var(--brand-700);
-            font-weight: 700;
+            font-weight: 600;
             padding: 0.62rem 1rem;
             background: transparent;
             text-decoration: none;
@@ -152,37 +142,30 @@
         .btn-back:hover {
             border-color: var(--brand-500);
             color: var(--brand-500);
-            background: rgba(46, 91, 135, 0.08);
-        }
-
-        body[data-theme='dark'] .icon-box {
-            background: linear-gradient(135deg, #2c5b87 0%, #21486f 55%, #183551 100%);
-            border: 1px solid rgba(148, 163, 184, 0.28);
-            box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+            background: var(--surface-container-low);
         }
 
         body[data-theme='dark'] .btn-brand {
-            background: linear-gradient(135deg, #3f74a8 0%, #305e8c 52%, #264d74 100%);
-            border: 1px solid rgba(148, 163, 184, 0.35);
-            color: #f8fbff;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.26);
+            background: var(--brand-500);
+            border: 1px solid var(--brand-500);
+            color: #fff;
         }
 
         body[data-theme='dark'] .btn-brand:hover {
-            background: linear-gradient(135deg, #4c85bc 0%, #3a6e9f 52%, #2d5a84 100%);
-            border-color: rgba(148, 163, 184, 0.48);
+            background: #3b82f6;
+            border-color: #3b82f6;
             color: #ffffff;
         }
 
         body[data-theme='dark'] .btn-back {
-            color: #d7e5f7;
-            border-color: rgba(148, 163, 184, 0.35);
+            color: var(--brand-700);
+            border-color: var(--border-soft);
         }
 
         body[data-theme='dark'] .btn-back:hover {
-            color: #edf4ff;
-            border-color: rgba(148, 163, 184, 0.52);
-            background: rgba(148, 163, 184, 0.14);
+            color: var(--brand-500);
+            border-color: var(--brand-500);
+            background: var(--surface-container-low);
         }
 
         .helper {
@@ -199,9 +182,6 @@
     </button>
 
     <div class="scan-login-card p-4 p-md-5">
-        <div class="icon-box mb-3">
-            <i class="bi bi-qr-code-scan"></i>
-        </div>
         <h1 class="title h3 text-center mb-2">Login Scan Absensi</h1>
         <p class="subtitle text-center mb-4">Gunakan akun yang sesuai.</p>
 

@@ -5,11 +5,7 @@
         .grubkas-detail-page {
             min-height: calc(100vh - 76px);
             padding: 1.25rem 0 2.5rem;
-            background:
-                radial-gradient(circle at top left, rgba(46, 91, 135, 0.18), transparent 30%),
-                radial-gradient(circle at top right, rgba(195, 143, 60, 0.12), transparent 26%),
-                radial-gradient(circle at bottom left, rgba(46, 91, 135, 0.08), transparent 28%),
-                var(--surface);
+            background: var(--surface);
         }
 
         .detail-shell {
@@ -51,23 +47,12 @@
             border: 1px solid var(--border-soft);
             border-radius: 1rem;
             overflow: hidden;
-            box-shadow: 0 18px 38px var(--shadow-soft);
+            box-shadow: 0 4px 12px var(--shadow-soft);
         }
 
         .hero-card {
-            background: linear-gradient(135deg, var(--brand-700), var(--brand-900));
+            background: var(--brand-700);
             color: #f8fbff;
-        }
-
-        .hero-card::before {
-            content: '';
-            position: absolute;
-            inset: auto -1.5rem -1.5rem auto;
-            width: 8rem;
-            height: 8rem;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-            pointer-events: none;
         }
 
         .hero-inner,
@@ -170,7 +155,7 @@
             border-radius: 0.75rem;
             padding: 0.95rem 0.85rem;
             text-align: center;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 247, 251, 0.95));
+            background: var(--surface-container-lowest);
             color: var(--text-main);
             min-height: 72px;
             display: flex;
@@ -186,14 +171,14 @@
         }
 
         .choice-card.is-button:focus-visible {
-            outline: 3px solid rgba(46, 91, 135, 0.25);
+            outline: 3px solid rgba(37, 99, 235, 0.25);
             outline-offset: 2px;
         }
 
         .choice-card.is-active {
-            border-color: rgba(46, 91, 135, 0.28);
-            box-shadow: inset 0 0 0 1px rgba(46, 91, 135, 0.06);
-            background: linear-gradient(180deg, rgba(233, 241, 249, 0.98), rgba(225, 235, 245, 0.98));
+            border-color: var(--brand-500);
+            box-shadow: inset 0 0 0 1px var(--brand-500);
+            background: var(--surface-container-low);
         }
 
         .choice-card .choice-label {
@@ -210,7 +195,7 @@
         }
 
         .detail-summary {
-            background: linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.98));
+            background: var(--surface-container-lowest);
             border: 1px solid var(--border-soft);
             border-radius: 0.8rem;
             padding: 1rem;
@@ -221,8 +206,8 @@
             margin-bottom: 1rem;
             padding: 1rem;
             border-radius: 0.85rem;
-            border: 1px solid rgba(46, 91, 135, 0.16);
-            background: linear-gradient(180deg, rgba(244, 247, 251, 0.96), rgba(233, 241, 249, 0.96));
+            border: 1px solid var(--border-soft);
+            background: var(--surface-container-low);
         }
 
         .custom-amount-box.is-visible {
@@ -244,8 +229,8 @@
         }
 
         .custom-amount-input:focus {
-            border-color: rgba(46, 91, 135, 0.38);
-            box-shadow: 0 0 0 0.2rem rgba(46, 91, 135, 0.12);
+            border-color: var(--brand-500);
+            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.12);
         }
 
         .custom-amount-help {
@@ -287,19 +272,20 @@
         }
 
         .pay-button {
-            border: 0;
+            border: 1px solid var(--brand-500);
             border-radius: 0.75rem;
-            background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+            background: var(--brand-500);
             color: #ffffff;
             font-weight: 800;
             padding: 0.9rem 1rem;
             width: 100%;
-            box-shadow: 0 10px 22px rgba(46, 91, 135, 0.2);
+            box-shadow: 0 4px 12px var(--shadow-soft);
         }
 
         .pay-button:hover {
             color: #ffffff;
-            background: linear-gradient(135deg, var(--brand-700), var(--brand-900));
+            background: #1d4ed8;
+            border-color: #1d4ed8;
         }
 
         .security-note {
@@ -309,8 +295,8 @@
         }
 
         body[data-theme='dark'] .hero-card {
-            background: linear-gradient(135deg, #2f5f8e 0%, #224a72 52%, #1a3a5a 100%);
-            border-color: rgba(148, 163, 184, 0.18);
+            background: var(--brand-700);
+            border-color: rgba(37, 99, 235, 0.5);
         }
 
         body[data-theme='dark'] .summary-tile {
@@ -327,8 +313,8 @@
         }
 
         body[data-theme='dark'] .choice-card.is-active {
-            background: linear-gradient(180deg, rgba(31, 41, 55, 0.96), rgba(17, 24, 39, 0.98));
-            border-color: rgba(148, 163, 184, 0.22);
+            background: var(--surface-container-low);
+            border-color: var(--brand-500);
         }
 
         body[data-theme='dark'] .choice-card .choice-value {

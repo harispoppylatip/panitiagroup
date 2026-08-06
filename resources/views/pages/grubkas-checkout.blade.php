@@ -5,7 +5,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xl-8 col-lg-9">
-                    <div class="card border-0 shadow-lg" style="border-radius: 16px;">
+                    <div class="card">
                         <div class="card-body p-4 p-md-5">
                             <div class="mb-3 d-flex justify-content-between">
                                 <div>

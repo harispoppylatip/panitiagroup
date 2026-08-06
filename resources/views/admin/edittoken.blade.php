@@ -209,23 +209,22 @@
         }
 
         .btn-save {
-            background: linear-gradient(135deg, #10b981, #059669);
-            border: none;
+            background: #10b981;
+            border: 1px solid #10b981;
             color: #fff;
-            font-weight: 700;
-            border-radius: 8px;
+            font-weight: 600;
+            border-radius: 0.5rem;
             padding: 0.75rem 2rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.3s ease;
+            transition: background-color 0.2s ease;
         }
 
         .btn-save:hover {
-            background: linear-gradient(135deg, #059669, #047857);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
+            background: #059669;
+            border-color: #059669;
         }
 
         .btn-cancel {
@@ -250,26 +249,26 @@
         }
 
         .info-box {
-            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-            border-left: 4px solid #3b82f6;
-            border-radius: 8px;
+            background: #dbeafe;
+            border: 1px solid #93c5fd;
+            border-radius: 0.75rem;
             padding: 1rem;
             margin-bottom: 2rem;
         }
 
         .info-box.warning {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-left-color: #f59e0b;
+            background: #fef3c7;
+            border-color: #fcd34d;
         }
 
         body[data-theme='dark'] .info-box {
             background: rgba(30, 58, 138, 0.3);
-            border-left-color: #60a5fa;
+            border-color: #60a5fa;
         }
 
         body[data-theme='dark'] .info-box.warning {
             background: rgba(78, 70, 20, 0.3);
-            border-left-color: #fbbf24;
+            border-color: #fbbf24;
         }
 
         .info-box-text {
@@ -305,14 +304,13 @@
 
         <!-- Header -->
         <div class="header-title">
-            <h1><i class="bi bi-pencil-square"></i> Edit Token</h1>
+            <h1>Edit Token</h1>
             <p>Perbarui data token untuk user <strong>{{ $data->nama }}</strong></p>
         </div>
 
         <!-- Info Box -->
         <div class="info-box">
             <p class="info-box-text">
-                <i class="bi bi-info-circle"></i>
                 <strong>Catatan:</strong> Pastikan token yang diinput valid dan masih berlaku. Token yang expired akan
                 menyebabkan kegagalan pada saat scanning.
             </p>

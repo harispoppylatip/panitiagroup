@@ -35,7 +35,8 @@
                                 <option value="">-- Pilih anggota --</option>
                                 @foreach ($anggotaOptions as $anggota)
                                     <option value="{{ $anggota->nama }}|{{ $anggota->Nim }}">{{ $anggota->nama }}
-                                        ({{ $anggota->Nim }})</option>
+                                        ({{ $anggota->Nim }})
+                                    </option>
                                 @endforeach
                             </select>
                             <small class="text-muted">Pilih anggota yang sudah terdaftar di Management Token</small>
@@ -112,7 +113,7 @@
         <div class="card border-0 shadow-sm">
             <div class="card-body p-4">
                 <h5 class="card-title fw-bold mb-3">
-                    <i class="bi bi-people"></i> Daftar Anggota Tim
+                    Daftar Anggota Tim
                 </h5>
 
                 <div class="table-responsive">
@@ -136,12 +137,12 @@
                                     <td class="fw-medium">
                                         {{ $member->name }}
                                         @if ($member->nim)
-                                            <br><small class="badge bg-info mt-1">Terhubung</small>
+                                            <br><small class="text-info mt-1">Terhubung</small>
                                         @endif
                                     </td>
                                     <td>{{ $member->role }}</td>
                                     <td>
-                                        <span class="badge bg-secondary">{{ $member->order }}</span>
+                                        <span class="small text-muted fw-semibold">{{ $member->order }}</span>
                                     </td>
                                     <td class="text-end">
                                         <button type="button" class="btn btn-sm btn-outline-secondary"
@@ -216,7 +217,7 @@
                             @empty
                                 <tr>
                                     <td colspan="5" class="text-center py-4 text-muted">
-                                        <i class="bi bi-inbox"></i><br>
+                                        <br>
                                         Belum ada anggota tim
                                     </td>
                                 </tr>

@@ -39,10 +39,7 @@
 
         .grubkas-page {
             padding: 1.5rem 0 2.5rem;
-            background:
-                radial-gradient(circle at top left, rgba(46, 91, 135, 0.12), transparent 32%),
-                radial-gradient(circle at bottom right, rgba(195, 143, 60, 0.10), transparent 30%),
-                var(--surface);
+            background: var(--surface);
             color: var(--text-main);
             min-height: calc(100vh - 76px);
         }
@@ -56,19 +53,18 @@
         .grubkas-card {
             background: var(--surface-elevated);
             border: 1px solid var(--border-soft);
-            border-radius: 12px;
-            box-shadow: 0 16px 34px var(--shadow-soft);
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px var(--shadow-soft);
         }
 
         .summary-card {
-            border: 1px solid rgba(46, 91, 135, 0.20);
-            background: linear-gradient(135deg, var(--brand-700), var(--brand-900));
-            box-shadow: 0 16px 34px rgba(18, 38, 63, 0.18);
+            border: 1px solid rgba(37, 99, 235, 0.4);
+            background: var(--brand-700);
+            box-shadow: 0 4px 12px var(--shadow-soft);
         }
 
         .summary-icon,
-        .activity-icon,
-        .send-icon {
+        .activity-icon {
             width: 42px;
             height: 42px;
             border-radius: 12px;
@@ -76,11 +72,6 @@
             align-items: center;
             justify-content: center;
             flex: 0 0 42px;
-        }
-
-        .summary-icon {
-            background: rgba(255, 255, 255, 0.14);
-            color: #f5c36b;
         }
 
         .section-title {
@@ -97,8 +88,8 @@
 
         .member-card {
             border: 1px solid var(--border-soft);
-            border-radius: 10px;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.96));
+            border-radius: 0.75rem;
+            background: var(--surface-container-lowest);
             color: var(--text-main);
             padding: 0.9rem 1rem;
             transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
@@ -108,24 +99,9 @@
 
         .member-card:hover,
         .member-card.is-selected {
-            border-color: rgba(46, 91, 135, 0.45);
-            background: linear-gradient(180deg, rgba(236, 245, 252, 0.98), rgba(226, 237, 247, 0.98));
+            border-color: var(--brand-500);
+            background: var(--surface-container-low);
             transform: translateY(-1px);
-        }
-
-        .member-card .badge-initial {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background: rgba(148, 163, 184, 0.18);
-            color: var(--brand-700);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.72rem;
-            font-weight: 800;
-            margin-right: 0.7rem;
-            flex: 0 0 26px;
         }
 
         .member-name {
@@ -194,14 +170,19 @@
         }
 
         .pay-button {
-            border-radius: 10px;
-            border: 1px solid rgba(46, 91, 135, 0.18);
-            background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
+            border-radius: 0.75rem;
+            border: 1px solid var(--brand-500);
+            background: var(--brand-500);
             color: #ffffff;
             font-weight: 700;
             height: 44px;
             width: 100%;
-            opacity: 0.98;
+        }
+
+        .pay-button:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+            color: #ffffff;
         }
 
         .security-note {
@@ -274,27 +255,23 @@
         }
 
         .send-banner {
-            background: linear-gradient(135deg, rgba(46, 91, 135, 0.08), rgba(195, 143, 60, 0.08));
+            background: var(--surface-container-low);
             border: 1px solid var(--border-soft);
         }
 
-        .send-icon {
-            background: rgba(46, 91, 135, 0.12);
-            color: var(--brand-500);
-        }
-
         .btn-send {
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--brand-500), var(--brand-700));
-            border: none;
+            border-radius: 0.75rem;
+            background: var(--brand-500);
+            border: 1px solid var(--brand-500);
             color: #ffffff;
-            font-weight: 800;
+            font-weight: 700;
             white-space: nowrap;
         }
 
         .btn-send:hover {
             color: #ffffff;
-            background: linear-gradient(135deg, var(--brand-700), var(--brand-900));
+            background: #1d4ed8;
+            border-color: #1d4ed8;
         }
 
         .muted-divider {
@@ -302,10 +279,7 @@
         }
 
         body[data-theme='dark'] .grubkas-page {
-            background:
-                radial-gradient(circle at top left, rgba(46, 91, 135, 0.18), transparent 32%),
-                radial-gradient(circle at bottom right, rgba(195, 143, 60, 0.12), transparent 30%),
-                var(--surface);
+            background: var(--surface);
         }
 
         body[data-theme='dark'] .grubkas-card,
@@ -314,18 +288,22 @@
             color: var(--text-main);
         }
 
-        body[data-theme='dark'] .summary-card {
-            background: linear-gradient(135deg, #2f5f8e 0%, #224a72 52%, #1a3a5a 100%);
-            border-color: rgba(148, 163, 184, 0.18);
+        body[data-theme='dark'] .member-card {
+            background: var(--surface-container-lowest);
         }
 
-        body[data-theme='dark'] .summary-icon {
-            background: rgba(255, 255, 255, 0.14);
-            color: #f5c36b;
+        body[data-theme='dark'] .member-card:hover,
+        body[data-theme='dark'] .member-card.is-selected {
+            background: var(--surface-container-low);
+        }
+
+        body[data-theme='dark'] .summary-card {
+            background: var(--brand-700);
+            border-color: rgba(37, 99, 235, 0.5);
         }
 
         body[data-theme='dark'] .send-banner {
-            background: linear-gradient(135deg, rgba(46, 91, 135, 0.12), rgba(195, 143, 60, 0.08));
+            background: var(--surface-container-low);
         }
 
         @media (max-width: 575.98px) {
@@ -353,9 +331,6 @@
             <div class="card summary-card text-white rounded-4 mb-3">
                 <div class="card-body p-3 p-md-4">
                     <div class="d-flex gap-3 align-items-start">
-                        <div class="summary-icon">
-                            <i class="bi bi-tag-fill fs-5"></i>
-                        </div>
                         <div class="flex-grow-1">
                             <h1 class="h6 fw-bold mb-1 text-white">Iuran Keanggotaan Mingguan</h1>
                             <p class="mb-3 small text-white-50">Kontribusi rutin mingguan untuk kas bersama Panitia Akhir
@@ -426,15 +401,13 @@
                                             data-tagihan="{{ $tagihan }}" data-status="{{ $statusLabel }}"
                                             @disabled($tagihan < 1) onclick="pilihMember(this)">
                                             <span class="d-flex align-items-center">
-                                                <span
-                                                    class="badge-initial">{{ strtoupper(substr($item->datasikad->nama, 0, 2)) }}</span>
                                                 <span>
                                                     <span class="member-name d-block"
                                                         name='nama'>{{ $item->datasikad->nama }}</span>
                                                     <span class="member-tag">Tagihan: Rp
                                                         {{ number_format($tagihan, 0, ',', '.') }}</span>
-                                                    <span class="member-status {{ $statusClass }}"><i
-                                                            class="bi bi-flag-fill"></i>{{ $statusLabel }}</span>
+                                                    <span
+                                                        class="member-status {{ $statusClass }}">{{ $statusLabel }}</span>
                                                 </span>
                                             </span>
                                         </button>
@@ -453,11 +426,11 @@
                                 </div>
                                 <div class="invoice-row">
                                     <span>Atas nama</span>
-                                    <strong id="previewNama">— belum dipilih —</strong>
+                                    <strong id="previewNama">Belum dipilih</strong>
                                 </div>
                                 <div class="invoice-row">
                                     <span>NIM</span>
-                                    <strong id="previewNim">—</strong>
+                                    <strong id="previewNim">-</strong>
                                 </div>
                                 <div class="invoice-row invoice-total mb-3">
                                     <span>Total Bayar</span>
@@ -487,7 +460,7 @@
                         <div>
                             <div class="section-title mb-1">Aktivitas terbaru</div>
                         </div>
-                        <span class="badge rounded-pill text-bg-secondary">Minggu ini</span>
+                        <span class="small text-white-50">Minggu ini</span>
                     </div>
 
                     <div class="px-3 px-md-4 py-2">
@@ -499,7 +472,7 @@
                                     </div>
                                     <div>
                                         <div class="activity-title">{{ $activity['title'] }}</div>
-                                        <div class="activity-meta">{{ $activity['detail'] ?: 'Aktivitas kas terbaru' }} ·
+                                        <div class="activity-meta">{{ $activity['detail'] ?: 'Aktivitas kas terbaru' }} |
                                             {{ $activity['time'] }}</div>
                                     </div>
                                 </div>
@@ -518,9 +491,6 @@
                 <div class="card-body p-3 p-md-4">
                     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
                         <div class="d-flex align-items-start gap-3">
-                            <div class="send-icon">
-                                <i class="bi bi-currency-dollar fs-5"></i>
-                            </div>
                             <div>
                                 <div class="section-title">Kirim Dana</div>
                                 <div class="section-subtitle">Bukan anggota? Kirim dana bebas untuk keperluan apa saja
@@ -559,7 +529,7 @@
             document.getElementById('previewTagihan').innerText = Number(tagihan) > 0 ? 'Rp ' + Number(tagihan)
                 .toLocaleString('id-ID') : 'Rp 0';
             document.getElementById('previewStatus').innerText = 'Status pembayaran: ' + status + (Number(tagihan) > 0 ?
-                '' : ' · tidak ada tagihan yang bisa dibayar.');
+                '' : ' | tidak ada tagihan yang bisa dibayar.');
 
             document.getElementById('btnBayar').disabled = Number(tagihan) < 1;
         }

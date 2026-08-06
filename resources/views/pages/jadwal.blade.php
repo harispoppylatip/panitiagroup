@@ -13,7 +13,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @else
-                <div class="card border-0 shadow-sm mb-4 filter-panel">
+                <div class="card filter-panel mb-4">
                     <div
                         class="card-body d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between">
                         <div class="btn-group flex-wrap gap-2" role="group" aria-label="Filter Hari">
@@ -35,13 +35,13 @@
 
                 <div class="schedule-list" id="scheduleGrid">
                     @forelse ($jadwal as $hari => $items)
-                        <div class="card border-0 shadow-lg schedule-group mb-4" data-day="{{ $hari }}">
+                        <div class="card schedule-group mb-4" data-day="{{ $hari }}">
                             <div class="card-body">
                                 <div
                                     class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
                                     <div>
                                         <span
-                                            class="badge text-bg-primary rounded-pill px-3 py-2 mb-2">{{ $hari }}</span>
+                                            class="small fw-bold text-uppercase text-muted mb-2 d-inline-block">{{ $hari }}</span>
 
                                     </div>
                                     <small class="text-muted fw-semibold">{{ $items->count() }} mata kuliah</small>
@@ -82,21 +82,22 @@
 
     <style>
         .filter-panel {
-            backdrop-filter: blur(4px);
             background: var(--surface-elevated);
             border: 1px solid var(--border-soft);
         }
 
         .schedule-group {
-            border-radius: 18px;
+            border-radius: 1rem;
             overflow: hidden;
             transition: transform 0.25s ease, box-shadow 0.25s ease;
             background: var(--surface-elevated);
+            border: 1px solid var(--border-soft);
+            box-shadow: 0 4px 12px var(--shadow-soft);
         }
 
         .schedule-group:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 18px 30px var(--shadow-soft) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px var(--shadow-soft) !important;
         }
 
         .schedule-table {

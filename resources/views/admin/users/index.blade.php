@@ -85,7 +85,7 @@
                         @empty
                             <tr>
                                 <td colspan="5" class="text-center py-4 text-muted">
-                                    <i class="bi bi-inbox"></i><br>
+                                    <br>
                                     Belum ada user
                                 </td>
                             </tr>
