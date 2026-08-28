@@ -32,8 +32,8 @@
 
                         <div class="mt-4">
                             <div class="mb-4">
-                                <p class="text-muted small mb-2">Foto Utama (Main)</p>
-                                @if ($heroImages->get('main'))
+                                <p class="text-muted small mb-2">Foto Utama (Desktop)</p>
+                                @if ($heroImages->get('main')?->image_url)
                                     <img src="{{ $heroImages->get('main')->image_url }}"
                                         alt="{{ $heroImages->get('main')->alt_text }}" class="img-fluid rounded"
                                         style="max-height: 250px; width: 100%; object-fit: cover;">
@@ -42,6 +42,22 @@
                                     </small>
                                 @else
                                     <div class="alert alert-warning mb-0">Belum ada foto utama</div>
+                                @endif
+                            </div>
+
+                            <div class="mb-4">
+                                <p class="text-muted small mb-2">Foto Mobile</p>
+                                @if ($heroImages->get('main')?->image_url_mobile)
+                                    <img src="{{ $heroImages->get('main')->image_url_mobile }}" alt="Foto mobile"
+                                        class="img-fluid rounded"
+                                        style="max-height: 250px; width: 100%; object-fit: cover;">
+                                    <small class="text-muted d-block mt-2">
+                                        Foto khusus tampilan ponsel
+                                    </small>
+                                @else
+                                    <div class="alert alert-info mb-0">
+                                        Belum ada foto mobile. Tampilan ponsel memakai Foto Utama (Desktop).
+                                    </div>
                                 @endif
                             </div>
 

@@ -2,8 +2,18 @@
 @section('konten')
     <section class="home-hero">
         <div class="hero-bg">
-            <img src="{{ $heroImages->get('main')?->image_url ?? 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1300&q=80' }}"
-                alt="{{ $heroImages->get('main')?->alt_text ?? 'Foto utama tim' }}" class="hero-bg-img">
+            @php
+                $mainHero = $heroImages->get('main');
+                $desktopSrc =
+                    $mainHero?->image_url ??
+                    'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1300&q=80';
+                $mobileSrc = $mainHero?->image_url_mobile ?? $desktopSrc;
+                $altText = $mainHero?->alt_text ?? 'Foto utama tim';
+            @endphp
+            <picture>
+                <source media="(max-width: 767.98px)" srcset="{{ $mobileSrc }}">
+                <img src="{{ $desktopSrc }}" alt="{{ $altText }}" class="hero-bg-img">
+            </picture>
             <div class="hero-scrim"></div>
         </div>
 
@@ -13,14 +23,17 @@
                     <div class="hero-copy">
                         {{-- <p class="hero-tag mb-3">BERANDA RESMI</p> --}}
                         <h1 class="hero-title mb-3">Pemuda Akhir Zaman</h1>
-                        <p class="hero-lead mb-4">
+                        <p class="hero-lead hero-lead-desktop d-none d-md-block mb-4">
                             Kami merupakan kelompok mahasiswa Universitas Muhammadiyah Kalimantan Timur dari jurusan IT
                             Internasional yang dipersatukan oleh minat yang sama dalam dunia teknologi. Website ini kami
                             hadirkan sebagai solusi untuk mempermudah pengelolaan tim, komunikasi, serta produktivitas
                             kerja bersama.
                         </p>
+                        <p class="hero-lead hero-lead-mobile d-md-none mb-4">
+                            Kelompok mahasiswa UMKT jurusan IT Internasional yang dipersatukan oleh minat pada dunia
+                            teknologi.
+                        </p>
                         <div class="d-flex flex-wrap align-items-center gap-3 mb-4 hero-actions">
-                            <a href="{{ route('scan.login') }}" class="btn btn-brand px-4 py-2">Masuk Scan Absen</a>
                             <a href="{{ route('galeri.index') }}" class="hero-link">Jelajahi Galeri</a>
                         </div>
                     </div>
@@ -353,25 +366,98 @@
         }
 
         @media (max-width: 767.98px) {
+
+            /* Konten halaman full-width di mobile, hapus frame/card luar */
+            main {
+                padding-top: 0;
+                padding-bottom: 1.5rem;
+            }
+
+            /* Hero mobile: edge-to-edge, teks di bawah dengan gradient dari bawah */
             .home-hero {
-                margin: 0 0.75rem 2rem;
-                min-height: 0;
-                border-radius: 1.25rem;
-                border: 1px solid rgba(255, 255, 255, 0.14);
+                margin: 0 0 1.75rem;
+                min-height: clamp(430px, 64vh, 560px);
+                border-radius: 0;
+                border: 0;
+                align-items: flex-end;
             }
 
             .hero-container {
-                padding: 3rem 1.25rem;
+                padding: 3.5rem 1.25rem 1.5rem;
+                max-width: none;
+                width: 100%;
+            }
+
+            .hero-bg-img {
+                object-position: center;
+            }
+
+            .hero-scrim {
+                background: linear-gradient(180deg, rgba(9, 16, 28, 0.08) 0%, rgba(9, 16, 28, 0.35) 45%, rgba(9, 16, 28, 0.88) 100%);
+            }
+
+            body[data-theme='dark'] .hero-scrim {
+                background: linear-gradient(180deg, rgba(7, 11, 18, 0.08) 0%, rgba(7, 11, 18, 0.38) 45%, rgba(7, 11, 18, 0.92) 100%);
+            }
+
+            .hero-title {
+                font-size: 1.65rem;
+                line-height: 1.15;
+                max-width: none;
+            }
+
+            .hero-lead {
+                font-size: 0.875rem;
+                line-height: 1.6;
+                text-align: left;
+                max-width: none;
+            }
+
+            .hero-actions {
+                gap: 0.75rem;
+            }
+
+            .home-hero .btn-brand {
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0.6rem 1.25rem;
+            }
+
+            .hero-link {
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+            }
+
+            /* Anggota Tim: container full-width, kartu hampir selebar layar */
+            .team-section .container {
+                max-width: none;
+                padding-inline: 16px;
+            }
+
+            .team-grid {
+                --bs-gutter-x: 0;
+                row-gap: 1rem;
+            }
+
+            .team-head {
+                margin-bottom: 1.25rem;
             }
         }
 
         @media (max-width: 576px) {
             .hero-title {
-                font-size: 1.75rem;
+                font-size: 1.5rem;
             }
 
             .hero-lead {
-                font-size: 0.95rem;
+                font-size: 0.825rem;
+            }
+
+            .hero-container {
+                padding-inline: 1rem;
             }
 
             .team-card-body {

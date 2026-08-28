@@ -70,6 +70,11 @@
             --toggle-color: #eaf1ff;
         }
 
+        html,
+        body {
+            overflow-x: clip;
+        }
+
         body {
             min-height: 100vh;
             margin: 0;
@@ -112,11 +117,20 @@
 
         main {
             flex: 1;
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+
+        @media (max-width: 991.98px) {
+            body {
+                padding-bottom: calc(6.75rem + env(safe-area-inset-bottom, 0px));
+            }
         }
 
         @media (max-width: 767.98px) {
-            body {
-                padding-bottom: 6.75rem;
+            main {
+                padding-top: 1rem;
+                padding-bottom: 1.5rem;
             }
         }
 
@@ -188,7 +202,7 @@
 
         @media (max-width: 991.98px) {
 
-            /* Menu navbar disembunyikan di mobile — navigasi memakai tab bar bawah */
+            /* Menu navbar disembunyikan di mobile, navigasi memakai tab bar bawah */
             .navbar .navbar-collapse {
                 display: none !important;
             }
@@ -314,7 +328,7 @@
             transform: translateY(-2px);
         }
 
-        @media (max-width: 767.98px) {
+        @media (max-width: 991.98px) {
             .bottom-nav {
                 display: flex;
             }
@@ -483,58 +497,44 @@
 
         .footer-grid {
             display: grid;
-            grid-template-columns: 1.6fr 1fr 1fr;
+            grid-template-columns: 1.6fr 1fr;
             gap: 2.5rem;
             padding-bottom: 2.5rem;
         }
 
-        .footer-bottom {
-            border-top: 1px solid var(--border-soft);
-            padding: 1rem 0 0;
-            text-align: center;
-            font-size: 0.875rem;
-        }
-
         @media (max-width: 767.98px) {
+
+            /* Footer mobile menyatu dengan latar halaman, bukan panel/kartu */
+            footer {
+                background: transparent;
+            }
+
             .site-footer {
-                padding: 1.5rem 0 1.25rem;
+                padding: 1.75rem 0 1.5rem;
             }
 
             .footer-grid {
                 grid-template-columns: 1fr;
-                gap: 1.25rem;
-                padding-bottom: 1.25rem;
+                gap: 1.5rem;
+                padding-bottom: 0;
             }
 
-            /* Navigasi sudah tersedia di tab bar bawah, kolom ini redundant di mobile */
-            .footer-col-nav {
-                display: none;
-            }
-
-            /* Kolom Layanan & Sosial: link berjajar ringkas */
+            /* Kolom Layanan: link berjajar ringkas */
             .footer-col-services .footer-links {
                 display: flex;
                 flex-wrap: wrap;
-                column-gap: 1.5rem;
-                row-gap: 0.6rem;
+                column-gap: 1.25rem;
+                row-gap: 0.5rem;
             }
 
             .footer-col-services .footer-heading {
-                font-size: 0.72rem;
+                font-size: 0.68rem;
                 margin-bottom: 0.6rem;
             }
 
-            .footer-col-services .footer-heading.mt-4 {
-                margin-top: 1.1rem;
-            }
-
             .footer-desc {
-                font-size: 0.85rem;
+                font-size: 0.8rem;
                 line-height: 1.55;
-            }
-
-            .footer-bottom {
-                padding-top: 0.9rem;
             }
         }
 
@@ -548,7 +548,7 @@
         }
 
         .card {
-            border: 1px solid var(--border-soft);
+            border: 1px var(--border-soft);
             border-radius: 1rem;
             box-shadow: 0 4px 12px var(--shadow-soft);
         }
@@ -761,7 +761,7 @@
         }
 
         .list-group-item.active {
-            background-color: var(--brand-500);
+            background: var(--brand-500);
             border-color: var(--brand-500);
             color: #ffffff;
         }
@@ -870,7 +870,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="py-5 flex-grow-1">
+    <main class="flex-grow-1">
         @yield('konten')
     </main>
 
@@ -884,34 +884,15 @@
                         dengan teknologi.
                     </p>
                 </div>
-                <div class="footer-col footer-col-nav">
-                    <p class="footer-heading">Navigasi</p>
-                    <ul class="footer-links">
-                        <li><a href="/">Beranda</a></li>
-                        <li><a href="{{ route('jadwal') }}">Jadwal Kuliah</a></li>
-                        <li><a href="{{ route('tugas') }}">Tugas</a></li>
-                        <li><a href="{{ route('galeri.index') }}">Galeri</a></li>
-                        <li><a href="{{ route('grubkas.index') }}">Kas Grub</a></li>
-                    </ul>
-                </div>
                 <div class="footer-col footer-col-services">
                     <p class="footer-heading">Layanan</p>
-                    <ul class="footer-links">
+                    <ul class="footer-links list-unstyled">
                         <li><a href="{{ route('scan.login') }}">Scan Absen</a></li>
                         <li><a href="{{ route('admin.login') }}">Login Admin</a></li>
-                    </ul>
-                    <p class="footer-heading mt-4">Sosial</p>
-                    <ul class="footer-links">
-                        <li>
-                            <a href="https://www.instagram.com/paz.team214" target="_blank" rel="noopener">
-                                @paz.team214
-                            </a>
-                        </li>
+                        <li><a href="https://www.instagram.com/paz.team214" target="_blank"
+                                rel="noopener">@paz.team214</a></li>
                     </ul>
                 </div>
-            </div>
-            <div class="footer-bottom">
-                <p class="mb-0">© 2026 Pemuda Akhir Zaman | Dibuat Oleh Tim Kami</p>
             </div>
         </div>
     </footer>
@@ -952,7 +933,6 @@
             }
         });
     </script>
-
 </body>
 
 </html>

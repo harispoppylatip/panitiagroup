@@ -59,8 +59,8 @@
 
             <!-- Foto Utama -->
             <div class="hero-upload-card p-4 mb-4">
-                <h6 class="fw-bold mb-1">Foto Utama (Main)</h6>
-                <small class="text-muted d-block mb-3">Tampil sebagai latar hero di halaman beranda</small>
+                <h6 class="fw-bold mb-1">Foto Utama (Desktop)</h6>
+                <small class="text-muted d-block mb-3">Tampil sebagai latar hero di layar desktop (lebar, cinematic)</small>
                 <div class="row g-3">
                     <div class="col-md-7">
                         <label class="form-label photo-label">Upload Foto</label>
@@ -80,13 +80,42 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    @if ($heroImages->get('main'))
+                    @if ($heroImages->get('main')?->image_url)
                         <div class="col-12">
                             <label class="form-label photo-label">Foto Saat Ini</label>
                             <img src="{{ $heroImages->get('main')->image_url }}" alt="Foto utama saat ini"
                                 class="hero-preview">
                         </div>
                     @endif
+                </div>
+            </div>
+
+            <!-- Foto Mobile -->
+            <div class="hero-upload-card p-4 mb-4">
+                <h6 class="fw-bold mb-1">Foto Mobile</h6>
+                <small class="text-muted d-block mb-3">Tampil sebagai latar hero di ponsel. Jika kosong, otomatis memakai
+                    Foto Utama Desktop</small>
+                <div class="row g-3">
+                    <div class="col-md-7">
+                        <label class="form-label photo-label">Upload Foto</label>
+                        <input type="file" class="form-control @error('main_image_mobile') is-invalid @enderror"
+                            name="main_image_mobile" accept="image/jpeg,image/png,image/gif,image/webp" data-max-mb="5">
+                        <small class="text-muted d-block mt-1">Max 5MB (JPG, PNG, GIF, WebP). Disarankan potret
+                            (9:16)</small>
+                        @error('main_image_mobile')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-5 d-flex flex-column justify-content-end">
+                        @if ($heroImages->get('main')?->image_url_mobile)
+                            <label class="form-label photo-label">Foto Saat Ini</label>
+                            <img src="{{ $heroImages->get('main')->image_url_mobile }}" alt="Foto mobile saat ini"
+                                class="hero-preview">
+                        @else
+                            <div class="alert alert-info mb-0">Belum ada foto mobile. Saat ini tampilan ponsel memakai
+                                foto desktop.</div>
+                        @endif
+                    </div>
                 </div>
             </div>
 

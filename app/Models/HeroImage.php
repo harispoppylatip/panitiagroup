@@ -9,6 +9,7 @@ class HeroImage extends Model
     protected $fillable = [
         'position',
         'image_url',
+        'image_url_mobile',
         'alt_text',
     ];
 }

@@ -9,10 +9,8 @@ use Illuminate\Support\Facades\Storage;
 
 class BerandaController extends Controller
 {
-    private function processImage($request, $fieldName, $oldImageUrl = null)
+    private function processImage($request, $imageField, $oldImageUrl = null)
     {
-        $imageField = $fieldName . '_image';
-
         if ($request->hasFile($imageField)) {
             if ($oldImageUrl && !filter_var($oldImageUrl, FILTER_VALIDATE_URL)) {
                 Storage::disk('public')->delete(str_replace('storage/', '', $oldImageUrl));
@@ -44,15 +42,20 @@ class BerandaController extends Controller
     {
         $request->validate([
             'main_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'main_image_mobile' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'main_alt_text' => 'nullable|string',
         ], [
             'main_image.image' => 'Foto utama harus berupa gambar.',
             'main_image.mimes' => 'Foto utama harus berformat JPG, PNG, GIF, atau WebP.',
             'main_image.max' => 'Foto utama maksimal 5MB.',
+            'main_image_mobile.image' => 'Foto mobile harus berupa gambar.',
+            'main_image_mobile.mimes' => 'Foto mobile harus berformat JPG, PNG, GIF, atau WebP.',
+            'main_image_mobile.max' => 'Foto mobile maksimal 5MB.',
         ]);
 
         $mainOld = HeroImage::where('position', 'main')->first();
-        $mainImageUrl = $this->processImage($request, 'main', $mainOld?->image_url);
+        $mainImageUrl = $this->processImage($request, 'main_image', $mainOld?->image_url);
+        $mainMobileUrl = $this->processImage($request, 'main_image_mobile', $mainOld?->image_url_mobile);
 
         if (!$mainImageUrl) {
             return back()->withErrors(['main' => 'Pilih foto untuk diunggah']);
@@ -62,6 +65,7 @@ class BerandaController extends Controller
             ['position' => 'main'],
             [
                 'image_url' => $mainImageUrl,
+                'image_url_mobile' => $mainMobileUrl,
                 'alt_text' => $request->input('main_alt_text'),
             ]
         );
