@@ -115,7 +115,12 @@ class GalleryController extends Controller
 
         $mime = $meta->getMimeType() ?: 'application/octet-stream';
 
+        // Normalnya MP4 sudah disiapkan `galeri:sync`; kalau belum, disiapkan di sini (fallback).
         $localPath = $converter->playablePath($fileId, $mime, $drive);
+
+        if (! $localPath && $converter->sedangDiproses($fileId)) {
+            return response('Video sedang diproses, coba lagi sebentar.', 503, ['Retry-After' => '60']);
+        }
 
         if (! $localPath || ! Storage::disk('public')->exists($localPath)) {
             abort(404);

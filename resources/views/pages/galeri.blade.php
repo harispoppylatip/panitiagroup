@@ -465,11 +465,16 @@
                     });
                 });
 
-                playerEl.addEventListener('error', function() {
+                // Dengan <source>, error dikirim ke elemen source (bukan video)
+                const tampilkanGagal = function() {
                     const loading = document.getElementById('videoLoading');
-                    loading.hidden = true;
-                    loading.querySelector('span').textContent = 'Gagal memuat video.';
-                });
+                    loading.querySelector('span').textContent =
+                        'Video belum siap atau gagal dimuat. Coba lagi beberapa menit lagi.';
+                    loading.querySelector('.spinner-border').style.display = 'none';
+                    loading.hidden = false;
+                };
+                playerEl.addEventListener('error', tampilkanGagal);
+                playerEl.querySelector('source')?.addEventListener('error', tampilkanGagal);
 
                 // Pause/stop video saat modal ditutup
                 const videoModalEl = document.getElementById('videoModal');
@@ -484,6 +489,7 @@
                     const loading = document.getElementById('videoLoading');
                     loading.hidden = true;
                     loading.querySelector('span').textContent = 'Memuat video...';
+                    loading.querySelector('.spinner-border').style.display = '';
                 });
             }
 
