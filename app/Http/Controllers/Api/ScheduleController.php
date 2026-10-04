@@ -25,7 +25,7 @@ class ScheduleController extends Controller
             'Accept' => 'application/json, text/plain, */*',
             'college-id' => '111024',
             'Authorization' => 'Bearer ' . $data->access_token,
-        ])->get('https://mahasiswa.umkt.ac.id/v1/mahasiswa/' . $data->Nim . '/jadwal_kuliah?semester=2&tahun=2026');
+        ])->get('https://mahasiswa.umkt.ac.id/v1/mahasiswa/' . $data->Nim . '/jadwal_kuliah?semester=1&tahun=2027');
 
         if (!$response->successful()) {
             $errorData = $response->json();
