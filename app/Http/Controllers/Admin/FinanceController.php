@@ -208,10 +208,7 @@ class FinanceController extends Controller
 
         $settings = $this->ambilSettingFinance();
         $settings['weekly_fee'] = $validated['weekly_fee'];
-        GrubkasDashboard::updateOrCreate(
-            ['key' => 'finance_settings'],
-            ['value' => json_encode($settings)]
-        );
+        GrubkasDashboard::simpanSettingFinance($settings);
 
         return back()->with('success', 'Pengaturan berhasil diperbarui.');
     }
@@ -308,13 +305,15 @@ class FinanceController extends Controller
 
         $payment->save();
 
-        $this->simpanLogAktivitas([
-            'title' => 'Pembayaran dikonfirmasi',
-            'description' => 'Pembayaran dari NIM ' . $nim . ' telah dikonfirmasi',
-            'amount' => (int) ($payment->Nominal_Bayar ?: ((int) $payment->Utang_Anggota + (int) $payment->Saldo_Lebih)),
-            'direction' => 'in',
-            'user_nim' => $nim,
-        ]);
+        if (!$sebelumnyaSudah) {
+            $this->simpanLogAktivitas([
+                'title' => 'Pembayaran dikonfirmasi',
+                'description' => 'Pembayaran dari NIM ' . $nim . ' telah dikonfirmasi',
+                'amount' => $nominal,
+                'direction' => 'in',
+                'user_nim' => $nim,
+            ]);
+        }
 
         return back()->with('success', 'Pembayaran berhasil dikonfirmasi.');
     }
@@ -435,17 +434,7 @@ class FinanceController extends Controller
 
     private function ambilSettingFinance(): array
     {
-        $setting = GrubkasDashboard::where('key', 'finance_settings')->first();
-
-        if ($setting && $setting->value) {
-            $decoded = json_decode($setting->value, true);
-
-            if (is_array($decoded)) {
-                return $decoded;
-            }
-        }
-
-        return ['weekly_fee' => 10000];
+        return GrubkasDashboard::settingFinance();
     }
 
     private function simpanLogAktivitas(array $data): void

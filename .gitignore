@@ -22,3 +22,6 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# arsip build, jangan ikut ke public
+/public/*.zip

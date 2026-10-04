@@ -1,10 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\WebhookController;
 use App\Http\Controllers\Api\TugasApiController;
 use Illuminate\Support\Facades\Route;
-
-Route::post('/testapi', [WebhookController::class, 'callback']);
 
 Route::middleware('whatsapp_auth')->group(function () {
     Route::get('/tugas', [TugasApiController::class, 'index']);

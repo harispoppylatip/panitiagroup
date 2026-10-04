@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Datasikadmodel;
 use App\Models\grubkas;
+use App\Models\payment\GrubkasDashboard;
 use App\Models\StatusPembayaranModel;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -20,9 +21,10 @@ class updatenominalmingguan extends Command
     {
         $this->ensureStatusPembayaranDefaults();
 
-        $setting = $this->ambilSettingFinance();
-        $weeklyFee = (int) ($setting['weekly_fee'] ?? 10000);
-        $deskripsi = $setting['default_weekly_description'] ?: 'Tagihan mingguan otomatis';
+        // Sama dengan yang disimpan admin di /admin/finance (grubkas_dashboard.finance_settings)
+        $setting = GrubkasDashboard::settingFinance();
+        $weeklyFee = (int) $setting['weekly_fee'];
+        $deskripsi = $setting['default_weekly_description'] ?? 'Tagihan mingguan otomatis';
         $rows = Datasikadmodel::all();
         $jumlah = 0;
 
@@ -73,6 +75,7 @@ class updatenominalmingguan extends Command
             1 => 'Belum Bayar',
             2 => 'Menunggu Konfirmasi',
             3 => 'Sudah Bayar',
+            4 => 'Ditolak',
         ];
 
         foreach ($defaults as $statusId => $statusLabel) {
@@ -81,23 +84,6 @@ class updatenominalmingguan extends Command
                 ['Status' => $statusLabel]
             );
         }
-    }
-
-    private function ambilSettingFinance(): array
-    {
-        if (!Schema::hasTable('finance_settings')) {
-            return [
-                'weekly_fee' => 10000,
-                'default_weekly_description' => null,
-            ];
-        }
-
-        $settings = DB::table('finance_settings')->orderBy('id')->first();
-
-        return [
-            'weekly_fee' => $settings?->weekly_fee ?? 10000,
-            'default_weekly_description' => $settings?->default_weekly_description,
-        ];
     }
 
     private function simpanLogAktivitas(array $data): void

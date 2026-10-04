@@ -10,4 +10,5 @@ Artisan::command('inspire', function () {
 
 Schedule::command('app:refreshtoken')->dailyAt('00:00');
 Schedule::command('app:updatenominalmingguan')->mondays()->at('00:00');
-Schedule::command('mqtt:listen')->everySecond();
+// listener berhenti sendiri setelah 55 detik, jadi tidak menumpuk dan tidak menahan jadwal lain
+Schedule::command('mqtt:listen --seconds=55')->everyMinute()->withoutOverlapping(2)->runInBackground();

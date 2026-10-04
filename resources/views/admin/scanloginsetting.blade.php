@@ -6,7 +6,11 @@
                 <div class="card shadow-sm border-0">
                     <div class="card-body p-4 p-md-5">
                         <h1 class="h4 mb-2">Setting Login Scan</h1>
-                        <p class="text-muted mb-4">Akun ini dipakai untuk login ke halaman Scan Absensi.</p>
+                        <p class="text-muted mb-4">Akun ber-role scanabsen untuk login di halaman Scan Absensi. Akun admin kamu tidak ikut berubah.</p>
+
+                        @if (!$user)
+                            <div class="alert alert-warning">Belum ada akun scanabsen. Isi username dan password untuk membuatnya.</div>
+                        @endif
 
                         @if (session('status'))
                             <div class="alert alert-success">{{ session('status') }}</div>
@@ -23,13 +27,13 @@
                             <div class="col-12">
                                 <label class="form-label">Username Login Scan</label>
                                 <input type="text" name="username" class="form-control" required
-                                    value="{{ old('username', $user->username) }}">
+                                    value="{{ old('username', $user?->username) }}">
                             </div>
 
                             <div class="col-md-6">
                                 <label class="form-label">Password Baru</label>
                                 <input type="password" name="password" class="form-control"
-                                    placeholder="Kosongkan jika tidak diubah">
+                                    placeholder="{{ $user ? 'Kosongkan jika tidak diubah' : 'Wajib diisi' }}" {{ $user ? '' : 'required' }}>
                                 <small class="text-muted">Minimal 8 karakter.</small>
                             </div>
 

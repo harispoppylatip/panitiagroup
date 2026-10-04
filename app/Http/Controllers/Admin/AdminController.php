@@ -18,28 +18,42 @@ class AdminController extends Controller
         abort_unless(Auth::user()?->role === 'admin', 403);
 
         return view('admin.scanloginsetting', [
-            'user' => Auth::user(),
+            'user' => $this->akunScan(),
         ]);
     }
 
+    /**
+     * Ubah username/password akun ber-role scanabsen (dipakai di /loginbarcode),
+     * bukan akun admin yang sedang login. Kalau belum ada, akun dibuat.
+     */
     public function updateScanLoginSetting(Request $request): RedirectResponse
     {
-        $user = Auth::user();
-        if (!$user instanceof User || $user->role !== 'admin') {
-            abort(403);
-        }
+        abort_unless(Auth::user()?->role === 'admin', 403);
+
+        $scan = $this->akunScan();
 
         $validated = $request->validate([
-            'username' => ['required', 'string', Rule::unique('users', 'username')->ignore($user->id)],
-            'password' => ['nullable', 'min:8', 'confirmed'],
+            'username' => ['required', 'string', 'max:255', Rule::unique('users', 'username')->ignore($scan?->id)],
+            'password' => [$scan ? 'nullable' : 'required', 'min:8', 'confirmed'],
         ]);
 
-        $user->username = $validated['username'];
-        if (!empty($validated['password'])) {
-            $user->password = Hash::make($validated['password']);
-        }
-        $user->save();
+        $scan ??= new User([
+            'name' => 'Scan Absen',
+            'email' => 'scanabsen+' . uniqid() . '@paz.local',
+            'role' => 'scanabsen',
+        ]);
 
-        return back()->with('status', 'Login Scan berhasil diperbarui.');
+        $scan->username = $validated['username'];
+        if (!empty($validated['password'])) {
+            $scan->password = Hash::make($validated['password']);
+        }
+        $scan->save();
+
+        return back()->with('status', 'Akun login scan berhasil diperbarui.');
+    }
+
+    private function akunScan(): ?User
+    {
+        return User::where('role', 'scanabsen')->orderBy('id')->first();
     }
 }

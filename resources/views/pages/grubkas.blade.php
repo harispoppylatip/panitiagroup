@@ -254,25 +254,8 @@
             color: #fca5a5;
         }
 
-        .send-banner {
-            background: var(--surface-container-low);
-            border: 1px solid var(--border-soft);
-        }
 
-        .btn-send {
-            border-radius: 0.75rem;
-            background: var(--brand-500);
-            border: 1px solid var(--brand-500);
-            color: #ffffff;
-            font-weight: 700;
-            white-space: nowrap;
-        }
 
-        .btn-send:hover {
-            color: #ffffff;
-            background: #1d4ed8;
-            border-color: #1d4ed8;
-        }
 
         .muted-divider {
             border-color: var(--border-soft);
@@ -302,9 +285,6 @@
             border-color: rgba(37, 99, 235, 0.6);
         }
 
-        body[data-theme='dark'] .send-banner {
-            background: var(--surface-container-low);
-        }
 
         @media (max-width: 575.98px) {
             .grubkas-page {
@@ -489,23 +469,6 @@
                         @empty
                             <div class="text-center text-white-50 py-3">Belum ada aktivitas kas yang tercatat.</div>
                         @endforelse
-                    </div>
-                </div>
-            </div>
-
-            <div class="card grubkas-card send-banner rounded-4">
-                <div class="card-body p-3 p-md-4">
-                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-                        <div class="d-flex align-items-start gap-3">
-                            <div>
-                                <div class="section-title">Kirim Dana</div>
-                                <div class="section-subtitle">Bukan anggota? Kirim dana bebas untuk keperluan apa saja
-                                </div>
-                            </div>
-                        </div>
-                        <a href="{{ route('grubkas.kirim-dana.page') }}" class="btn btn-send px-3 py-2">
-                            Kirim Dana <i class="bi bi-arrow-right-short fs-5 align-middle"></i>
-                        </a>
                     </div>
                 </div>
             </div>

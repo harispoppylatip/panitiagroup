@@ -118,7 +118,6 @@ Route::post('/grubkas/detail', [GrubkasController::class, 'detail'])->name('grub
 Route::post('/grubkas/checkout', [GrubkasController::class, 'bayar'])->name('grubkas.checkout.page');
 Route::post('/grubkas/checkout/upload', [GrubkasController::class, 'upload'])->name('grubkas.checkout.upload');
 Route::post('/grubkas/checkout/confirm', [GrubkasController::class, 'confirm'])->name('grubkas.checkout.confirm');
-Route::view('/grubkas/kirim-dana', 'pages.grubkas-kirim-dana')->name('grubkas.kirim-dana.page');
 
 // =====================
 // SCAN / ABSENSI

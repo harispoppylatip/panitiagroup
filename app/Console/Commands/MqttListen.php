@@ -8,20 +8,36 @@ use PhpMqtt\Client\MqttClient;
 
 class MqttListen extends Command
 {
-    protected $signature = 'mqtt:listen';
+    protected $signature = 'mqtt:listen {--seconds=55 : Berhenti sendiri setelah N detik (0 = jalan terus)}';
+
+    protected $description = 'Dengarkan topik MQTT dan simpan data terakhir ke cache latest_bms';
 
     public function handle()
     {
+        $broker = config('services.mqtt.Mqtt_broker');
+        $topic = config('services.mqtt.Client_Subcribe');
+
+        if (!$broker || !$topic) {
+            $this->warn('MQTT_BROKER / MQTT_SUBSCRIBE belum diisi, dilewati.');
+            return self::SUCCESS;
+        }
+
         $mqtt = new MqttClient(
-            config('services.mqtt.Mqtt_broker'),
+            $broker,
             1883,
-            config('services.mqtt.Client_ID')
+            // client id unik per proses supaya tidak saling menendang di broker
+            (config('services.mqtt.Client_ID') ?: 'paz') . '-' . getmypid()
         );
 
-        $mqtt->connect();
+        try {
+            $mqtt->connect();
+        } catch (\Throwable $e) {
+            $this->error('Gagal konek MQTT: ' . $e->getMessage());
+            return self::FAILURE;
+        }
 
         $mqtt->subscribe(
-            config('services.mqtt.Client_Subcribe'),
+            $topic,
             function ($topic, $message) {
 
                 Cache::put(
@@ -34,6 +50,19 @@ class MqttListen extends Command
             0
         );
 
+        // Dijadwalkan tiap menit: proses lama selesai sendiri sebelum yang baru jalan
+        $batas = (int) $this->option('seconds');
+        if ($batas > 0) {
+            $mqtt->registerLoopEventHandler(function (MqttClient $client, float $elapsed) use ($batas) {
+                if ($elapsed >= $batas) {
+                    $client->interrupt();
+                }
+            });
+        }
+
         $mqtt->loop(true);
+        $mqtt->disconnect();
+
+        return self::SUCCESS;
     }
 }
