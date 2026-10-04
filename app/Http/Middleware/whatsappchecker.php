@@ -15,10 +15,12 @@ class whatsappchecker
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $botkey = config('api.whatsapp_key');
-        if ($request->header('botkey') !== $botkey) {
+        $botkey = (string) config('api.whatsapp_key');
+
+        // key kosong di .env = tolak semua, jangan sampai API terbuka tanpa auth
+        if ($botkey === '' || ! hash_equals($botkey, (string) $request->header('botkey'))) {
             return response()->json([
-                'massage' => 'botkey anda tidak sama'
+                'message' => 'botkey anda tidak sama'
                 ], 401);
         }
         return $next($request);

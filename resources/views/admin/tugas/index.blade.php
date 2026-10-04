@@ -133,32 +133,28 @@
                     <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
-                                <th class="ps-4">Judul</th>
-                                <th>Mata Kuliah</th>
-                                <th>Status</th>
+                                <th class="ps-4">ID</th>
+                                <th>Nama Tugas</th>
                                 <th>Deadline</th>
+                                <th>Tanggal</th>
                                 <th class="text-end pe-4">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($tugas as $item)
                                 <tr>
-                                    <td class="ps-4 fw-semibold">{{ $item['judul'] }}</td>
-                                    <td>{{ $item['mata_kuliah'] }}</td>
-                                    <td>
-                                        <span
-                                            class="badge {{ $item['status'] === 'Selesai' ? 'text-bg-success' : ($item['status'] === 'Proses' ? 'text-bg-warning' : 'text-bg-danger') }}">
-                                            {{ $item['status'] }}
-                                        </span>
-                                    </td>
-                                    <td>{{ \Carbon\Carbon::parse($item['deadline'])->translatedFormat('d M Y') }}</td>
+                                    <td class="ps-4 text-muted">{{ $item->id }}</td>
+                                    <td class="fw-semibold">{{ $item->namatugas }}</td>
+                                    <td>{{ $item->deadline ?: '-' }}</td>
+                                    <td>{{ $item->deadline_tanggal?->locale('id')->translatedFormat('d M Y') ?? '-' }}</td>
                                     <td class="text-end pe-4">
                                         <a href="{{ route('admin.tugas.show', $item['id']) }}"
                                             class="btn btn-sm btn-outline-primary">Detail</a>
                                         <a href="{{ route('admin.tugas.edit', $item['id']) }}"
                                             class="btn btn-sm btn-outline-secondary">Edit</a>
 
-                                        <form action="{{ route('admin.tugas.delete', [$item->id]) }}" method="POST">
+                                        <form action="{{ route('admin.tugas.delete', [$item->id]) }}" method="POST" class="d-inline"
+                                            onsubmit="return confirm('Hapus tugas ini?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-outline-danger">Hapus</button>
