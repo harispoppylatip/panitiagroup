@@ -34,7 +34,13 @@ class GalleryController extends Controller
                         $f['thumbnail_link'] ?? null,
                         $f['id']
                     );
+
+                    // Video baru bisa diputar setelah MP4-nya disiapkan galeri:sync
+                    if (str_starts_with($f['mime_type'], 'video/')) {
+                        $f['ready'] = Storage::disk('public')->exists(VideoConverterService::mp4PathFor($f['id']));
+                    }
                 }
+                unset($f);
             } catch (\Throwable $e) {
                 Log::warning('Galeri: gagal membaca Google Drive - '.$e->getMessage());
                 $files = [];
@@ -101,37 +107,28 @@ class GalleryController extends Controller
     }
 
     /**
-     * Sajikan video untuk diputar inline di browser.
-     * Video non-MP4 (mis. MOV) dikonversi ke MP4 secara otomatis (ffmpeg)
-     * pada permintaan pertama, lalu di-cache lokal agar permintaan berikutnya instan.
+     * Sajikan video MP4 yang sudah disiapkan `galeri:sync` (konversi MOV → MP4 terjadwal).
+     * Request web tidak pernah mengunduh/mengonversi (rawan timeout PHP);
+     * kalau MP4 belum ada → 503 "sedang diproses".
      */
-    public function video(string $fileId, GoogleDriveService $drive, VideoConverterService $converter)
+    public function video(string $fileId, GoogleDriveService $drive)
     {
-        $meta = $drive->getMetadata($fileId);
+        $mp4Path = VideoConverterService::mp4PathFor($fileId);
 
-        if (! $meta) {
-            abort(404);
+        if (! Storage::disk('public')->exists($mp4Path)) {
+            // Bedakan video yang memang ada di Drive (belum diproses) dengan id asal
+            $meta = $drive->getMetadata($fileId);
+
+            if (! $meta || ! str_starts_with((string) $meta->getMimeType(), 'video/')) {
+                abort(404);
+            }
+
+            return response('Video sedang diproses, coba lagi beberapa menit lagi.', 503, ['Retry-After' => '300']);
         }
 
-        $mime = $meta->getMimeType() ?: 'application/octet-stream';
-
-        // Normalnya MP4 sudah disiapkan `galeri:sync`; kalau belum, disiapkan di sini (fallback).
-        $localPath = $converter->playablePath($fileId, $mime, $drive);
-
-        if (! $localPath && $converter->sedangDiproses($fileId)) {
-            return response('Video sedang diproses, coba lagi sebentar.', 503, ['Retry-After' => '60']);
-        }
-
-        if (! $localPath || ! Storage::disk('public')->exists($localPath)) {
-            abort(404);
-        }
-
-        // Layani dari disk lokal memakai BinaryFileResponse Symfony yang
-        // menangani Range request (206 + Content-Range) sehingga video bisa
-        // di-seek dan diputar inline dengan benar.
-        $absolutePath = Storage::disk('public')->path($localPath);
-
-        return new \Symfony\Component\HttpFoundation\BinaryFileResponse($absolutePath, 200, [
+        // BinaryFileResponse menangani Range request (206 + Content-Range)
+        // sehingga video bisa di-seek dan diputar inline dengan benar.
+        return new \Symfony\Component\HttpFoundation\BinaryFileResponse(Storage::disk('public')->path($mp4Path), 200, [
             'Content-Type' => 'video/mp4',
             'Cache-Control' => 'private, max-age=86400',
         ]);

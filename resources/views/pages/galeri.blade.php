@@ -34,12 +34,19 @@
                     <div class="row g-3 g-md-4 video-grid" id="videoGrid">
                         @foreach ($videos as $file)
                             <div class="col-6 col-md-4 col-lg-3">
-                                <figure class="photo-item video-item" data-name="{{ $file['name'] }}"
-                                    data-video-id="{{ $file['id'] }}" data-mime="{{ $file['mime_type'] }}">
+                                @php $siap = $file['ready'] ?? true; @endphp
+                                <figure class="photo-item video-item {{ $siap ? '' : 'is-processing' }}"
+                                    data-name="{{ $file['name'] }}" data-video-id="{{ $file['id'] }}"
+                                    data-mime="{{ $file['mime_type'] }}" data-ready="{{ $siap ? '1' : '0' }}">
                                     <img src="{{ $file['thumb'] ?? '' }}" alt="{{ $file['name'] }}" loading="lazy"
                                         class="photo-img">
                                     <div class="video-overlay">
-                                        <i class="bi bi-play-circle-fill"></i>
+                                        @if ($siap)
+                                            <i class="bi bi-play-circle-fill"></i>
+                                        @else
+                                            <i class="bi bi-hourglass-split"></i>
+                                            <span class="video-processing-text">Sedang diproses</span>
+                                        @endif
                                     </div>
                                 </figure>
                             </div>
@@ -252,6 +259,18 @@
             pointer-events: none;
         }
 
+        .video-item.is-processing .video-overlay {
+            flex-direction: column;
+            gap: 0.35rem;
+            font-size: 1.75rem;
+            background: rgba(8, 14, 24, 0.55);
+        }
+
+        .video-processing-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
         /* Loading overlay di dalam modal player */
         .video-loading {
             position: absolute;
@@ -430,29 +449,37 @@
                 document.body.style.overflow = '';
             }
 
-            // Video items open inline player (server mengonversi ke MP4 bila perlu)
+            // Video items open inline player (MP4 disiapkan galeri:sync terjadwal)
             videoItems.forEach(function(vi) {
                 vi.addEventListener('click', function() {
                     const id = vi.dataset.videoId;
                     if (!id) return;
 
-                    // Route internal yang menyajikan MP4 yang siap diputar
-                    const url = '{{ url('/galeri/video') }}/' + encodeURIComponent(id);
                     const player = document.getElementById('playerVideo');
                     const source = player.querySelector('source');
                     const loading = document.getElementById('videoLoading');
+                    const modalEl = document.getElementById('videoModal');
 
-                    // Hasil akhir selalu MP4 (server mengonversi otomatis)
+                    if (vi.dataset.ready === '0') {
+                        // MP4 belum disiapkan server: jangan coba putar, cukup beri tahu
+                        loading.querySelector('span').textContent =
+                            'Video sedang diproses, coba lagi beberapa menit lagi.';
+                        loading.querySelector('.spinner-border').style.display = 'none';
+                        loading.hidden = false;
+                        bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                        return;
+                    }
+
+                    // Route internal yang menyajikan MP4 yang siap diputar
+                    const url = '{{ url('/galeri/video') }}/' + encodeURIComponent(id);
+
                     source.type = 'video/mp4';
                     source.src = url;
 
                     loading.hidden = false;
                     player.load();
 
-                    // Tampilkan modal Bootstrap
-                    const modalEl = document.getElementById('videoModal');
-                    const bsModal = new bootstrap.Modal(modalEl);
-                    bsModal.show();
+                    bootstrap.Modal.getOrCreateInstance(modalEl).show();
                 });
             });
 

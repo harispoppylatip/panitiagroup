@@ -21,22 +21,6 @@ class VideoConverterService
     }
 
     /**
-     * Apakah video ini sedang diunduh / dikonversi oleh proses lain.
-     */
-    public function sedangDiproses(string $fileId): bool
-    {
-        $lock = Cache::lock($this->lockKey($fileId), self::LOCK_SECONDS);
-
-        if ($lock->get()) {
-            $lock->release();
-
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * Pastikan file video dapat diputar di browser.
      *
      * - Jika sudah ada MP4 lokal → langsung dipakai.

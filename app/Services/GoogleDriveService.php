@@ -90,8 +90,8 @@ class GoogleDriveService
 
     /**
      * Daftar file media (gambar + video) di folder galeri.
-     * Digunakan oleh halaman publik untuk menampilkan thumbnail video tanpa
-     * memengaruhi proses sinkronisasi yang hanya mengunduh gambar.
+     * Dipakai halaman publik (thumbnail video tanpa unduh file besar) dan
+     * GallerySyncService (unduh foto + siapkan MP4 video).
      *
      * @return array<int, array{id: string, name: string, mime_type: string, size: int, created_at: ?string, modified_at: ?string, thumbnail_link: ?string}>
      */
