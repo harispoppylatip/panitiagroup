@@ -510,6 +510,8 @@
                                     </td>
                                     <td>
                                         <div class="action-cell">
+                                            <a href="{{ route('admin.tim.detail') }}#anggota-{{ $item->id }}"
+                                                class="btn-action btn-action-edit">Detail</a>
                                             <button type="button" class="btn-action btn-action-edit" data-bs-toggle="modal"
                                                 data-bs-target="#memberModal" data-mode="edit"
                                                 data-id="{{ $item->id }}" data-nama="{{ $item->nama }}"

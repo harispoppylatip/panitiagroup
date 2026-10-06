@@ -383,8 +383,12 @@
 
                     @if (in_array($currentRole, ['admin', 'akuntan'], true))
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.tim.*') ? 'active' : '' }}"
+                            <a class="nav-link {{ request()->routeIs('admin.tim.index') ? 'active' : '' }}"
                                 href="{{ route('admin.tim.index') }}">Management Tim</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('admin.tim.detail') ? 'active' : '' }}"
+                                href="{{ route('admin.tim.detail') }}">Detail Tim</a>
                         </li>
                     @endif
 

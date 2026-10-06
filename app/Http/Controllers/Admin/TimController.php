@@ -92,6 +92,37 @@ class TimController extends Controller
         return view('admin.tim.index', compact('data', 'displayByNim', 'statusPembayaran'));
     }
 
+    public function detail(): View
+    {
+        $anggota = Datasikadmodel::orderBy('nama')->get();
+        $details = $anggota->mapWithKeys(function (Datasikadmodel $item) {
+            $response = Http::withHeaders([
+                'Accept' => 'application/json, text/plain, */*',
+                'college-id' => '111024',
+                'Authorization' => 'Bearer ' . $item->access_token,
+            ])->timeout(15)->get('https://mahasiswa.umkt.ac.id/v1/mahasiswa/' . $item->Nim . '/biodata');
+
+            if (!$response->successful()) {
+                return [$item->id => [
+                    'error' => 'Data biodata tidak dapat diambil saat ini.',
+                ]];
+            }
+
+            $biodata = $response->json();
+
+            return [$item->id => [
+                'nama' => $biodata['nama'] ?? $item->nama,
+                'umur' => $biodata['umur'] ?? null,
+                'email' => $biodata['email'] ?? null,
+                'ponsel' => $biodata['ponsel'] ?? $biodata['telepon'] ?? null,
+                'namaAyah' => $biodata['namaAyah'] ?? null,
+                'tanggalLahir' => $biodata['tanggalLahir'] ?? null,
+            ]];
+        });
+
+        return view('admin.tim.detail', compact('anggota', 'details'));
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([

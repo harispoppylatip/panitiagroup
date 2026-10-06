@@ -64,6 +64,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::middleware('role:admin,akuntan')->group(function () {
         // Management Tim (satu halaman: data anggota + token absen + tampilan beranda + kas)
         Route::get('/tim', [TimController::class, 'index'])->name('admin.tim.index');
+        Route::get('/tim/detail', [TimController::class, 'detail'])->name('admin.tim.detail');
         Route::post('/tim', [TimController::class, 'store'])->name('admin.tim.store');
         Route::put('/tim/{id}', [TimController::class, 'update'])->name('admin.tim.update');
         Route::delete('/tim/{id}', [TimController::class, 'destroy'])->name('admin.tim.destroy');
