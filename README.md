@@ -15,13 +15,41 @@ Perintah `key:generate --force` tidak dipakai di container karena `.env` tidak d
 
 Untuk MySQL di host server yang sama, gunakan `DB_HOST=host.docker.internal`. Untuk database di server lain, isi `DB_HOST` dengan alamat IP atau hostname database tersebut. `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, dan `DB_PASSWORD` wajib disesuaikan. Compose tidak menyediakan database lokal.
 
-Jika muncul `SQLSTATE[HY000] [2002] Connection refused`, periksa hal berikut:
+## Setup MySQL Server
 
-1. Pastikan `.env` server tidak masih memakai nilai contoh seperti `DB_DATABASE=laravel`.
-2. Pastikan MySQL aktif dan mendengarkan pada `DB_HOST:DB_PORT`.
-3. Jika MySQL berada di server Docker yang sama, pastikan MySQL mengizinkan koneksi dari jaringan Docker, bind address tidak hanya `127.0.0.1`, user database memiliki izin dari alamat container, dan firewall membuka port MySQL.
-4. Jika MySQL berada di server lain, gunakan IP/hostname server database, bukan `host.docker.internal`.
-5. Uji ulang dengan `docker compose run --rm app php artisan migrate:status` setelah nilai `.env` benar.
+Jika database belum dibuat di server:
+
+```bash
+sudo mysql
+```
+
+```sql
+CREATE DATABASE laravel;
+CREATE USER 'panitia'@'%' IDENTIFIED BY '<password-aman>';
+GRANT ALL PRIVILEGES ON laravel.* TO 'panitia'@'%';
+FLUSH PRIVILEGES;
+SHOW GRANTS FOR 'panitia'@'%';
+```
+
+Jika user hanya tersedia sebagai `panitia@localhost`, buat juga user `panitia@'%'` dengan grant yang sama. Agar container dapat terhubung, edit `/etc/mysql/mysql.conf.d/mysqld.cnf`:
+
+```ini
+bind-address = 0.0.0.0
+```
+
+Lalu restart MySQL:
+
+```bash
+sudo systemctl restart mysql
+```
+
+Isi `.env` container dengan database dan user yang sama, lalu uji:
+
+```bash
+docker compose run --rm app php artisan migrate:status
+```
+
+Jika muncul `Connection refused`, periksa MySQL aktif, `DB_HOST`/`DB_PORT`, bind address, firewall, dan izin user database.
 
 `APP_URL` adalah URL publik aplikasi, misalnya `https://paz.example.com`. `APP_PORT=2005` adalah port host Docker dan dapat diganti tanpa mengubah `docker-compose.yml`. Jika memakai domain dengan reverse proxy HTTPS, `APP_URL` tetap memakai `https://` dan port internal Docker tetap `80`.
 
