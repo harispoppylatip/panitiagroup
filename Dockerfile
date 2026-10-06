@@ -9,7 +9,7 @@ COPY resources ./resources
 COPY vite.config.js .
 RUN npm run build
 
-FROM php:8.3-apache-bookworm
+FROM php:8.4-fpm
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public \
     COMPOSER_ALLOW_SUPERUSER=1 \
