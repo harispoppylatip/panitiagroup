@@ -10,7 +10,7 @@ docker compose run --rm app php artisan migrate --force
 docker compose up -d
 ```
 
-Untuk MySQL di host server yang sama, gunakan `DB_HOST=host.docker.internal`. Untuk database di server lain, isi `DB_HOST` dengan alamat IP atau hostname database tersebut. `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, dan `DB_PASSWORD` wajib disesuaikan.
+Untuk MySQL di host server yang sama, gunakan `DB_HOST=host.docker.internal`. Untuk database di server lain, isi `DB_HOST` dengan alamat IP atau hostname database tersebut. `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, dan `DB_PASSWORD` wajib disesuaikan. Compose tidak menyediakan database lokal.
 
 `APP_URL` adalah URL publik aplikasi, misalnya `https://paz.example.com`. `APP_PORT=2005` adalah port host Docker dan dapat diganti tanpa mengubah `docker-compose.yml`. Jika memakai domain dengan reverse proxy HTTPS, `APP_URL` tetap memakai `https://` dan port internal Docker tetap `80`.
 
