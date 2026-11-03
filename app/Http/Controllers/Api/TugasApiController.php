@@ -79,6 +79,9 @@ class TugasApiController extends Controller
             'penjelasan' => 'sometimes|nullable|string|max:65000',
             'deadline' => 'sometimes|nullable|string|max:255',
             'deadline_tanggal' => 'sometimes|nullable|date',
+            'link_materi' => 'sometimes|nullable|string|max:65000',
+            'file_path' => 'sometimes|nullable|string|max:500',
+            'file_name' => 'sometimes|nullable|string|max:255',
         ], [
             'deadline_tanggal.date' => 'deadline_tanggal harus tanggal, contoh 2026-10-11.',
         ]);
@@ -122,6 +125,9 @@ class TugasApiController extends Controller
             'penjelasan' => $row['penjelasan'] ?? $row['deskripsi'] ?? null,
             'deadline' => $deadline,
             'deadline_tanggal' => $tanggal,
+            'link_materi' => $row['link_materi'] ?? $row['link'] ?? $row['url'] ?? null,
+            'file_path' => $row['file_path'] ?? $row['filepath'] ?? null,
+            'file_name' => $row['file_name'] ?? $row['filename'] ?? null,
         ];
 
         return array_filter($data, fn ($v) => $v !== null && $v !== '');

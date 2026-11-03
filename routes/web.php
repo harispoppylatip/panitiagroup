@@ -124,8 +124,8 @@ Route::post('/grubkas/checkout/confirm', [GrubkasController::class, 'confirm'])-
 // SCAN / ABSENSI
 // =====================
 Route::get('/loginbarcode', [ScanController::class, 'loginbarcode'])->name('scan.login');
-Route::post('/sesi/login', [ScanController::class, 'login']);
-Route::get('/sesi/logout', [ScanController::class, 'logout'])->middleware('auth');
+Route::post('/sesi/login', [ScanController::class, 'login'])->name('scan.login.submit');
+Route::get('/sesi/logout', [ScanController::class, 'logout'])->name('scan.logout')->middleware('auth');
 
 Route::middleware(['auth', 'role:scanabsen'])->group(function () {
     Route::get('/barcode', [ScanController::class, 'index'])->name('scan.barcode');

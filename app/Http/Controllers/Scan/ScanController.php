@@ -16,7 +16,15 @@ class ScanController extends Controller
 
     public function loginbarcode()
     {
-        return view('scan.loginscan');
+        if (Auth::check() && Auth::user()?->role === 'scanabsen') {
+            return redirect()->route('scan.barcode');
+        }
+
+        return response()
+            ->view('scan.loginscan')
+            ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
     }
 
     public function login(Request $request)

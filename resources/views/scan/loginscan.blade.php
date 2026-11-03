@@ -4,6 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Login Scan Absensi</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -83,7 +86,6 @@
             z-index: 10;
         }
 
-
         .title {
             font-family: 'Inter', sans-serif;
             font-weight: 700;
@@ -126,6 +128,13 @@
             background: #1d4ed8;
             border-color: #1d4ed8;
             color: #fff;
+        }
+
+        .btn-brand:disabled {
+            background: var(--brand-500);
+            border-color: var(--brand-500);
+            opacity: 0.75;
+            cursor: not-allowed;
         }
 
         .btn-back {
@@ -189,12 +198,12 @@
             <div class="alert alert-danger">{{ $errors->first() }}</div>
         @endif
 
-        <form action="{{ url('/sesi/login') }}" method="POST" class="row g-3">
+        <form id="scanLoginForm" action="{{ route('scan.login.submit') }}" method="POST" class="row g-3">
             @csrf
             <div class="col-12">
                 <label class="form-label">Username</label>
                 <input type="text" class="form-control" placeholder="Masukkan username" autocomplete="username"
-                    name="username" value="{{ old('username') }}" required />
+                    name="username" value="{{ old('username') }}" required autofocus />
             </div>
 
             <div class="col-12">
@@ -204,7 +213,7 @@
             </div>
 
             <div class="col-12 d-grid">
-                <button type="submit" class="btn btn-brand">Masuk ke Scanner</button>
+                <button type="submit" id="submitBtn" class="btn btn-brand">Masuk ke Scanner</button>
             </div>
 
             <div class="col-12 d-grid">
@@ -224,6 +233,32 @@
             const body = document.body;
             const themeToggle = document.getElementById('themeToggle');
             const themeToggleText = document.getElementById('themeToggleText');
+            const loginForm = document.getElementById('scanLoginForm');
+            const submitBtn = document.getElementById('submitBtn');
+            let isSubmitting = false;
+
+            if (loginForm && submitBtn) {
+                loginForm.addEventListener('submit', function(e) {
+                    if (isSubmitting) {
+                        e.preventDefault();
+                        return false;
+                    }
+                    isSubmitting = true;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Memproses...';
+                });
+            }
+
+            // Tangani pemulihan dari back-forward cache browser pada smartphone
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
+                    window.location.reload();
+                } else if (submitBtn && isSubmitting) {
+                    isSubmitting = false;
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Masuk ke Scanner';
+                }
+            });
 
             function applyTheme(theme) {
                 body.setAttribute('data-theme', theme);

@@ -113,6 +113,55 @@
             opacity: 0.6;
         }
 
+        .tugas-attachments {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.85rem;
+        }
+
+        .tugas-btn-attachment {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.75rem;
+            background: var(--surface-container-low);
+            border: 1px solid var(--border-soft);
+            border-radius: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
+            max-width: 100%;
+        }
+
+        .tugas-btn-attachment:hover {
+            background: var(--surface-container);
+            border-color: var(--brand-500);
+            color: var(--brand-700);
+        }
+
+        body[data-theme='dark'] .tugas-btn-attachment:hover {
+            color: var(--brand-900);
+        }
+
+        .tugas-btn-attachment i {
+            font-size: 1rem;
+            color: var(--brand-500);
+            flex-shrink: 0;
+        }
+
+        .tugas-btn-attachment .attachment-label {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .tugas-lewat .tugas-btn-attachment {
+            opacity: 0.7;
+        }
+
         .tugas-kosong {
             padding: 2.5rem 1.25rem;
             text-align: center;
@@ -206,6 +255,24 @@
                                         @endif
                                         @if ($item->penjelasan)
                                             <p class="tugas-desk">{{ $item->penjelasan }}</p>
+                                        @endif
+                                        @if ($item->file_url || $item->link_materi_url)
+                                            <div class="tugas-attachments">
+                                                @if ($item->file_url)
+                                                    <a href="{{ $item->file_url }}" target="_blank" rel="noopener noreferrer" class="tugas-btn-attachment" title="{{ $item->file_name ?: 'File Tugas' }}">
+                                                        <i class="bi {{ $item->file_icon_class }}"></i>
+                                                        <span class="attachment-label">{{ $item->file_name ?: 'File Tugas' }}</span>
+                                                        <i class="bi bi-download ms-auto" style="font-size: 0.75rem; opacity: 0.7;"></i>
+                                                    </a>
+                                                @endif
+                                                @if ($item->link_materi_url)
+                                                    <a href="{{ $item->link_materi_url }}" target="_blank" rel="noopener noreferrer" class="tugas-btn-attachment" title="{{ $item->link_materi }}">
+                                                        <i class="bi bi-link-45deg"></i>
+                                                        <span class="attachment-label">Link Materi / Tugas</span>
+                                                        <i class="bi bi-box-arrow-up-right ms-auto" style="font-size: 0.75rem; opacity: 0.7;"></i>
+                                                    </a>
+                                                @endif
+                                            </div>
                                         @endif
                                     </div>
                                 </article>

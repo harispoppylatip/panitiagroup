@@ -75,6 +75,9 @@ class TugasController extends Controller
             'penjelasan' => 'nullable|string|max:65000',
             'deadline' => 'nullable|string|max:255',
             'deadline_tanggal' => 'nullable|date',
+            'link_materi' => 'nullable|string|max:65000',
+            'file_path' => 'nullable|string|max:500',
+            'file_name' => 'nullable|string|max:255',
         ]);
     }
 }

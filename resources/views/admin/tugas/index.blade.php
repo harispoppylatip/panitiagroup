@@ -137,6 +137,7 @@
                                 <th>Nama Tugas</th>
                                 <th>Deadline</th>
                                 <th>Tanggal</th>
+                                <th>Lampiran / Link</th>
                                 <th class="text-end pe-4">Aksi</th>
                             </tr>
                         </thead>
@@ -147,6 +148,21 @@
                                     <td class="fw-semibold">{{ $item->namatugas }}</td>
                                     <td>{{ $item->deadline ?: '-' }}</td>
                                     <td>{{ $item->deadline_tanggal?->locale('id')->translatedFormat('d M Y') ?? '-' }}</td>
+                                    <td>
+                                        @if ($item->file_url)
+                                            <a href="{{ $item->file_url }}" target="_blank" rel="noopener noreferrer" class="badge text-bg-primary text-decoration-none me-1" title="{{ $item->file_name ?: 'File' }}">
+                                                <i class="bi {{ $item->file_icon_class }} me-1"></i>File
+                                            </a>
+                                        @endif
+                                        @if ($item->link_materi_url)
+                                            <a href="{{ $item->link_materi_url }}" target="_blank" rel="noopener noreferrer" class="badge text-bg-info text-decoration-none" title="{{ $item->link_materi }}">
+                                                <i class="bi bi-link-45deg me-1"></i>Link
+                                            </a>
+                                        @endif
+                                        @if (! $item->file_url && ! $item->link_materi_url)
+                                            <span class="text-muted">-</span>
+                                        @endif
+                                    </td>
                                     <td class="text-end pe-4">
                                         <a href="{{ route('admin.tugas.show', $item['id']) }}"
                                             class="btn btn-sm btn-outline-primary">Detail</a>

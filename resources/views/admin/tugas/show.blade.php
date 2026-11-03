@@ -30,6 +30,22 @@
                         <p class="text-muted mb-1">Penjelasan</p>
                         <p class="mb-0" style="white-space: pre-line">{{ $tugas->penjelasan ?: '-' }}</p>
                     </div>
+                    @if ($tugas->link_materi_url)
+                        <div class="col-12">
+                            <p class="text-muted mb-1">Link Materi / Tugas</p>
+                            <a href="{{ $tugas->link_materi_url }}" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
+                                <i class="bi bi-box-arrow-up-right me-1"></i> {{ $tugas->link_materi }}
+                            </a>
+                        </div>
+                    @endif
+                    @if ($tugas->file_url)
+                        <div class="col-12">
+                            <p class="text-muted mb-1">File Lampiran</p>
+                            <a href="{{ $tugas->file_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline-primary">
+                                <i class="bi {{ $tugas->file_icon_class }} me-1"></i> {{ $tugas->file_name ?: 'Unduh / Lihat File' }}
+                            </a>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="mt-4 d-flex gap-2">

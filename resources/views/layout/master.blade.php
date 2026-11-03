@@ -208,22 +208,25 @@
             }
         }
 
-        /* Bottom navigation (mobile), gaya aplikasi: bar mengambang + tombol scan bulat di tengah */
+        /* Bottom navigation (mobile): bar full mengotak di bawah */
         .bottom-nav {
             position: fixed;
-            bottom: 0.6rem;
-            left: 0.6rem;
-            right: 0.6rem;
+            bottom: 0;
+            left: 0;
+            right: 0;
             z-index: 1030;
             display: none;
             align-items: center;
             justify-content: space-between;
             gap: 0.35rem;
             background: var(--surface-container-lowest);
-            border: 1px solid var(--border-soft);
-            border-radius: 1.4rem;
-            box-shadow: 0 8px 28px var(--shadow-soft);
-            padding: 0.4rem 0.35rem calc(0.4rem + env(safe-area-inset-bottom, 0px));
+            border-top: 1px solid var(--border-soft);
+            border-left: none;
+            border-right: none;
+            border-bottom: none;
+            border-radius: 0;
+            box-shadow: 0 -4px 20px var(--shadow-soft);
+            padding: 0.45rem 0.5rem calc(0.45rem + env(safe-area-inset-bottom, 0px));
             backdrop-filter: blur(12px);
             overflow: visible;
         }

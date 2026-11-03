@@ -22,4 +22,19 @@
         <label class="form-label">Penjelasan</label>
         <textarea class="form-control" name="penjelasan" rows="4" placeholder="Tuliskan penjelasan tugas...">{{ old('penjelasan', $tugas?->penjelasan) }}</textarea>
     </div>
+    <div class="col-12">
+        <label class="form-label">Link Materi / Tugas (URL)</label>
+        <input type="url" name="link_materi" class="form-control" placeholder="https://..."
+            value="{{ old('link_materi', $tugas?->link_materi) }}">
+    </div>
+    <div class="col-md-8">
+        <label class="form-label">File Path / URL File Lampiran</label>
+        <input type="text" name="file_path" class="form-control" placeholder="statics/media/contoh.pdf"
+            value="{{ old('file_path', $tugas?->file_path) }}">
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">Nama File Lampiran</label>
+        <input type="text" name="file_name" class="form-control" placeholder="tugas.pdf"
+            value="{{ old('file_name', $tugas?->file_name) }}">
+    </div>
 </div>
