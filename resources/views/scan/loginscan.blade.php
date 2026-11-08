@@ -16,41 +16,41 @@
 
     <style>
         :root {
-            --brand-900: #0d1c2e;
-            --brand-700: #004ac6;
+            --brand-900: #0f172a;
+            --brand-700: #1d4ed8;
             --brand-500: #2563eb;
-            --accent: #943700;
-            --surface: #f8f9ff;
+            --surface: #f8fafc;
             --surface-elevated: #ffffff;
-            --surface-container-low: #eff4ff;
-            --text-main: #0d1c2e;
-            --text-muted: #434655;
+            --surface-container-low: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
             --border-soft: #e2e8f0;
-            --shadow-soft: rgba(0, 0, 0, 0.05);
-            --toggle-bg: rgba(13, 28, 46, 0.06);
-            --toggle-color: var(--brand-900);
+            --shadow-card: 0px 1px 2px rgba(15, 23, 42, 0.04), 0px 4px 12px -2px rgba(15, 23, 42, 0.05);
+            --toggle-bg: #f1f5f9;
+            --toggle-color: #0f172a;
+            --radius-sm: 0.5rem;
+            --radius-lg: 0.875rem;
         }
 
         body[data-theme='dark'] {
-            --brand-900: #eaf1ff;
-            --brand-700: #b4c5ff;
-            --brand-500: #2563eb;
-            --accent: #ffb596;
-            --surface: #0f1724;
-            --surface-elevated: #233144;
-            --surface-container-low: #1b2537;
-            --text-main: #eaf1ff;
-            --text-muted: #b4c5ff;
-            --border-soft: rgba(148, 163, 184, 0.18);
-            --shadow-soft: rgba(0, 0, 0, 0.35);
-            --toggle-bg: rgba(255, 255, 255, 0.08);
-            --toggle-color: #eaf1ff;
+            --brand-900: #f8fafc;
+            --brand-700: #93c5fd;
+            --brand-500: #3b82f6;
+            --surface: #0b0f19;
+            --surface-elevated: #111827;
+            --surface-container-low: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-soft: rgba(148, 163, 184, 0.15);
+            --shadow-card: 0px 1px 2px rgba(0, 0, 0, 0.25), 0px 4px 12px -2px rgba(0, 0, 0, 0.35);
+            --toggle-bg: rgba(255, 255, 255, 0.06);
+            --toggle-color: #f8fafc;
         }
 
         body {
             min-height: 100vh;
             margin: 0;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--text-main);
             background: var(--surface);
             display: flex;
@@ -62,11 +62,11 @@
 
         .scan-login-card {
             width: 100%;
-            max-width: 460px;
+            max-width: 440px;
             border: 1px solid var(--border-soft);
-            border-radius: 1rem;
+            border-radius: var(--radius-lg);
             background: var(--surface-elevated);
-            box-shadow: 0 4px 12px var(--shadow-soft);
+            box-shadow: var(--shadow-card);
         }
 
         .theme-toggle {
@@ -76,43 +76,57 @@
             background: var(--toggle-bg);
             color: var(--toggle-color);
             border: 1px solid var(--border-soft);
-            border-radius: 999px;
-            padding: 0.45rem 0.85rem;
+            border-radius: var(--radius-sm);
+            padding: 0.4rem 0.75rem;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8125rem;
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
             z-index: 10;
+            transition: color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--brand-500);
+            border-color: var(--brand-500);
         }
 
         .title {
-            font-family: 'Inter', sans-serif;
             font-weight: 700;
+            letter-spacing: -0.025em;
             color: var(--brand-900);
         }
 
         .subtitle {
             color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
         .form-label {
-            color: var(--brand-700);
+            color: var(--text-main);
             font-weight: 600;
-            font-size: 0.86rem;
+            font-size: 0.85rem;
         }
 
         .form-control {
-            border-radius: 0.5rem;
+            border-radius: var(--radius-sm);
             border: 1px solid var(--border-soft);
-            padding: 0.7rem 0.85rem;
+            padding: 0.6rem 0.85rem;
+            font-size: 0.9375rem;
             background: var(--surface-elevated);
             color: var(--text-main);
         }
 
         .form-control:focus {
             border-color: var(--brand-500);
-            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+            background: var(--surface-elevated);
+            color: var(--text-main);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
         }
 
         .btn-brand {
@@ -120,8 +134,10 @@
             border: 1px solid var(--brand-500);
             color: #fff;
             font-weight: 600;
-            border-radius: 999px;
-            padding: 0.65rem 1rem;
+            font-size: 0.9rem;
+            border-radius: var(--radius-sm);
+            padding: 0.6rem 1rem;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
         }
 
         .btn-brand:hover {
@@ -138,64 +154,42 @@
         }
 
         .btn-back {
-            border-radius: 999px;
+            border-radius: var(--radius-sm);
             border: 1px solid var(--border-soft);
-            color: var(--brand-700);
+            color: var(--text-muted);
             font-weight: 600;
-            padding: 0.62rem 1rem;
+            font-size: 0.875rem;
+            padding: 0.58rem 1rem;
             background: transparent;
             text-decoration: none;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
 
         .btn-back:hover {
-            border-color: var(--brand-500);
-            color: var(--brand-500);
-            background: var(--surface-container-low);
-        }
-
-        body[data-theme='dark'] .btn-brand {
-            background: var(--brand-500);
-            border: 1px solid var(--brand-500);
-            color: #fff;
-        }
-
-        body[data-theme='dark'] .btn-brand:hover {
-            background: #3b82f6;
-            border-color: #3b82f6;
-            color: #ffffff;
-        }
-
-        body[data-theme='dark'] .btn-back {
-            color: var(--brand-700);
             border-color: var(--border-soft);
-        }
-
-        body[data-theme='dark'] .btn-back:hover {
-            color: var(--brand-500);
-            border-color: var(--brand-500);
+            color: var(--text-main);
             background: var(--surface-container-low);
         }
 
         .helper {
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.825rem;
         }
     </style>
 </head>
 
 <body>
-    <button type="button" class="theme-toggle" id="themeToggle">
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Ganti tema tampilan">
         <i class="bi bi-moon-stars"></i>
         <span id="themeToggleText">Dark</span>
     </button>
 
     <div class="scan-login-card p-4 p-md-5">
-        <h1 class="title h3 text-center mb-2">Login Scan Absensi</h1>
-        <p class="subtitle text-center mb-4">Gunakan akun yang sesuai.</p>
+        <h1 class="title h4 mb-1">Login Scan Absensi</h1>
+        <p class="subtitle mb-4">Gunakan akun scanner untuk melanjutkan.</p>
 
         @if ($errors->any())
-            <div class="alert alert-danger">{{ $errors->first() }}</div>
+            <div class="alert alert-danger py-2 small">{{ $errors->first() }}</div>
         @endif
 
         <form id="scanLoginForm" action="{{ route('scan.login.submit') }}" method="POST" class="row g-3">
@@ -212,7 +206,7 @@
                     autocomplete="current-password" name="password" required />
             </div>
 
-            <div class="col-12 d-grid">
+            <div class="col-12 d-grid pt-1">
                 <button type="submit" id="submitBtn" class="btn btn-brand">Masuk ke Scanner</button>
             </div>
 
@@ -223,7 +217,7 @@
             </div>
         </form>
 
-        <p class="helper text-center mt-4 mb-0">Akses scanner untuk proses absensi QR.</p>
+        <p class="helper text-center mt-4 mb-0">Akses scanner khusus untuk proses absensi QR.</p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

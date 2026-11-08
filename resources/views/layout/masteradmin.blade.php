@@ -27,58 +27,65 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         :root {
-            --brand-900: #0d1c2e;
-            --brand-700: #004ac6;
+            --brand-900: #0f172a;
+            --brand-700: #1d4ed8;
+            --brand-600: #2563eb;
             --brand-500: #2563eb;
-            --accent: #943700;
-            --surface: #f8f9ff;
-            --surface-dim: #ccdbf3;
+            --accent: #b45309;
+            --surface: #f8fafc;
+            --surface-dim: #e2e8f0;
             --surface-container-lowest: #ffffff;
-            --surface-container-low: #eff4ff;
-            --surface-container: #e6eeff;
-            --surface-container-high: #dce9ff;
+            --surface-container-low: #f1f5f9;
+            --surface-container: #e2e8f0;
+            --surface-container-high: #cbd5e1;
             --surface-elevated: #ffffff;
-            --surface-variant: #d5e3fc;
-            --on-surface-variant: #434655;
-            --text-main: #0d1c2e;
-            --text-muted: #434655;
+            --surface-variant: #e2e8f0;
+            --on-surface-variant: #475569;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
             --border-soft: #e2e8f0;
-            --shadow-soft: rgba(0, 0, 0, 0.05);
-            --nav-bg: rgba(248, 249, 255, 0.92);
+            --shadow-soft: rgba(15, 23, 42, 0.04);
+            --shadow-card: 0px 1px 2px rgba(15, 23, 42, 0.04), 0px 4px 12px -2px rgba(15, 23, 42, 0.05);
+            --nav-bg: rgba(255, 255, 255, 0.88);
             --nav-menu-bg: #ffffff;
-            --footer-bg: #eff4ff;
-            --toggle-bg: rgba(13, 28, 46, 0.06);
-            --toggle-color: var(--brand-900);
+            --footer-bg: #ffffff;
+            --toggle-bg: #f1f5f9;
+            --toggle-color: #0f172a;
+            --radius-sm: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 0.875rem;
         }
 
         body[data-theme='dark'] {
-            --brand-900: #eaf1ff;
-            --brand-700: #b4c5ff;
-            --brand-500: #2563eb;
-            --accent: #ffb596;
-            --surface: #0f1724;
-            --surface-container-lowest: #1b2537;
-            --surface-container-low: #1b2537;
-            --surface-container: #233144;
-            --surface-container-high: #2b3a52;
-            --surface-elevated: #233144;
-            --surface-variant: rgba(35, 49, 68, 0.65);
-            --on-surface-variant: #b4c5ff;
-            --text-main: #eaf1ff;
-            --text-muted: #b4c5ff;
-            --border-soft: rgba(148, 163, 184, 0.18);
+            --brand-900: #f8fafc;
+            --brand-700: #93c5fd;
+            --brand-600: #60a5fa;
+            --brand-500: #3b82f6;
+            --accent: #fbbf24;
+            --surface: #0b0f19;
+            --surface-container-lowest: #111827;
+            --surface-container-low: #1e293b;
+            --surface-container: #1e293b;
+            --surface-container-high: #334155;
+            --surface-elevated: #111827;
+            --surface-variant: rgba(30, 41, 59, 0.7);
+            --on-surface-variant: #94a3b8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-soft: rgba(148, 163, 184, 0.15);
             --shadow-soft: rgba(0, 0, 0, 0.35);
-            --nav-bg: rgba(35, 49, 68, 0.92);
-            --nav-menu-bg: #233144;
-            --footer-bg: #1b2537;
-            --toggle-bg: rgba(255, 255, 255, 0.08);
-            --toggle-color: #eaf1ff;
+            --shadow-card: 0px 1px 2px rgba(0, 0, 0, 0.25), 0px 4px 12px -2px rgba(0, 0, 0, 0.35);
+            --nav-bg: rgba(17, 24, 39, 0.88);
+            --nav-menu-bg: #111827;
+            --footer-bg: #111827;
+            --toggle-bg: rgba(255, 255, 255, 0.06);
+            --toggle-color: #f8fafc;
         }
 
         body {
             min-height: 100vh;
             margin: 0;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             color: var(--text-main);
             background: var(--surface);
             display: flex;
@@ -93,21 +100,27 @@
         h5,
         h6,
         .navbar-brand {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            text-wrap: balance;
+            letter-spacing: -0.02em;
+        }
+
+        .table td {
+            font-variant-numeric: tabular-nums;
         }
 
         .theme-toggle {
             background: var(--toggle-bg);
             color: var(--toggle-color);
             border: 1px solid var(--border-soft);
-            border-radius: 999px;
-            padding: 0.45rem 0.85rem;
+            border-radius: var(--radius-sm);
+            padding: 0.4rem 0.75rem;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8125rem;
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
-            transition: border-color 0.2s ease, color 0.2s ease;
+            transition: border-color 0.15s ease, color 0.15s ease;
         }
 
         .theme-toggle:hover {
@@ -117,13 +130,14 @@
 
         .navbar {
             background: var(--nav-bg) !important;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-soft);
             position: sticky;
             top: 0;
             z-index: 1030;
-            box-shadow: 0 2px 8px var(--shadow-soft);
+            padding-top: 0.65rem;
+            padding-bottom: 0.65rem;
         }
 
         .navbar-toggler {
@@ -131,15 +145,15 @@
         }
 
         .navbar-toggler:focus {
-            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
         }
 
         .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23434655' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23475569' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
         }
 
         body[data-theme='dark'] .navbar-toggler-icon {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23eaf1ff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23f8fafc' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
         }
 
         @media (min-width: 768px) {
@@ -158,11 +172,11 @@
                 padding: 0.5rem 0;
                 visibility: visible !important;
                 background: var(--nav-menu-bg);
-                margin: 0 -0.75rem;
+                margin: 0.5rem -0.75rem -0.5rem;
                 padding-left: 0.75rem;
                 padding-right: 0.75rem;
-                border-radius: 0 0 1rem 1rem;
-                box-shadow: 0 10px 24px var(--shadow-soft);
+                border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+                box-shadow: var(--shadow-card);
             }
 
             .navbar .navbar-collapse.collapsing,
@@ -175,31 +189,41 @@
             }
 
             .navbar .nav-link {
-                padding: 0.75rem 0.5rem;
+                padding: 0.65rem 0.5rem;
             }
         }
 
         .navbar-brand {
-            color: var(--brand-700) !important;
+            color: var(--brand-900) !important;
             font-weight: 700;
-            letter-spacing: 0.01em;
+            font-size: 1.025rem;
+            letter-spacing: -0.02em;
         }
 
         .nav-link {
-            color: var(--on-surface-variant) !important;
-            font-weight: 600;
-            border-radius: 0.5rem;
-            transition: color 0.2s ease, background-color 0.2s ease;
+            color: var(--text-muted) !important;
+            font-weight: 500;
+            font-size: 0.875rem;
+            border-radius: var(--radius-sm);
+            padding: 0.4rem 0.7rem !important;
+            transition: color 0.15s ease, background-color 0.15s ease;
         }
 
         .nav-link:hover {
-            color: var(--brand-500) !important;
+            color: var(--text-main) !important;
             background: var(--surface-container-low);
         }
 
         .nav-link.active {
-            color: var(--brand-700) !important;
-            font-weight: 700;
+            color: var(--brand-900) !important;
+            background: var(--surface-container-low);
+            font-weight: 600;
+        }
+
+        .btn {
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.875rem;
         }
 
         .btn-brand {
@@ -207,8 +231,8 @@
             border: 1px solid var(--brand-500);
             color: #fff;
             font-weight: 600;
-            border-radius: 999px;
-            padding: 0.45rem 1rem;
+            border-radius: var(--radius-sm);
+            padding: 0.4rem 0.9rem;
         }
 
         .btn-brand:hover {
@@ -218,8 +242,8 @@
         }
 
         body[data-theme='dark'] .btn-brand:hover {
-            background: #3b82f6;
-            border-color: #3b82f6;
+            background: #2563eb;
+            border-color: #2563eb;
         }
 
         main {
@@ -230,6 +254,7 @@
             margin-top: auto;
             background: var(--footer-bg);
             color: var(--text-muted);
+            font-size: 0.85rem;
             border-top: 1px solid var(--border-soft);
         }
 
@@ -245,8 +270,9 @@
         }
 
         .card {
-            border-radius: 1rem;
-            box-shadow: 0 4px 12px var(--shadow-soft);
+            border: 1px solid var(--border-soft);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
         }
 
         .table {
@@ -256,13 +282,22 @@
             border-color: var(--border-soft);
         }
 
+        .form-control,
+        .form-select {
+            border-radius: var(--radius-sm);
+            font-size: 0.9375rem;
+        }
+
         .form-control::placeholder {
             color: var(--text-muted);
         }
 
-        .form-control:focus {
+        .form-control:focus,
+        .form-select:focus {
             border-color: var(--brand-500);
-            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+            background-color: var(--surface-elevated);
+            color: var(--text-main);
         }
 
         .btn-primary {
@@ -334,7 +369,7 @@
 
 <body>
     <nav class="navbar navbar-expand-md">
-        <div class="container-fluid">
+        <div class="container">
             @php
                 $currentRole = auth()->user()?->role;
                 $homeRoute = route('admin.beranda.index');
@@ -364,7 +399,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="adminNavbar">
-                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
                     @foreach ($sharedMenus as $menu)
                         @if (in_array($currentRole, ['admin', 'akuntan', 'anggota'], true))
                             <li class="nav-item">
@@ -403,8 +438,8 @@
                         </li>
                     @endif
 
-                    <li class="nav-item">
-                        <button type="button" class="theme-toggle" id="themeToggle">
+                    <li class="nav-item ms-lg-1">
+                        <button type="button" class="theme-toggle" id="themeToggle" aria-label="Ganti tema tampilan">
                             <i class="bi bi-moon-stars"></i>
                             <span id="themeToggleText">Dark</span>
                         </button>
@@ -412,7 +447,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/') }}">Lihat Website</a>
                     </li>
-                    <li class="nav-item ms-lg-2">
+                    <li class="nav-item ms-lg-1">
                         <form action="{{ route('admin.logout') }}" method="POST" class="d-inline">
                             @csrf
                             <button type="submit" class="btn btn-brand btn-sm">
@@ -425,7 +460,7 @@
         </div>
     </nav>
 
-    <main class="py-5">
+    <main class="py-4 py-md-5">
         @yield('konten')
     </main>
 

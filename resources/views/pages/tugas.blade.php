@@ -7,9 +7,11 @@
         }
 
         .tugas-section-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-main);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
             margin: 0 0 0.75rem;
         }
 
@@ -21,37 +23,42 @@
 
         .tugas-item {
             display: flex;
-            gap: 1.25rem;
+            gap: 1.15rem;
             align-items: flex-start;
-            padding: 1.25rem;
+            padding: 1.15rem 1.25rem;
             background: var(--surface-container-lowest);
             border: 1px solid var(--border-soft);
-            border-radius: 14px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            transition: border-color 0.15s ease;
         }
 
         .tugas-date {
-            flex: 0 0 64px;
+            flex: 0 0 60px;
             text-align: center;
-            padding: 0.55rem 0;
-            border-radius: 10px;
+            padding: 0.5rem 0;
+            border-radius: var(--radius-md);
             background: var(--surface-container-low);
-            color: var(--text-main);
+            border: 1px solid var(--border-soft);
+            color: var(--brand-900);
             line-height: 1.1;
+            font-variant-numeric: tabular-nums;
         }
 
         .tugas-date .tgl {
             display: block;
-            font-size: 1.5rem;
-            font-weight: 800;
+            font-size: 1.35rem;
+            font-weight: 700;
         }
 
         .tugas-date .bln {
             display: block;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.05em;
+            margin-top: 0.15rem;
         }
 
         .tugas-body {
@@ -67,19 +74,20 @@
         }
 
         .tugas-judul {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-main);
+            font-size: 1.025rem;
+            font-weight: 600;
+            color: var(--brand-900);
             margin: 0;
             overflow-wrap: anywhere;
         }
 
         .tugas-sisa {
             flex-shrink: 0;
-            font-size: 0.85rem;
+            font-size: 0.8125rem;
             font-weight: 600;
             color: var(--text-muted);
             white-space: nowrap;
+            font-variant-numeric: tabular-nums;
         }
 
         .tugas-sisa.mendesak {
@@ -87,17 +95,19 @@
         }
 
         body[data-theme='dark'] .tugas-sisa.mendesak {
-            color: #fdba74;
+            color: #fbbf24;
         }
 
         .tugas-matkul {
-            font-size: 0.875rem;
+            font-size: 0.8125rem;
             color: var(--text-muted);
-            margin: 0.15rem 0 0;
+            margin: 0.2rem 0 0;
         }
 
         .tugas-desk {
-            margin: 0.6rem 0 0;
+            margin: 0.55rem 0 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
             color: var(--text-main);
             white-space: pre-line;
             overflow-wrap: anywhere;
@@ -105,6 +115,7 @@
 
         .tugas-lewat .tugas-item {
             background: transparent;
+            box-shadow: none;
         }
 
         .tugas-lewat .tugas-judul,
@@ -127,12 +138,12 @@
             padding: 0.4rem 0.75rem;
             background: var(--surface-container-low);
             border: 1px solid var(--border-soft);
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             color: var(--text-main);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.8125rem;
             font-weight: 500;
-            transition: background-color 0.15s ease, border-color 0.15s ease;
+            transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
             max-width: 100%;
         }
 
@@ -147,7 +158,7 @@
         }
 
         .tugas-btn-attachment i {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: var(--brand-500);
             flex-shrink: 0;
         }
@@ -166,22 +177,23 @@
             padding: 2.5rem 1.25rem;
             text-align: center;
             color: var(--text-muted);
+            font-size: 0.9rem;
             border: 1px dashed var(--border-soft);
-            border-radius: 14px;
+            border-radius: var(--radius-lg);
         }
 
         @media (max-width: 575.98px) {
             .tugas-item {
-                gap: 0.9rem;
+                gap: 0.85rem;
                 padding: 1rem;
             }
 
             .tugas-date {
-                flex-basis: 52px;
+                flex-basis: 50px;
             }
 
             .tugas-date .tgl {
-                font-size: 1.25rem;
+                font-size: 1.2rem;
             }
 
             .tugas-head {
@@ -214,16 +226,16 @@
 
         $bagian = [
             ['judul' => 'Mendatang', 'items' => $mendatang, 'class' => ''],
-            ['judul' => 'Sudah lewat', 'items' => $lewat, 'class' => 'tugas-lewat mt-5'],
+            ['judul' => 'Sudah lewat', 'items' => $lewat, 'class' => 'tugas-lewat mt-4 pt-2'],
         ];
     @endphp
 
-    <section class="py-5">
+    <section class="tugas-section">
         <div class="container tugas-page">
-            <div class="mb-4">
-                <h1 class="display-5 fw-bold mb-2">Tugas Kuliah</h1>
-                <p class="text-muted mb-0">
-                    {{ $mendatang->count() ? $mendatang->count() . ' tugas belum lewat deadline' : 'Belum ada tugas mendatang' }}
+            <div class="page-header">
+                <h1 class="page-title">Tugas Kuliah</h1>
+                <p class="page-subtitle">
+                    {{ $mendatang->count() ? $mendatang->count() . ' tugas belum lewat tenggat waktu' : 'Belum ada tugas dengan tenggat waktu mendatang' }}
                 </p>
             </div>
 

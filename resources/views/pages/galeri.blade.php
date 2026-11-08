@@ -2,8 +2,9 @@
 @section('konten')
     <section class="gallery-section">
         <div class="container">
-            <div class="gallery-header text-center mb-5">
-                <h1 class="gallery-title mb-3">Galeri Pemuda Akhir Zaman</h1>
+            <div class="page-header">
+                <h1 class="page-title">Galeri Dokumentasi</h1>
+                <p class="page-subtitle">Dokumentasi kegiatan dan kebersamaan Pemuda Akhir Zaman.</p>
             </div>
 
             @if ($files->count() > 0)
@@ -17,7 +18,7 @@
                     );
                 @endphp
 
-                <div class="row g-3 g-md-4 photo-grid" id="photoGrid">
+                <div class="row g-3 photo-grid" id="photoGrid">
                     @foreach ($images as $file)
                         <div class="col-6 col-md-4 col-lg-3">
                             <figure class="photo-item" data-name="{{ $file['name'] }}">
@@ -29,28 +30,29 @@
                 </div>
 
                 @if (count($videos) > 0)
-                    <hr class="my-4">
-                    <h3 class="mb-3">Video</h3>
-                    <div class="row g-3 g-md-4 video-grid" id="videoGrid">
-                        @foreach ($videos as $file)
-                            <div class="col-6 col-md-4 col-lg-3">
-                                @php $siap = $file['ready'] ?? true; @endphp
-                                <figure class="photo-item video-item {{ $siap ? '' : 'is-processing' }}"
-                                    data-name="{{ $file['name'] }}" data-video-id="{{ $file['id'] }}"
-                                    data-mime="{{ $file['mime_type'] }}" data-ready="{{ $siap ? '1' : '0' }}">
-                                    <img src="{{ $file['thumb'] ?? '' }}" alt="{{ $file['name'] }}" loading="lazy"
-                                        class="photo-img">
-                                    <div class="video-overlay">
-                                        @if ($siap)
-                                            <i class="bi bi-play-circle-fill"></i>
-                                        @else
-                                            <i class="bi bi-hourglass-split"></i>
-                                            <span class="video-processing-text">Sedang diproses</span>
-                                        @endif
-                                    </div>
-                                </figure>
-                            </div>
-                        @endforeach
+                    <div class="video-section mt-5">
+                        <h2 class="gallery-section-heading mb-3">Video</h2>
+                        <div class="row g-3 video-grid" id="videoGrid">
+                            @foreach ($videos as $file)
+                                <div class="col-6 col-md-4 col-lg-3">
+                                    @php $siap = $file['ready'] ?? true; @endphp
+                                    <figure class="photo-item video-item {{ $siap ? '' : 'is-processing' }}"
+                                        data-name="{{ $file['name'] }}" data-video-id="{{ $file['id'] }}"
+                                        data-mime="{{ $file['mime_type'] }}" data-ready="{{ $siap ? '1' : '0' }}">
+                                        <img src="{{ $file['thumb'] ?? '' }}" alt="{{ $file['name'] }}" loading="lazy"
+                                            class="photo-img">
+                                        <div class="video-overlay">
+                                            @if ($siap)
+                                                <i class="bi bi-play-circle-fill"></i>
+                                            @else
+                                                <i class="bi bi-hourglass-split"></i>
+                                                <span class="video-processing-text">Sedang diproses</span>
+                                            @endif
+                                        </div>
+                                    </figure>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
 
                     {{-- Inline player modal --}}
@@ -58,7 +60,7 @@
                         <div class="modal-dialog modal-xl modal-dialog-centered">
                             <div class="modal-content bg-transparent border-0">
                                 <div class="modal-body p-0">
-                                    <div class="ratio ratio-16x9">
+                                    <div class="ratio ratio-16x9 rounded-3 overflow-hidden">
                                         <div class="video-loading" id="videoLoading" hidden>
                                             <div class="spinner-border spinner-border-sm text-light me-2" role="status">
                                             </div>
@@ -75,11 +77,11 @@
                     </div>
                 @endif
 
-                <div class="gallery-pagination mt-4">
+                <div class="gallery-pagination mt-4 pt-2">
                     {{ $files->links('pagination.gallery') }}
                 </div>
             @else
-                <div class="text-center py-5">
+                <div class="gallery-empty">
                     <p class="text-muted mb-0">Belum ada foto. Dokumentasi akan segera hadir.</p>
                 </div>
             @endif
@@ -101,35 +103,21 @@
         <button type="button" class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Berikutnya">
             <i class="bi bi-chevron-right"></i>
         </button>
-        <span class="lightbox-counter" id="lightboxCounter"></span>
+        <span class="lightbox-counter tabular-nums" id="lightboxCounter"></span>
     </div>
 
     <style>
-        .gallery-section {
-            padding-top: 0.5rem;
-        }
-
-        .gallery-eyebrow {
-            font-size: 0.78rem;
-            font-weight: 600;
-            letter-spacing: 0.14em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        .gallery-title {
-            font-size: clamp(1.9rem, 3vw, 2.7rem);
+        .gallery-section-heading {
+            font-size: 1.1rem;
             font-weight: 700;
-            letter-spacing: -0.02em;
             color: var(--brand-900);
         }
 
-        .gallery-subtitle {
-            font-size: 1.05rem;
-            color: var(--text-muted);
-            max-width: 52ch;
-            margin-left: auto;
-            margin-right: auto;
+        .gallery-empty {
+            padding: 3rem 1.5rem;
+            text-align: center;
+            border: 1px dashed var(--border-soft);
+            border-radius: var(--radius-lg);
         }
 
         .gallery-pagination {
@@ -144,90 +132,22 @@
             margin-bottom: 0;
         }
 
-        .gallery-pagination .page-link {
-            min-width: 40px;
-            height: 40px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 0.75rem;
-            border-radius: 0.5rem;
-            background: var(--surface-elevated);
-            border: 1px solid var(--border-soft);
-            color: var(--brand-700);
-            font-weight: 600;
-            transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-        }
-
-        .gallery-pagination .page-link:hover {
-            background: var(--surface-container-low);
-            border-color: var(--border-soft);
-            color: var(--brand-500);
-        }
-
-        .gallery-pagination .page-item.active .page-link {
-            background: var(--brand-500);
-            border-color: var(--brand-500);
-            color: #fff;
-        }
-
-        .gallery-pagination .page-item.disabled .page-link {
-            background: var(--surface-elevated);
-            border-color: var(--border-soft);
-            color: var(--text-muted);
-            opacity: 0.5;
-        }
-
-        .gallery-pagination .page-item:first-child .page-link,
-        .gallery-pagination .page-item:last-child .page-link {
-            border-radius: 0.5rem;
-        }
-
-        body[data-theme='dark'] .gallery-pagination .page-link {
-            background: var(--surface-elevated);
-            border-color: var(--border-soft);
-            color: var(--brand-700);
-        }
-
-        body[data-theme='dark'] .gallery-pagination .page-link:hover {
-            background: var(--surface-container-low);
-            border-color: var(--border-soft);
-            color: var(--brand-500);
-        }
-
-        body[data-theme='dark'] .gallery-pagination .page-item.active .page-link {
-            background: var(--brand-500);
-            border-color: var(--brand-500);
-            color: #fff;
-        }
-
-        body[data-theme='dark'] .gallery-eyebrow {
-            color: var(--text-muted);
-        }
-
-        body[data-theme='dark'] .gallery-title {
-            color: var(--brand-900);
-        }
-
-        body[data-theme='dark'] .gallery-subtitle {
-            color: var(--text-muted);
-        }
-
         .photo-item {
             position: relative;
             margin: 0;
-            border-radius: 16px;
+            border-radius: var(--radius-lg);
             overflow: hidden;
             aspect-ratio: 4 / 3;
             cursor: pointer;
-            background: var(--surface-elevated);
+            background: var(--surface-container-low);
             border: 1px solid var(--border-soft);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .photo-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 18px 36px var(--shadow-soft);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card-hover);
         }
 
         .photo-img {
@@ -235,11 +155,11 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.4s ease;
+            transition: transform 0.35s ease;
         }
 
         .photo-item:hover .photo-img {
-            transform: scale(1.04);
+            transform: scale(1.03);
         }
 
         /* Video item overlay */
@@ -254,20 +174,20 @@
             align-items: center;
             justify-content: center;
             color: rgba(255, 255, 255, 0.95);
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.28));
-            font-size: 2.25rem;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.32));
+            font-size: 2.15rem;
             pointer-events: none;
         }
 
         .video-item.is-processing .video-overlay {
             flex-direction: column;
             gap: 0.35rem;
-            font-size: 1.75rem;
-            background: rgba(8, 14, 24, 0.55);
+            font-size: 1.65rem;
+            background: rgba(8, 14, 24, 0.6);
         }
 
         .video-processing-text {
-            font-size: 0.85rem;
+            font-size: 0.8125rem;
             font-weight: 600;
         }
 
@@ -283,7 +203,7 @@
             background: rgba(8, 14, 24, 0.85);
             color: #dbe4ef;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
 
         .video-loading[hidden] {
@@ -296,7 +216,7 @@
             inset: 0;
             z-index: 2000;
             background: rgba(8, 14, 24, 0.92);
-            backdrop-filter: blur(6px);
+            backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -320,13 +240,13 @@
             max-width: 100%;
             max-height: 80vh;
             object-fit: contain;
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
         }
 
         .lightbox-caption {
             color: #dbe4ef;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             text-align: center;
             word-break: break-word;
         }
@@ -338,7 +258,7 @@
             transform: translateX(-50%);
             color: #a7b4c5;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
         }
 
         .lightbox-close {
@@ -348,14 +268,14 @@
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.18);
             color: #fff;
-            width: 44px;
-            height: 44px;
-            border-radius: 999px;
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-sm);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.15rem;
-            transition: background 0.2s ease;
+            font-size: 1.1rem;
+            transition: background 0.15s ease;
         }
 
         .lightbox-close:hover {
@@ -369,14 +289,14 @@
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.18);
             color: #fff;
-            width: 48px;
-            height: 48px;
-            border-radius: 999px;
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
-            transition: background 0.2s ease;
+            font-size: 1.15rem;
+            transition: background 0.15s ease;
         }
 
         .lightbox-nav:hover {
@@ -393,14 +313,14 @@
 
         @media (max-width: 575.98px) {
             .lightbox-nav {
-                width: 40px;
-                height: 40px;
+                width: 38px;
+                height: 38px;
                 font-size: 1rem;
             }
 
             .lightbox-close {
-                width: 40px;
-                height: 40px;
+                width: 38px;
+                height: 38px;
             }
         }
     </style>
@@ -461,7 +381,6 @@
                     const modalEl = document.getElementById('videoModal');
 
                     if (vi.dataset.ready === '0') {
-                        // MP4 belum disiapkan server: jangan coba putar, cukup beri tahu
                         loading.querySelector('span').textContent =
                             'Video sedang diproses, coba lagi beberapa menit lagi.';
                         loading.querySelector('.spinner-border').style.display = 'none';
@@ -470,7 +389,6 @@
                         return;
                     }
 
-                    // Route internal yang menyajikan MP4 yang siap diputar
                     const url = '{{ url('/galeri/video') }}/' + encodeURIComponent(id);
 
                     source.type = 'video/mp4';
@@ -485,14 +403,12 @@
 
             const playerEl = document.getElementById('playerVideo');
             if (playerEl) {
-                // Sembunyikan indikator loading begitu video siap diputar
                 ['playing', 'canplay', 'loadeddata'].forEach(function(evt) {
                     playerEl.addEventListener(evt, function() {
                         document.getElementById('videoLoading').hidden = true;
                     });
                 });
 
-                // Dengan <source>, error dikirim ke elemen source (bukan video)
                 const tampilkanGagal = function() {
                     const loading = document.getElementById('videoLoading');
                     loading.querySelector('span').textContent =
@@ -503,7 +419,6 @@
                 playerEl.addEventListener('error', tampilkanGagal);
                 playerEl.querySelector('source')?.addEventListener('error', tampilkanGagal);
 
-                // Pause/stop video saat modal ditutup
                 const videoModalEl = document.getElementById('videoModal');
                 videoModalEl.addEventListener('hidden.bs.modal', function() {
                     const player = document.getElementById('playerVideo');

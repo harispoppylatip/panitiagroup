@@ -1,59 +1,42 @@
 @extends('layout.master')
 @section('konten')
-    <section class="py-5">
+    <section class="login-section py-3">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-lg-5 col-md-7">
-                    <div class="card border-0 shadow-lg" style="border-radius: 16px;">
+                <div class="col-lg-5 col-md-7" style="max-width: 440px;">
+                    <div class="card">
                         <div class="card-body p-4 p-md-5">
-                            <!-- Heading Section -->
-                            <div class="text-center mb-5">
-                                <h1 class="h2 fw-bold mb-2" style="color: var(--text-main); font-size: 2rem;">Login</h1>
-                                <p class="text-muted mb-0" style="font-size: 0.95rem;">
-                                    Untuk <span class="fw-semibold">Admin</span> | <span class="fw-semibold">Akuntan</span>
-                                    | <span class="fw-semibold">Anggota</span>
+                            <div class="mb-4">
+                                <h1 class="h4 fw-bold mb-1" style="color: var(--brand-900);">Masuk ke Panel</h1>
+                                <p class="text-muted small mb-0">
+                                    Akses khusus Admin, Akuntan, dan Anggota.
                                 </p>
                             </div>
 
                             @if ($errors->any())
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <div class="alert alert-danger alert-dismissible fade show py-2 small" role="alert">
                                     {{ $errors->first() }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
                                 </div>
                             @endif
 
                             <form action="{{ route('admin.login.submit') }}" method="POST">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="login_input" class="form-label fw-semibold">Email atau Username</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-0"
-                                            style="border-radius: 8px 0 0 8px;">
-                                            <i class="bi bi-person"></i>
-                                        </span>
-                                        <input type="text" id="login_input" name="login_input"
-                                            class="form-control border-0" value="{{ old('login_input') }}"
-                                            placeholder="Masukan email atau username" style="border-radius: 0 8px 8px 0;"
-                                            required autofocus>
-                                    </div>
-                                    <small class="text-muted d-block mt-1">Gunakan email atau username Anda untuk
-                                        masuk</small>
+                                    <label for="login_input" class="form-label fw-semibold small">Email atau Username</label>
+                                    <input type="text" id="login_input" name="login_input"
+                                        class="form-control" value="{{ old('login_input') }}"
+                                        placeholder="Masukkan email atau username"
+                                        autocomplete="username" required autofocus>
                                 </div>
                                 <div class="mb-4">
-                                    <label for="password" class="form-label fw-semibold">Password</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-0"
-                                            style="border-radius: 8px 0 0 8px;">
-                                            <i class="bi bi-lock"></i>
-                                        </span>
-                                        <input type="password" id="password" name="password" class="form-control border-0"
-                                            placeholder="Masukan password Anda" style="border-radius: 0 8px 8px 0;"
-                                            required>
-                                    </div>
+                                    <label for="password" class="form-label fw-semibold small">Password</label>
+                                    <input type="password" id="password" name="password" class="form-control"
+                                        placeholder="Masukkan password" autocomplete="current-password"
+                                        required>
                                 </div>
-                                <button type="submit" class="btn btn-brand w-100 fw-semibold py-2"
-                                    style="border-radius: 8px;">
-                                    <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
+                                <button type="submit" class="btn btn-brand w-100 py-2">
+                                    Masuk
                                 </button>
                             </form>
                         </div>

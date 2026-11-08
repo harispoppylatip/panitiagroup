@@ -1,10 +1,23 @@
 @extends('layout.master')
 @section('konten')
-    <section class="py-5">
+    <section class="jadwal-section">
         <div class="container">
-            <div class="mb-4 text-center text-md-start">
-                <h1 class="display-5 fw-bold mb-2">Jadwal Matkul</h1>
-                {{-- <p class="text-muted fs-5 mb-0">Realtime</p> --}}
+            <div class="page-header d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3">
+                <div>
+                    <h1 class="page-title">Jadwal Kuliah</h1>
+                    <p class="page-subtitle">Daftar jadwal perkuliahan mingguan yang aktif.</p>
+                </div>
+
+                @if (!$error)
+                    <div class="day-filter" role="group" aria-label="Filter Hari">
+                        <button type="button" class="day-filter-btn active" data-day="Semua">Semua</button>
+                        <button type="button" class="day-filter-btn" data-day="Senin">Senin</button>
+                        <button type="button" class="day-filter-btn" data-day="Selasa">Selasa</button>
+                        <button type="button" class="day-filter-btn" data-day="Rabu">Rabu</button>
+                        <button type="button" class="day-filter-btn" data-day="Kamis">Kamis</button>
+                        <button type="button" class="day-filter-btn" data-day="Jumat">Jumat</button>
+                    </div>
+                @endif
             </div>
 
             @if ($error)
@@ -13,67 +26,41 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @else
-                <div class="card filter-panel mb-4">
-                    <div
-                        class="card-body d-flex flex-column flex-lg-row gap-3 align-items-lg-center justify-content-between">
-                        <div class="btn-group flex-wrap gap-2" role="group" aria-label="Filter Hari">
-                            <button type="button" class="btn btn-primary btn-sm filter-btn active" data-day="Semua">Semua
-                                Hari</button>
-                            <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
-                                data-day="Senin">Senin</button>
-                            <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
-                                data-day="Selasa">Selasa</button>
-                            <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
-                                data-day="Rabu">Rabu</button>
-                            <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
-                                data-day="Kamis">Kamis</button>
-                            <button type="button" class="btn btn-outline-primary btn-sm filter-btn"
-                                data-day="Jumat">Jumat</button>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="schedule-list" id="scheduleGrid">
                     @forelse ($jadwal as $hari => $items)
-                        <div class="card schedule-group mb-4" data-day="{{ $hari }}">
-                            <div class="card-body">
-                                <div
-                                    class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
-                                    <div>
-                                        <span
-                                            class="small fw-bold text-uppercase text-muted mb-2 d-inline-block">{{ $hari }}</span>
+                        <div class="card schedule-group" data-day="{{ $hari }}">
+                            <div class="schedule-group-header">
+                                <h2 class="schedule-day-title">{{ $hari }}</h2>
+                                <span class="schedule-day-count tabular-nums">{{ $items->count() }} mata kuliah</span>
+                            </div>
 
-                                    </div>
-                                    <small class="text-muted fw-semibold">{{ $items->count() }} mata kuliah</small>
-                                </div>
-
-                                <div class="table-responsive">
-                                    <table class="table table-borderless align-middle mb-0 schedule-table">
-                                        <thead>
+                            <div class="table-responsive">
+                                <table class="table align-middle mb-0 schedule-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-time">Jam</th>
+                                            <th class="col-course">Mata Kuliah</th>
+                                            <th class="col-lecturer">Dosen</th>
+                                            <th class="col-room">Ruang</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($items as $item)
                                             <tr>
-                                                <th class="text-muted fw-semibold">Jam</th>
-                                                <th class="text-muted fw-semibold">Mata Kuliah</th>
-                                                <th class="text-muted fw-semibold">Dosen</th>
-                                                <th class="text-muted fw-semibold">Ruang</th>
+                                                <td class="col-time tabular-nums">{{ $item['jamberangkat'] }} - {{ $item['jampulang'] }}</td>
+                                                <td class="col-course">{{ $item['matkul'] }}</td>
+                                                <td class="col-lecturer">{{ $item['dosen'] }}</td>
+                                                <td class="col-room tabular-nums">{{ $item['ruang'] }}</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($items as $item)
-                                                <tr>
-                                                    <td class="fw-semibold">{{ $item['jamberangkat'] }} -
-                                                        {{ $item['jampulang'] }}</td>
-                                                    <td>{{ $item['matkul'] }}</td>
-                                                    <td>{{ $item['dosen'] }}</td>
-                                                    <td>{{ $item['ruang'] }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     @empty
-                        <div class="alert alert-warning">Belum ada data jadwal.</div>
+                        <div class="schedule-empty">
+                            <p class="text-muted mb-0">Belum ada data jadwal perkuliahan.</p>
+                        </div>
                     @endforelse
                 </div>
             @endif
@@ -81,76 +68,154 @@
     </section>
 
     <style>
-        .filter-panel {
-            background: var(--surface-elevated);
+        .day-filter {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem;
+            background: var(--surface-container-low);
             border: 1px solid var(--border-soft);
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            max-width: 100%;
+        }
+
+        .day-filter-btn {
+            border: 0;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            padding: 0.4rem 0.8rem;
+            border-radius: calc(var(--radius-md) - 3px);
+            white-space: nowrap;
+            transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .day-filter-btn:hover {
+            color: var(--text-main);
+        }
+
+        .day-filter-btn.active {
+            background: var(--surface-elevated);
+            color: var(--brand-900);
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+        }
+
+        .schedule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
         }
 
         .schedule-group {
-            border-radius: 1rem;
+            border-radius: var(--radius-lg);
             overflow: hidden;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
             background: var(--surface-elevated);
             border: 1px solid var(--border-soft);
-            box-shadow: 0 4px 12px var(--shadow-soft);
+            box-shadow: var(--shadow-card);
         }
 
-        .schedule-group:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px var(--shadow-soft) !important;
+        .schedule-group-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            background: var(--surface-container-low);
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .schedule-day-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--brand-900);
+            margin: 0;
+        }
+
+        .schedule-day-count {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--text-muted);
         }
 
         .schedule-table {
             --bs-table-bg: transparent;
-            --bs-table-striped-bg: transparent;
-            --bs-table-active-bg: transparent;
-            --bs-table-hover-bg: rgba(18, 38, 63, 0.03);
+            --bs-table-hover-bg: var(--surface-container-low);
             --bs-table-color: var(--text-main);
             --bs-table-border-color: var(--border-soft);
+            margin-bottom: 0;
         }
 
         .schedule-table thead th {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
+            padding: 0.75rem 1.25rem;
             border-bottom: 1px solid var(--border-soft);
-            padding-top: 0.25rem;
+            white-space: nowrap;
         }
 
-        .schedule-table tbody tr {
-            border-top: 1px solid var(--border-soft);
+        .schedule-table tbody td {
+            padding: 0.9rem 1.25rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-soft);
         }
 
-        body[data-theme='dark'] .schedule-table {
-            --bs-table-hover-bg: rgba(148, 163, 184, 0.1);
+        .schedule-table tbody tr:last-child td {
+            border-bottom: 0;
         }
 
-        .schedule-table tbody tr:first-child {
-            border-top: 0;
+        .schedule-table .col-time {
+            width: 160px;
+            white-space: nowrap;
+            font-weight: 600;
+            color: var(--brand-900);
         }
 
-        .schedule-table td {
-            padding-top: 0.9rem;
-            padding-bottom: 0.9rem;
+        .schedule-table .col-course {
+            font-weight: 600;
+            color: var(--text-main);
+            min-width: 200px;
         }
 
-        .schedule-list {
-            animation: slideUp 0.5s ease both;
+        .schedule-table .col-lecturer {
+            color: var(--text-muted);
+            min-width: 180px;
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(18px);
+        .schedule-table .col-room {
+            width: 130px;
+            white-space: nowrap;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .schedule-empty {
+            padding: 3rem 1.5rem;
+            text-align: center;
+            border: 1px dashed var(--border-soft);
+            border-radius: var(--radius-lg);
+        }
+
+        @media (max-width: 767.98px) {
+            .schedule-group-header {
+                padding: 0.85rem 1rem;
             }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            .schedule-table thead th,
+            .schedule-table tbody td {
+                padding: 0.75rem 1rem;
+                font-size: 0.85rem;
             }
         }
     </style>
 
     <script>
         (function() {
-            const filterButtons = document.querySelectorAll('.filter-btn');
+            const filterButtons = document.querySelectorAll('.day-filter-btn');
             const scheduleItems = document.querySelectorAll('.schedule-group');
             let activeDay = 'Semua';
 
@@ -165,15 +230,8 @@
             filterButtons.forEach(btn => {
                 btn.addEventListener('click', function() {
                     activeDay = this.dataset.day;
-
-                    filterButtons.forEach(b => {
-                        b.classList.remove('btn-primary');
-                        b.classList.add('btn-outline-primary');
-                    });
-
-                    this.classList.remove('btn-outline-primary');
-                    this.classList.add('btn-primary');
-
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
                     applyFilter();
                 });
             });
